@@ -9,8 +9,33 @@
     <atom:link href="http://yunsaijc.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>Enjoy</description>
-    <pubDate>Sun, 16 Oct 2022 15:16:22 GMT</pubDate>
+    <pubDate>Thu, 20 Oct 2022 15:14:55 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title></title>
+      <link>http://yunsaijc.top/2022/10/20/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%AC3%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</link>
+      <guid>http://yunsaijc.top/2022/10/20/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%AC3%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</guid>
+      <pubDate>Thu, 20 Oct 2022 15:13:13 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h1 id=&quot;区块链第3次实验报告&quot;&gt;区块链第3次实验报告&lt;/h1&gt;
+&lt;h3 id=&quot;实验1熟悉bitcoin-core的基本配置方法&quot;&gt;实验1：熟悉Bitcoin
+Core的基本配置方法&lt;/h3&gt;
+&lt;h4 id=&quot;熟悉比特币客户端的配置方法&quot;&gt;1.1 熟悉比特币客户端的</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="区块链第3次实验报告">区块链第3次实验报告</h1><h3 id="实验1熟悉bitcoin-core的基本配置方法">实验1：熟悉BitcoinCore的基本配置方法</h3><h4 id="熟悉比特币客户端的配置方法">1.1 熟悉比特币客户端的配置方法</h4><p>思考题：</p><ol type="1"><li><p>根据日志中的<code>* Using 8.0MiB for chain state database</code>可知，为存储链上交易状态而初始化的数据空间为8.0MiB；</p></li><li><p>根据日志中的<code>keypool added 2000 keys (1000 internal), size=2000 (1000 internal)</code>以及<code>keypool added 1 keys (0 internal), size=2000 (1000 internal)</code>可知，最终保存了2001对密钥；</p></li><li><p>加载<code>peer.dat</code>文件--&gt;加载<code>banlist.dat</code>文件--&gt;启动网络线程--&gt;从DNS种子中加载地址--&gt;添加修正的种子节点。</p></li></ol><h4 id="学习bitcoin.conf的配置方法">1.2 学习bitcoin.conf的配置方法</h4><p>alice的配置文件内容如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">regtest=1</span><br><span class="line">listen=1</span><br><span class="line">port=60000</span><br><span class="line">addnode=127.0.0.1:60002</span><br><span class="line">addnode=127.0.0.1:60004</span><br><span class="line"></span><br><span class="line">rpcport=60001</span><br><span class="line">rpcuser=alice</span><br><span class="line">rpcpassword=alice</span><br></pre></td></tr></table></figure><p>bob和network的配置类似，其中bob的port=60002, rpcport=60003,network的port=60004, rpcport=60005；</p><p>在3个命令行中运行bitcoind后，alice的<code>debug.log</code>文件显示3个节点连接成功，截图如下：</p><img src="/2022/10/20/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%AC3%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/911664434239_.pic.jpg" class=""><h3 id="实验2-掌握常用rpc指令利用回归测试网络实现挖矿与交易">实验2:掌握常用RPC指令，利用回归测试网络实现挖矿与交易</h3><p>实验流程：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为alice生成比特币</span></span><br><span class="line">alice-cli generate <span class="number">50</span></span><br><span class="line">alice-cli generate <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 产生地址</span></span><br><span class="line">alice-cli getnewaddress</span><br><span class="line">bob-cli getnewaddress</span><br><span class="line">network-cli getnewaddress</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向bob和network转账</span></span><br><span class="line">alice-cli sendtoaddress n1e6bsTvEPeAvzxaVDAU1mHzeMMfzkqX4Q</span><br><span class="line">alice-cli sendtoaddress mqFEmW3PArPU7bYvYbaSVZiEgwy32qgvGn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取承载上述交易的区块原始数据</span></span><br><span class="line">alice-cli gettransaction e32b8eb78aca04241b5a0b74c9b276b4caf67457f09aa0b42385096a97529727</span><br><span class="line">alice-cli gettransaction 79abb94ae33b6227b00fd3546e657850c3d23f01bcac205a8755d72778ce5143</span><br></pre></td></tr></table></figure><p>3个节点的余额如下图所示：</p><img src="/2022/10/20/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%AC3%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/image-20220929150438781.png" class=""><p>记录alice给bob转账的区块信息如下图所示：</p><img src="/2022/10/20/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%AC3%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/image-20220929150522950.png" class=""><p>记录alice给network转账的区块信息如下图所示：</p><img src="/2022/10/20/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%AC3%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/image-20220929150531131.png" class=""><h3 id="实验3-通过控制台与测试链进行更加丰富的交互">实验3:通过控制台与测试链进行更加丰富的交互</h3><p>利用<code>decoderawtransaction</code>命令解码交易源数据，所得结果如下图所示：</p><img src="/2022/10/20/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%AC3%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/901664376929_.pic.jpg" class=""><p>思考题：</p><ol type="a"><li>输入是前一笔确认交易的输出，即以“296e”开头的<code>txid</code>；</li></ol><p>​ 输出是0.1BTC的转账金额以及0.0989BTC的找零金额。</p><ol start="2" type="a"><li>该交易的数据量大小为119Bytes。</li></ol>]]></content:encoded>
+      
+      
+      
+      
+      <comments>http://yunsaijc.top/2022/10/20/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%AC%AC3%E6%AC%A1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>区块链第2次实验报告</title>
