@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-03 15:32:20" itemprop="dateModified" datetime="2022-11-03T15:32:20+08:00">2022-11-03</time>
+                <time title="修改时间：2022-11-03 15:40:19" itemprop="dateModified" datetime="2022-11-03T15:40:19+08:00">2022-11-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -430,9 +430,9 @@ id="实验5体验在线生成不同种类的钱包地址">实验5：体验在线
 <p>最后在animals数组后输入索引，即可查看创建的宠物名称及其DNA。</p>
 <h4 id="实验结果截图-6">实验结果截图</h4>
 <p>创建的3个宠物及DNA如下所示：</p>
-<p><img src="区块链实验报告/26.png" style="zoom: 33%;" /></p>
-<p><img src="区块链实验报告/27.png" style="zoom: 33%;" /></p>
-<p><img src="区块链实验报告/28.png" style="zoom:33%;" /></p>
+<img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/26.png" class="">
+<img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/27.png" class="">
+<img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/28.png" class="">
 <h4 id="实验代码">实验代码</h4>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity &gt;=0.4.12 &lt;0.6.0;</span><br><span class="line"></span><br><span class="line">contract AnimalIncubators is Ownable&#123;</span><br><span class="line">	uint dnaDigits = 16;</span><br><span class="line">	uint dnaLength = 10 ** dnaDigits;</span><br><span class="line">	struct Animal &#123;</span><br><span class="line">		string name;</span><br><span class="line">		uint dna;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Animal[] public animals;</span><br><span class="line">	event NewAnimal (uint AnimalId, string name, uint dna);</span><br><span class="line"></span><br><span class="line">	function _createAnimal (string _name, uint _dna) private &#123;</span><br><span class="line">		animals.push(Animal(_name, _dna));</span><br><span class="line">		uint animalId = animals.length - 1;</span><br><span class="line">		NewAnimal(animalId, _name, _dna);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	function _generateRandomDna (string _str) private view returns (uint) &#123;</span><br><span class="line">		uint random = uint(keccak256(_str));</span><br><span class="line">		return random % dnaLength;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	function createRandomAnimal (string _name) public &#123;</span><br><span class="line">		uint randDna = _generateRandomDna(_name);</span><br><span class="line">		_createAnimal(_name, randDna);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3
@@ -450,7 +450,7 @@ id="实验2solidity进阶宠物成长系统">实验2：Solidity进阶——宠�
 <p>使用3个不同的账号创建3只宠物：</p>
 <img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/29.png" class="">
 <p>对Dragon进行投喂，并查看产生的新宠物No-one：</p>
-<p><img src="区块链实验报告/30.png" style="zoom:33%;" /></p>
+<img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/30.png" class="">
 <p>使用不是Dragon主人的另外两个账户对新宠物No-one进行投喂，产生报错信息：</p>
 <img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/31.png" class="">
 <h4 id="实验代码-1">实验代码</h4>
