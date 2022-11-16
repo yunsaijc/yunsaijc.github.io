@@ -164,6 +164,152 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yunsaijc.top/2022/11/16/%E5%85%B3%E4%BA%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E6%9E%84%E9%80%A0N-iid%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yunsaijc">
+      <meta itemprop="description" content="Enjoy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yunsaijc's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/16/%E5%85%B3%E4%BA%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E6%9E%84%E9%80%A0N-iid%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">关于联邦学习构造Non-IID数据集的记录</a>
+        </h2>
+
+        <div class="post-meta">
+	
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-11-16 20:21:44 / 修改时间：20:28:57" itemprop="dateCreated datePublished" datetime="2022-11-16T20:21:44+08:00">2022-11-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>简单来说，Non-IID就是指每个设备中的数据分布不能代表全局数据分布。本篇简单记录一下自己在研究联邦学习过程中对Non-IID数据的思考和处理</p>
+<h2 id="dateset-shift数据集偏移">Dateset Shift（数据集偏移）</h2>
+<p>联邦学习中客户端之间数据的Non-IID分布，和在做机器学习任务时可能遇到的训练集与测试集分布不一致是一个道理</p>
+<p>训练集和测试集分布不一致被称作数据集偏移(Dataset
+Shift)，有3种类型：</p>
+<ol type="1">
+<li><p><strong>协变量偏移(Covariate Shift)</strong>:
+独立变量的偏移，指训练集和测试集的输入服从不同分布，但背后是服从同一个函数关系，即:
+<span class="math display">\[
+P_{train}(y|x) = P_{test}(y|x)\\
+P_{train}(x) \neq P_{test}(x)
+\]</span></p></li>
+<li><p><strong>先验概率偏移(Prior Probability Shift)</strong>:
+目标变量的偏移，即： <span class="math display">\[
+P_{train}(x|y) = P_{test}(x|y)\\
+P_{train}(y) \neq P_{test}(y)
+\]</span></p></li>
+<li><p><strong>概念偏移(Concept Shift)</strong>:
+独立变量和目标变量之间关系的偏移，即： <span class="math display">\[
+P_{train}(y|x) \neq P_{test}(y|x)\ and\ P_{train}(x) = P_{test}(x)\ in\
+X\rightarrow Y\ problems \\
+P_{train}(x|y) \neq P_{test}(x|y)\ and\ P_{train}(y) = P_{test}(y)\ in\
+Y\rightarrow X\ problems
+\]</span></p></li>
+</ol>
+<h2
+id="联邦学习中客户端数据non-iid分布的五种类型">联邦学习中客户端数据Non-IID分布的五种类型</h2>
+<ol type="1">
+<li><p>Feature distribution skew (convariate shift)</p>
+<p>与数据集偏移中的协变量偏移同理</p>
+<p>以MNIST数据集为例，不同的人写同一个数字，写法不同（即不同客户端的<span
+class="math inline">\(P_i(x)\)</span>分布不同），但是不同客户端用这个特征<code>x</code>预测得到该标签<code>y</code>的概率是相近的，即<span
+class="math inline">\(P(y|x)\)</span>分布相同</p></li>
+<li><p>Label distribution skew (prior probability shift)</p>
+<p>与数据集偏移中的先验概率偏移同理</p>
+<p>以MNIST数据集为例，不同的客户端内，各个标签所占的比例不是平均的，如A有50%的标签<code>1</code>，B有50%的标签<code>2</code>（即不同客户端的<span
+class="math inline">\(P_i(y)\)</span>分布不同），但是当标签给定时，A和B中对应的特征都大概率相似，即<span
+class="math inline">\(P(x|y)\)</span>分布相同</p></li>
+<li><p>Same label, different features (concept shift)</p>
+<p>与数据集偏移中的概念偏移同理，<span
+class="math inline">\(P_{train}(x|y) \neq P_{test}(x|y)\ and\
+P_{train}(y) = P_{test}(y)\ \)</span></p>
+<p>通俗理解：同样是车（标签<code>y</code>），迈凯伦和花冠完全是两回事（特征<code>x</code>）</p></li>
+<li><p>Same features, different label (concept shift)</p>
+<p>与数据集偏移中的概念偏移同理，</p>
+<p><span class="math inline">\(P_{train}(y|x) \neq P_{test}(y|x)\ and\
+P_{train}(x) = P_{test}(x)\)</span></p>
+<p>通俗理解：同样是要买交通工具（特征<code>x</code>），A想买跑车，B想买机车（标签<code>y</code>）</p></li>
+<li><p>Quantity skew or unbalancedness</p>
+<p>即不同客户端持有的数据量差异较大</p></li>
+</ol>
+<h2 id="实践中遇到的具体实现方式">实践中遇到的具体实现方式</h2>
+<h3 id="a.-第二类non-iid的第一种分配方式">A.
+第二类Non-IID的第一种分配方式</h3>
+<p>​
+以MNIST为例，共10个客户端。分配后的数据表示方式：建立一个字典，对于每个客户<code>i</code>，<code>i</code>作为键，数据的索引存在一个列表中作为值。如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	0: [111, 333, 555]</span><br><span class="line">	1: [222, 444, 666]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​
+数据分配思路：根据客户ID的奇偶性分为两类（当然也可以分为更多类，此处以两类为例）。同时将数据集根据标签分类，奇数、偶数各为一类。奇数数据在0~4客户端中平均分配，偶数数据在5~9客户端中平均分配。</p>
+<p>​ 当然，本例只是分为了2组，实际上也可以分为5组、10组。</p>
+<p>​ 代码及注释如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mnist_noniid</span>(<span class="params">dataset, num_users</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Sample non-I.I.D client data from MNIST dataset</span></span><br><span class="line"><span class="string">    :param dataset: Dataset</span></span><br><span class="line"><span class="string">    :param num_users: Number of clients</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    dict_users = &#123;i: np.array([], dtype=<span class="string">&#x27;int64&#x27;</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_users)&#125;	<span class="comment"># 初始化字典</span></span><br><span class="line">    idxs = np.arange(<span class="built_in">len</span>(dataset))						<span class="comment"># 所有数据的索引</span></span><br><span class="line">    labels = dataset.train_labels.numpy()					<span class="comment"># 所有数据的标签</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># sort labels</span></span><br><span class="line">    idxs_labels = np.vstack((idxs, labels))			<span class="comment"># 将索引和标签对应起来</span></span><br><span class="line">    idxs_labels = idxs_labels[:, idxs_labels[<span class="number">1</span>, :].argsort()]	<span class="comment"># 根据第2维的数据进行排序</span></span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(idxs_labels[<span class="number">0</span>])):</span><br><span class="line">        <span class="keyword">if</span> idxs_labels[<span class="number">1</span>, i] % <span class="number">2</span> != <span class="number">0</span>:		<span class="comment"># 将标签为奇数的数据分到一组去</span></span><br><span class="line">            tmp.append(idxs_labels[<span class="number">0</span>, i])</span><br><span class="line">    idxs = idxs_labels[<span class="number">0</span>, :]			<span class="comment"># 取出第1维的索引</span></span><br><span class="line">    group1 = <span class="built_in">set</span>(tmp)</span><br><span class="line">    group2 = <span class="built_in">set</span>(<span class="built_in">set</span>(idxs) - group1)		<span class="comment"># 剩下的为标签为偶数的数据，分到另一组</span></span><br><span class="line">    group1 = <span class="built_in">list</span>(group1)</span><br><span class="line">    group2 = <span class="built_in">list</span>(group2)</span><br><span class="line">    shard1 = <span class="built_in">len</span>(group1) // (num_users // <span class="number">2</span>)	<span class="comment"># 每一组中每个客户端应该持有多少个数据</span></span><br><span class="line">    shard2 = <span class="built_in">len</span>(group2) // (num_users // <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># divide and assign</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_users):</span><br><span class="line">        <span class="keyword">if</span> i &lt; (num_users // <span class="number">2</span>):	<span class="comment"># 0~4客户端，在奇数组中随机取出shard1个数据</span></span><br><span class="line">            rand_set = <span class="built_in">set</span>(np.random.choice(group1, shard1, replace=<span class="literal">False</span>))</span><br><span class="line">            group1 = <span class="built_in">list</span>(<span class="built_in">set</span>(group1) - rand_set)</span><br><span class="line">            dict_users[i] = rand_set</span><br><span class="line">        <span class="keyword">else</span>:				<span class="comment"># 5~9客户端，在偶数组中随机取出shard2个数据</span></span><br><span class="line">            rand_set = <span class="built_in">set</span>(np.random.choice(group2, shard2, replace=<span class="literal">False</span>))</span><br><span class="line">            group2 = <span class="built_in">list</span>(<span class="built_in">set</span>(group2) - rand_set)</span><br><span class="line">            dict_users[i] = rand_set</span><br><span class="line">    <span class="keyword">if</span> dict_users == &#123;&#125;:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Error&quot;</span></span><br><span class="line">    <span class="keyword">return</span> dict_users</span><br></pre></td></tr></table></figure>
+<h3 id="b.-第二类non-iid的第二种分配方式">B.
+第二类Non-IID的第二种分配方式</h3>
+<p>​
+数据分配思路：将排序后的数据分为<code>2 * num_users</code>个碎片，每个客户随机取2个碎片，那么该客户拥有的数据就只包含这2个碎片里的标签（比如说60000个数据分成200个碎片，每个碎片300个数据，假设某个客户取到了前面的600个数据，那么他取到的数据含有的标签就只可能包含0，1，2，但是不可能包含9），从而构成了Non-IID</p>
+<p>​ 代码及注释如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mnist_noniid</span>(<span class="params">dataset, num_users</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Sample non-I.I.D client data from MNIST dataset</span></span><br><span class="line"><span class="string">    :param dataset: Dataset</span></span><br><span class="line"><span class="string">    :param num_users: Number of clients</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    num_shards, num_imgs = num_users * <span class="number">2</span>, <span class="built_in">int</span>(<span class="built_in">len</span>(dataset) / (num_users * <span class="number">2</span>))	<span class="comment"># 计算碎片数、每个碎片包含的数据条数</span></span><br><span class="line">    idx_shard = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_shards)]					<span class="comment"># 每个碎片的索引</span></span><br><span class="line">    dict_users = &#123;i: np.array([], dtype=<span class="string">&#x27;int64&#x27;</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_users)&#125;	<span class="comment"># 初始化字典</span></span><br><span class="line">    idxs = np.arange(<span class="built_in">len</span>(dataset))						<span class="comment"># 所有数据的索引</span></span><br><span class="line">    labels = dataset.train_labels.numpy()					<span class="comment"># 所有数据的标签</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># sort labels</span></span><br><span class="line">    idxs_labels = np.vstack((idxs, labels))			<span class="comment"># 将索引和标签对应起来</span></span><br><span class="line">    idxs_labels = idxs_labels[:, idxs_labels[<span class="number">1</span>, :].argsort()]	<span class="comment"># 根据第2维的数据进行排序</span></span><br><span class="line">    idxs = idxs_labels[<span class="number">0</span>, :]					<span class="comment"># 取出第1维的索引</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># divide and assign</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_users):</span><br><span class="line">        rand_set = <span class="built_in">set</span>(np.random.choice(idx_shard, <span class="number">2</span>, replace=<span class="literal">False</span>))	<span class="comment"># 随机取2个碎片</span></span><br><span class="line">        idx_shard = <span class="built_in">list</span>(<span class="built_in">set</span>(idx_shard) - rand_set)</span><br><span class="line">        <span class="keyword">for</span> rand <span class="keyword">in</span> rand_set:</span><br><span class="line">        dict_users[i] = np.concatenate((dict_users[i], idxs[rand * num_imgs:(rand + <span class="number">1</span>) * num_imgs]), axis=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">if</span> dict_users == &#123;&#125;:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Error&quot;</span></span><br><span class="line">    <span class="keyword">return</span> dict_users</span><br></pre></td></tr></table></figure>
+<h2 id="附python中m-n的用法">附：Python中[m, n]的用法</h2>
+<p><code>x[m, n]</code>是通过numpy引用数组或矩阵中的某一段数据集的一种写法。<code>m</code>表示第几维，<code>n</code>表示第几个数据。</p>
+<p>在一个2维矩阵中，通俗来理解，<code>x[m, n]</code>就是第<code>m</code>行第<code>n</code>列的数据，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([</span><br><span class="line">    [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">    [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<p>那么<code>x[1, 2]</code>得到的数据就是<code>6</code></p>
+<p>其他常用的用法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x[n, :]		<span class="comment"># 取第n维的全部数据</span></span><br><span class="line">x[:, n]		<span class="comment"># 在全部维中取第n个数据</span></span><br><span class="line">x[:, m:n]	<span class="comment"># 在全部维中取第m~(n-1)个数据</span></span><br></pre></td></tr></table></figure>
+<p>参考：https://blog.csdn.net/qq_43827595/article/details/120661931</p>
+<p>​ https://blog.csdn.net/u014159143/article/details/80307717</p>
+<p>​ https://zhuanlan.zhihu.com/p/263959892</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yunsaijc.top/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -196,7 +342,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-03 15:40:19" itemprop="dateModified" datetime="2022-11-03T15:40:19+08:00">2022-11-03</time>
+                <time title="修改时间：2022-11-03 15:43:48" itemprop="dateModified" datetime="2022-11-03T15:43:48+08:00">2022-11-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -554,7 +700,7 @@ id="实验3利用web3.js实现合约与前端的结合">实验3：利用Web3.js�
 <p>使用账户3的用户user3为委托人user2报名一个会议：</p>
 <img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/54.png" class="">
 <p>在账户2的user2中可以看到受托人帮忙报名的新会议：</p>
-<img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/55.png" class="" title="3-12">
+<img src="/2022/10/15/%E5%8C%BA%E5%9D%97%E9%93%BE%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/55.png" class="">
 <h2 id="选做实验选做三">选做实验（选做三）</h2>
 <h3 id="实验1远程登录服务器">实验1：远程登录服务器</h3>
 <p>使用<code>ifconfig</code>命令查看IP地址，如下图所示：</p>
@@ -799,20 +945,20 @@ target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
