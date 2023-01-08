@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yunsaijc.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本项目为联邦学习+差分隐私的实现(暂且记为myFed)。支持同步、异步、半异步（默认）机制。 项目仓库：https:&#x2F;&#x2F;github.com&#x2F;yunsaijc&#x2F;2023-Federated-Learning-and-Differential-Privacy 本代码基于以下仓库实现： https:&#x2F;&#x2F;github.com&#x2F;wenzhu23333&#x2F;Differential-Privacy-Bas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="联邦学习+差分隐私项目记录">
+<meta property="og:url" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="Yunsaijc&#39;s Blog">
+<meta property="og:description" content="本项目为联邦学习+差分隐私的实现(暂且记为myFed)。支持同步、异步、半异步（默认）机制。 项目仓库：https:&#x2F;&#x2F;github.com&#x2F;yunsaijc&#x2F;2023-Federated-Learning-and-Differential-Privacy 本代码基于以下仓库实现： https:&#x2F;&#x2F;github.com&#x2F;wenzhu23333&#x2F;Differential-Privacy-Bas">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/tau_iid_CNN_MNIST-16731516267212.png">
+<meta property="og:image" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/4_acc_iid_CNN_MNIST.png">
+<meta property="og:image" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/4_acc_N-iid_CNN_MNIST.png">
+<meta property="og:image" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/acc_iid_CNN_MNIST.png">
+<meta property="og:image" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/acc_N-iid_CNN_MNIST.png">
+<meta property="og:image" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/acc_iid_CNN_CIFAR.png">
+<meta property="og:image" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/acc_N-iid_CNN_CIFAR.png">
+<meta property="article:published_time" content="2023-01-08T05:44:45.000Z">
+<meta property="article:modified_time" content="2023-01-08T05:45:40.420Z">
+<meta property="article:author" content="Yunsaijc">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="联邦学习">
+<meta property="article:tag" content="差分隐私">
+<meta property="article:tag" content="CNN">
+<meta property="article:tag" content="神经网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/tau_iid_CNN_MNIST-16731516267212.png">
+
+<link rel="canonical" href="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>联邦学习+差分隐私项目记录 | Yunsaijc's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="Yunsaijc's Blog" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yunsaijc's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yunsaijc">
+      <meta itemprop="description" content="Enjoy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yunsaijc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          联邦学习+差分隐私项目记录
+        </h1>
+
+        <div class="post-meta">
+	
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-01-08 13:44:45 / 修改时间：13:45:40" itemprop="dateCreated datePublished" datetime="2023-01-08T13:44:45+08:00">2023-01-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本项目为联邦学习+差分隐私的实现(暂且记为myFed)。支持同步、异步、半异步（默认）机制。</p>
+<p>项目仓库：https://github.com/yunsaijc/2023-Federated-Learning-and-Differential-Privacy</p>
+<p>本代码基于以下仓库实现：
+https://github.com/wenzhu23333/Differential-Privacy-Based-Federated-Learning</p>
+<p>主要参考文献：</p>
+<p>FedSA: A Semi-Asynchronous Federated Learning Mechanism in
+Heterogeneous Edge Computing</p>
+<p>Federated Learning With Differential Privacy: Algorithms and
+Performance Analysis</p>
+<h2 id="重要参数定义与说明">重要参数定义与说明</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">M		//每一轮参与全局训练的客户数量</span><br><span class="line">N		//客户数量</span><br><span class="line">K		//全局更新的轮数</span><br><span class="line">tau		//陈旧度</span><br><span class="line">epsilon	//隐私预算</span><br></pre></td></tr></table></figure>
+<h2 id="项目目的">项目目的</h2>
+<p>本项目主要目的是学习理解联邦学习的工作过程。探究联邦学习加上差分隐私后的效果；同时考察在半异步机制下，不同M值对于准确率和收敛时间带来的影响。</p>
+<h2 id="项目结构">项目结构</h2>
+<p>项目文件结构及说明如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">myFed</span><br><span class="line">│  myFed.py			//项目main文件</span><br><span class="line">│  requirements.txt	//依赖包与版本</span><br><span class="line">│</span><br><span class="line">├─data		//存放数据集文件</span><br><span class="line">├─log       //代码运行记录</span><br><span class="line">├─models    //网络模型相关文件</span><br><span class="line">│  │  Fed.py        //全局更新函数</span><br><span class="line">│  │  Nets.py       //网络模型定义函数</span><br><span class="line">│  │  test.py       //测试准确率函数</span><br><span class="line">│  │  Update.py     //本地更新函数</span><br><span class="line">│</span><br><span class="line">├─utils     //存放一些使用到的函数</span><br><span class="line">│  │  dataset.py            //数据集有关函数</span><br><span class="line">│  │  dp_mechanism.py       //与dp有关的函数</span><br><span class="line">│  │  Functions.py          //其他函数</span><br><span class="line">│  │  language_utils.py     //与特定语言模型有关的函数</span><br><span class="line">│  │  options.py            //命令行参数设置函数</span><br><span class="line">│  │  sampling.py           //数据集划分函数</span><br></pre></td></tr></table></figure>
+<h2 id="实验设置">实验设置</h2>
+<p>本项目中，我进行了多次实验。各个实验设置如下：（数据分布：IID/Non-IID；数据集：MNIST/CIFAR-10）</p>
+<ol type="1">
+<li>半异步机制联邦学习+差分隐私，设置不同N值。</li>
+<li>半异步机制联邦学习+差分隐私，设置不同M值。</li>
+<li>五种机制对比：myFed, FedSA, FedAsync, FedAP, FedAF；</li>
+</ol>
+<h2 id="实验结果分析">实验结果分析</h2>
+<h3 id="设置不同n值">1. 设置不同N值</h3>
+<p>在不同的N值之下，各个客户端陈旧度的最大值随着N值的增大而增加。如下图所示：</p>
+<img src="/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/tau_iid_CNN_MNIST-16731516267212.png" class="">
+<h3 id="设置不同m值">2. 设置不同M值</h3>
+<p>令N的值固定，变量为M的值。在IID数据集下的实验结果如下图所示（图例中的值为<span
+class="math inline">\(\frac{M}{N}\)</span>）。可以发现，当M的值较小时，收敛速度更快，并且准确率也有略微的领先。</p>
+<img src="/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/4_acc_iid_CNN_MNIST.png" class="" title="4_acc_iid_CNN_MNIST">
+<p>在Non-IID数据集下的实验结果如下图所示。可以发现，当数据分布为Non-IID时，仍然是M的值较小时，准确率上升地更快；但是M较小时的准确率波动程度较大，甚至会无法收敛；而M的值较大时虽然准确率上升更慢，但准确率是较为稳定，并且能够收敛的。</p>
+<img src="/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/4_acc_N-iid_CNN_MNIST.png" class="" title="4_acc_N-iid_CNN_MNIST">
+<h3 id="五种机制对比">3. 五种机制对比</h3>
+<p>本实验将myFed(半异步), FedSA(半异步), FedAsync(异步), FedAP(同步),
+FedAF(同步)五种机制的性能进行了对比。</p>
+<p>MNIST数据集，IID分布下。</p>
+<img src="/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/acc_iid_CNN_MNIST.png" class="" title="acc_iid_CNN_MNIST">
+<p>MNIST数据集，Non-IID分布下。</p>
+<img src="/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/acc_N-iid_CNN_MNIST.png" class="" title="acc_N-iid_CNN_MNIST">
+<p>CIFAR-10数据集，IID分布下。</p>
+<img src="/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/acc_iid_CNN_CIFAR.png" class="" title="acc_iid_CNN_CIFAR">
+<p>CIFAR-10数据集，Non-IID分布下。</p>
+<img src="/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/acc_N-iid_CNN_CIFAR.png" class="" title="acc_N-iid_CNN_CIFAR">
+<h2 id="参考">参考</h2>
+<p>Q. Ma, Y. Xu, H. Xu, Z. Jiang, L. Huang and H. Huang, "FedSA: A
+Semi-Asynchronous Federated Learning Mechanism in Heterogeneous Edge
+Computing," in IEEE Journal on Selected Areas in Communications, vol.
+39, no. 12, pp. 3654-3672, Dec. 2021, doi:
+10.1109/JSAC.2021.3118435.</p>
+<p>K. Wei et al., "Federated Learning With Differential Privacy:
+Algorithms and Performance Analysis," in IEEE Transactions on
+Information Forensics and Security, vol. 15, pp. 3454-3469, 2020, doi:
+10.1109/TIFS.2020.2988575.</p>
+<p>https://blog.csdn.net/qq_36018871/article/details/121361027</p>
+<p>https://zhuanlan.zhihu.com/p/263959892?utm_source=wechat_session</p>
+<p>https://blog.csdn.net/m0_54487794/article/details/121674633</p>
+<p>https://blog.csdn.net/wenzhu2333/article/details/124556920?spm=1001.2014.3001.5501</p>
+<p>https://zhuanlan.zhihu.com/p/348290670</p>
+<p>https://blog.csdn.net/Lyn_S/article/details/119661088</p>
+<p>https://www.zhihu.com/question/354819140</p>
+<p>https://zhuanlan.zhihu.com/p/142597513</p>
+<p>https://blog.csdn.net/qq_41769289/article/details/87694955</p>
+<p>https://blog.fangzhou.me/posts/20190224-gradient-descent/#l-smooth-and-%CE%BC-strongly-convex-function</p>
+<p>https://blog.fangzhou.me/posts/20190217-convex-function-lipschitz-smooth-strongly-convex/#strongly-convex</p>
+<p>https://blog.csdn.net/qsczse943062710/article/details/76423509</p>
+<p>https://blog.csdn.net/qq_42589613/article/details/110296048</p>
+<p>https://blog.csdn.net/PanYHHH/article/details/107361827</p>
+<p>https://zhuanlan.zhihu.com/p/40761721</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Yunsaijc
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yunsaijc.top/2023/01/08/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/" title="联邦学习+差分隐私项目记录">http://yunsaijc.top/2023/01/08/联邦学习+差分隐私项目记录/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 联邦学习</a>
+              <a href="/tags/%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81/" rel="tag"># 差分隐私</a>
+              <a href="/tags/CNN/" rel="tag"># CNN</a>
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 神经网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/09/Django+Vue/" rel="prev" title="Django+Vue 项目记录">
+      <i class="fa fa-chevron-left"></i> Django+Vue 项目记录
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0%E5%AE%9A%E4%B9%89%E4%B8%8E%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">重要参数定义与说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%9B%AE%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">项目目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">实验设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="nav-number">5.</span> <span class="nav-text">实验结果分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%8D%E5%90%8Cn%E5%80%BC"><span class="nav-number">5.1.</span> <span class="nav-text">1. 设置不同N值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%8D%E5%90%8Cm%E5%80%BC"><span class="nav-number">5.2.</span> <span class="nav-text">2. 设置不同M值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E7%A7%8D%E6%9C%BA%E5%88%B6%E5%AF%B9%E6%AF%94"><span class="nav-number">5.3.</span> <span class="nav-text">3. 五种机制对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yunsaijc</p>
+  <div class="site-description" itemprop="description">Enjoy</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yunsaijc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+	<span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
