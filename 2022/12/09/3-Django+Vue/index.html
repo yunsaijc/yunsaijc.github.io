@@ -1,39 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yunsaijc.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="技术栈：Vue + Django + MySQL IDE：Pycharm 本项目为2022秋北航网络空间安全学院数据库实验课程作业。作业需要进行简单的全栈开发。时间紧迫，且本人初次接触Vue，过程中遇到了许多问题。在此记录项目的开发过程。 项目GitHub仓库：https:&#x2F;&#x2F;github.com&#x2F;yunsaijc&#x2F;2022-Autumn-DB_Lab3-Django-Vue-Project.gi">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Django+Vue 项目记录 | Yunsaijc's Blog</title><meta name="author" content="Yunsaijc"><meta name="copyright" content="Yunsaijc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="技术栈：Vue + Django + MySQL IDE：Pycharm 本项目为2022秋北航网络空间安全学院数据库实验课程作业。作业需要进行简单的全栈开发。时间紧迫，且本人初次接触Vue，过程中遇到了许多问题。在此记录项目的开发过程。 项目GitHub仓库：https:&#x2F;&#x2F;github.com&#x2F;yunsaijc&#x2F;2022-Autumn-DB_Lab3-Django-Vue-Project.gi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Django+Vue 项目记录">
 <meta property="og:url" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/index.html">
 <meta property="og:site_name" content="Yunsaijc&#39;s Blog">
 <meta property="og:description" content="技术栈：Vue + Django + MySQL IDE：Pycharm 本项目为2022秋北航网络空间安全学院数据库实验课程作业。作业需要进行简单的全栈开发。时间紧迫，且本人初次接触Vue，过程中遇到了许多问题。在此记录项目的开发过程。 项目GitHub仓库：https:&#x2F;&#x2F;github.com&#x2F;yunsaijc&#x2F;2022-Autumn-DB_Lab3-Django-Vue-Project.gi">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221118234718172.png">
-<meta property="og:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221118234925903.png">
-<meta property="og:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221209175859510.png">
-<meta property="og:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221209180008500.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
 <meta property="article:published_time" content="2022-12-09T14:37:04.000Z">
-<meta property="article:modified_time" content="2023-09-25T02:08:47.687Z">
+<meta property="article:modified_time" content="2023-09-25T08:09:04.661Z">
 <meta property="article:author" content="Yunsaijc">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Django">
@@ -41,207 +15,163 @@
 <meta property="article:tag" content="Web">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221118234718172.png">
-
-<link rel="canonical" href="http://yunsaijc.top/2022/12/09/3-Django+Vue/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>Django+Vue 项目记录 | Yunsaijc's Blog</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yunsaijc.top/2022/12/09/3-Django+Vue/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Django+Vue 项目记录',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-25 16:09:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
 
-<link rel="alternate" href="/rss2.xml" title="Yunsaijc's Blog" type="application/rss+xml">
-</head>
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Yunsaijc's Blog</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
   
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yunsaijc.top/2022/12/09/3-Django+Vue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Yunsaijc">
-      <meta itemprop="description" content="Enjoy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yunsaijc's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Django+Vue 项目记录
-        </h1>
-
-        <div class="post-meta">
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-12-09 22:37:04" itemprop="dateCreated datePublished" datetime="2022-12-09T22:37:04+08:00">2022-12-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-25 10:08:47" itemprop="dateModified" datetime="2023-09-25T10:08:47+08:00">2023-09-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
-
-        </div>
-      </header>
-
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <p>技术栈：Vue + Django + MySQL</p>
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/rss2.xml" title="Yunsaijc's Blog" type="application/rss+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Yunsaijc's Blog"><span class="site-name">Yunsaijc's Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Django+Vue 项目记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-09T14:37:04.000Z" title="发表于 2022-12-09 22:37:04">2022-12-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-25T08:09:04.661Z" title="更新于 2023-09-25 16:09:04">2023-09-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Django+Vue 项目记录"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>技术栈：Vue + Django + MySQL</p>
 <p>IDE：Pycharm</p>
 <p>本项目为2022秋北航网络空间安全学院数据库实验课程作业。作业需要进行简单的全栈开发。时间紧迫，且本人初次接触Vue，过程中遇到了许多问题。在此记录项目的开发过程。</p>
-<p>项目GitHub仓库：https://github.com/yunsaijc/2022-Autumn-DB_Lab3-Django-Vue-Project.git</p>
+<p>项目GitHub仓库：<a
+target="_blank" rel="noopener" href="https://github.com/yunsaijc/2022-Autumn-DB_Lab3-Django-Vue-Project.git">https://github.com/yunsaijc/2022-Autumn-DB_Lab3-Django-Vue-Project.git</a></p>
 <h2 id="后端-django">后端-Django</h2>
 <h3 id="初始化与配置">初始化与配置</h3>
 <h4 id="新建项目">新建项目</h4>
@@ -338,357 +268,20 @@ App.vue: 项目入口文件 • main.js:
 <p>解决办法：重新装一个低版本的包！！！</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall element-ui</span><br><span class="line">npm install element-ui@<span class="number">2.9</span><span class="number">.2</span> -S</span><br></pre></td></tr></table></figure>
 <h2 id="参考">参考</h2>
-<p>https://super-buaa-2021.github.io/Vuebook/</p>
-<p>https://cloud.tencent.com/developer/article/1005607</p>
-<p>http://t.zoukankan.com/smile-fanyin-p-11258300.html</p>
-<p>https://blog.csdn.net/weixin_48282959/article/details/124126667</p>
-<p>https://blog.csdn.net/m0_59023970/article/details/123427008</p>
-<p>https://blog.csdn.net/yehaocheng520/article/details/117025938</p>
-<p>https://blog.csdn.net/qq_41216743/article/details/104605524</p>
-
-    </div>
-
-    
-    
-    
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>Yunsaijc
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="http://yunsaijc.top/2022/12/09/3-Django+Vue/" title="Django+Vue 项目记录">http://yunsaijc.top/2022/12/09/3-Django+Vue/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-        
-
-  <div class="followme">
-    <p>欢迎关注我的其它发布渠道</p>
-
-    <div class="social-list">
-
-        <div class="social-item">
-          <a target="_blank" class="social-link" href="/atom.xml">
-            <span class="icon">
-              <i class="fa fa-rss"></i>
-            </span>
-
-            <span class="label">RSS</span>
-          </a>
-        </div>
-    </div>
-  </div>
-
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Python/" rel="tag"># Python</a>
-              <a href="/tags/Django/" rel="tag"># Django</a>
-              <a href="/tags/Vue/" rel="tag"># Vue</a>
-              <a href="/tags/Web/" rel="tag"># Web</a>
-              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/11/16/2-%E5%85%B3%E4%BA%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E6%9E%84%E9%80%A0N-iid%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E8%AE%B0%E5%BD%95/" rel="prev" title="关于联邦学习构造Non-IID数据集的记录">
-      <i class="fa fa-chevron-left"></i> 关于联邦学习构造Non-IID数据集的记录
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/01/08/4-%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/" rel="next" title="联邦学习+差分隐私项目记录">
-      联邦学习+差分隐私项目记录 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF-django"><span class="nav-number">1.</span> <span class="nav-text">后端-Django</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">初始化与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.1.1.</span> <span class="nav-text">新建项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.1.2.</span> <span class="nav-text">连接数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%A8%E7%AB%99%E7%82%B9%E8%AF%B7%E6%B1%82%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.1.3.</span> <span class="nav-text">跨站点请求设置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF-vue"><span class="nav-number">2.</span> <span class="nav-text">前端-Vue</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E7%90%86%E8%A7%A3"><span class="nav-number">2.2.</span> <span class="nav-text">文件结构理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0-1"><span class="nav-number">2.3.</span> <span class="nav-text">具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86vue%E4%B8%8Edjango%E7%BB%91%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">将Vue与Django绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="nav-number">4.</span> <span class="nav-text">遇到的坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Yunsaijc</p>
-  <div class="site-description" itemprop="description">Enjoy</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">7</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 2022 – 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Yunsaijc</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
-
-
-    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
-    <span class="post-meta-divider">|</span>
-    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
-    <span class="post-meta-divider">|</span>
-<!-- 不蒜子计数初始值纠正 -->
-<script>
-$(document).ready(function() {
-
-    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
-    var countOffset = 20000;  // 初始化首次数据
-
-    function fixCount() {            
-       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
-        {
-            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
-            clearInterval(int);
-        }                  
-        if ($("#busuanzi_container_site_pv").css("display") != "none")
-        {
-            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
-            clearInterval(int); // 停止检测
-        }  
-    }
-       	
-});
-</script> 
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-	<span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
-
-  
-
-</body>
-</html>
+<blockquote>
+<p><a
+target="_blank" rel="noopener" href="https://super-buaa-2021.github.io/Vuebook/">https://super-buaa-2021.github.io/Vuebook/</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1005607">https://cloud.tencent.com/developer/article/1005607</a></p>
+<p><a
+target="_blank" rel="noopener" href="http://t.zoukankan.com/smile-fanyin-p-11258300.html">http://t.zoukankan.com/smile-fanyin-p-11258300.html</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_48282959/article/details/124126667">https://blog.csdn.net/weixin_48282959/article/details/124126667</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/m0_59023970/article/details/123427008">https://blog.csdn.net/m0_59023970/article/details/123427008</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/yehaocheng520/article/details/117025938">https://blog.csdn.net/yehaocheng520/article/details/117025938</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41216743/article/details/104605524">https://blog.csdn.net/qq_41216743/article/details/104605524</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://yunsaijc.top">Yunsaijc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yunsaijc.top/2022/12/09/3-Django+Vue/">http://yunsaijc.top/2022/12/09/3-Django+Vue/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yunsaijc.top" target="_blank">Yunsaijc's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/Django/">Django</a><a class="post-meta__tags" href="/tags/Vue/">Vue</a><a class="post-meta__tags" href="/tags/Web/">Web</a><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/08/4-%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/" title="联邦学习+差分隐私项目记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">联邦学习+差分隐私项目记录</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/16/2-%E5%85%B3%E4%BA%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E6%9E%84%E9%80%A0N-iid%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E8%AE%B0%E5%BD%95/" title="关于联邦学习构造Non-IID数据集的记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">关于联邦学习构造Non-IID数据集的记录</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/01/08/4-%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/" title="联邦学习+差分隐私项目记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="title">联邦学习+差分隐私项目记录</div></div></a></div><div><a href="/2022/11/16/2-%E5%85%B3%E4%BA%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E6%9E%84%E9%80%A0N-iid%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E8%AE%B0%E5%BD%95/" title="关于联邦学习构造Non-IID数据集的记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-16</div><div class="title">关于联邦学习构造Non-IID数据集的记录</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Yunsaijc</div><div class="author-info__description">Enjoy</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF-django"><span class="toc-number">1.</span> <span class="toc-text">后端-Django</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">初始化与配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.1.1.</span> <span class="toc-text">新建项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.1.2.</span> <span class="toc-text">连接数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%A8%E7%AB%99%E7%82%B9%E8%AF%B7%E6%B1%82%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.1.3.</span> <span class="toc-text">跨站点请求设置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">具体实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF-vue"><span class="toc-number">2.</span> <span class="toc-text">前端-Vue</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E7%90%86%E8%A7%A3"><span class="toc-number">2.2.</span> <span class="toc-text">文件结构理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0-1"><span class="toc-number">2.3.</span> <span class="toc-text">具体实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86vue%E4%B8%8Edjango%E7%BB%91%E5%AE%9A"><span class="toc-number">3.</span> <span class="toc-text">将Vue与Django绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="toc-number">4.</span> <span class="toc-text">遇到的坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/09/17/7-HTB-sau-Walkthrough/" title="HTB-sau Walkthrough">HTB-sau Walkthrough</a><time datetime="2023-09-17T02:10:19.000Z" title="发表于 2023-09-17 10:10:19">2023-09-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/09/10/6-HTB-cozyhosting-Walkthrough/" title="HTB-cozyhosting Walkthrough">HTB-cozyhosting Walkthrough</a><time datetime="2023-09-10T01:58:56.000Z" title="发表于 2023-09-10 09:58:56">2023-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/09/07/5-HTB-keeper-Walkthrough/" title="HTB-keeper Walkthrough">HTB-keeper Walkthrough</a><time datetime="2023-09-07T02:03:54.000Z" title="发表于 2023-09-07 10:03:54">2023-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/01/08/4-%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/" title="联邦学习+差分隐私项目记录">联邦学习+差分隐私项目记录</a><time datetime="2023-01-08T05:44:45.000Z" title="发表于 2023-01-08 13:44:45">2023-01-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/09/3-Django+Vue/" title="Django+Vue 项目记录">Django+Vue 项目记录</a><time datetime="2022-12-09T14:37:04.000Z" title="发表于 2022-12-09 22:37:04">2022-12-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Yunsaijc</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
