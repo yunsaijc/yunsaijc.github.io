@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yunsaijc.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="技术栈：Vue + Django + MySQL IDE：Pycharm 本项目为2022秋北航网络空间安全学院数据库实验课程作业。作业需要进行简单的全栈开发。时间紧迫，且本人初次接触Vue，过程中遇到了许多问题。在此记录项目的开发过程。 项目GitHub仓库：https:&#x2F;&#x2F;github.com&#x2F;yunsaijc&#x2F;2022-Autumn-DB_Lab3-Django-Vue-Project.gi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django+Vue 项目记录">
+<meta property="og:url" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/index.html">
+<meta property="og:site_name" content="Yunsaijc&#39;s Blog">
+<meta property="og:description" content="技术栈：Vue + Django + MySQL IDE：Pycharm 本项目为2022秋北航网络空间安全学院数据库实验课程作业。作业需要进行简单的全栈开发。时间紧迫，且本人初次接触Vue，过程中遇到了许多问题。在此记录项目的开发过程。 项目GitHub仓库：https:&#x2F;&#x2F;github.com&#x2F;yunsaijc&#x2F;2022-Autumn-DB_Lab3-Django-Vue-Project.gi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221118234718172.png">
+<meta property="og:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221118234925903.png">
+<meta property="og:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221209175859510.png">
+<meta property="og:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221209180008500.png">
+<meta property="article:published_time" content="2022-12-09T14:37:04.000Z">
+<meta property="article:modified_time" content="2023-09-25T02:08:47.687Z">
+<meta property="article:author" content="Yunsaijc">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yunsaijc.top/2022/12/09/3-Django+Vue/image-20221118234718172.png">
+
+<link rel="canonical" href="http://yunsaijc.top/2022/12/09/3-Django+Vue/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Django+Vue 项目记录 | Yunsaijc's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="Yunsaijc's Blog" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yunsaijc's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yunsaijc.top/2022/12/09/3-Django+Vue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yunsaijc">
+      <meta itemprop="description" content="Enjoy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yunsaijc's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Django+Vue 项目记录
+        </h1>
+
+        <div class="post-meta">
+	
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-12-09 22:37:04" itemprop="dateCreated datePublished" datetime="2022-12-09T22:37:04+08:00">2022-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-25 10:08:47" itemprop="dateModified" datetime="2023-09-25T10:08:47+08:00">2023-09-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>技术栈：Vue + Django + MySQL</p>
+<p>IDE：Pycharm</p>
+<p>本项目为2022秋北航网络空间安全学院数据库实验课程作业。作业需要进行简单的全栈开发。时间紧迫，且本人初次接触Vue，过程中遇到了许多问题。在此记录项目的开发过程。</p>
+<p>项目GitHub仓库：https://github.com/yunsaijc/2022-Autumn-DB_Lab3-Django-Vue-Project.git</p>
+<h2 id="后端-django">后端-Django</h2>
+<h3 id="初始化与配置">初始化与配置</h3>
+<h4 id="新建项目">新建项目</h4>
+<p>通过命令<code>django-admin startproject project_name</code>来在当前路径下创建一个新的项目，项目文件夹结构如下：</p>
+<img src="/2022/12/09/3-Django+Vue/image-20221118234718172.png" class="">
+<p>随后通过命令<code>python manage.py startapp app_name</code>来创建一个app，并将该app的名字加入到项目文件夹的<code>settings.py</code>下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">&#x27;api&#x27;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>在该app文件夹下创建一个<code>urls.py</code>用于管理<code>url</code>，文件夹目录结构如下：</p>
+<img src="/2022/12/09/3-Django+Vue/image-20221118234925903.png" class="">
+<h4 id="连接数据库">连接数据库</h4>
+<p>在项目文件夹的<code>settings.py</code>下设置数据库信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;django.db.backends.mysql&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;NAME&#x27;</span>: <span class="string">&#x27;DB_Lab3&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;HOST&#x27;</span>: <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PORT&#x27;</span>: <span class="string">&#x27;3306&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;USER&#x27;</span>: <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PASSWORD&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;OPTIONS&#x27;</span>: &#123;</span><br><span class="line">            <span class="string">&#x27;init_command&#x27;</span>: <span class="string">&quot;SET sql_mode=&#x27;STRICT_TRANS_TABLES&#x27;&quot;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时在项目文件夹的<code>__init__.py</code>下配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line">pymysql.install_as_MySQLdb()</span><br></pre></td></tr></table></figure>
+<p>然后运行命令<code>python manage.py makemigrations</code>生成迁移文件，再通过<code>python manage.py migrate</code>进行迁移，最后运行<code>python manage.py inspectdb &gt; users/models.py</code>，这时候app文件夹下的<code>models.py</code>就会根据数据库中的表自动生成类。</p>
+<h4 id="跨站点请求设置">跨站点请求设置</h4>
+<p>需要进行跨站点请求的相关设置。
+首先通过<code>pip</code>安装<code>django-cors-headers</code>包，然后在<code>settings.py</code>下进行设置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    ......</span><br><span class="line">    <span class="string">&#x27;corsheaders&#x27;</span>,</span><br><span class="line">    ......</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">MIDDLEWARE = [</span><br><span class="line">    ......</span><br><span class="line">    <span class="string">&#x27;corsheaders.middleware.CorsMiddleware&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.middleware.common.CommonMiddleware&#x27;</span>,</span><br><span class="line">    ......</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">CORS_ORIGIN_ALLOW_ALL = <span class="literal">True</span></span><br><span class="line">CORS_ALLOW_CREDENTIALS = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h3 id="具体实现">具体实现</h3>
+<p>后端逻辑的实现在<code>app</code>文件夹的<code>views.py</code>文件中完成，在本项目中也就是<code>/api/views.py</code>。其中登录函数的代码如下所示，完整代码见Github仓库。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        username = request.POST.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">        password = request.POST.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> username == <span class="string">&#x27;&#x27;</span> <span class="keyword">or</span> password == <span class="string">&#x27;&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(&#123;<span class="string">&#x27;errno&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;msg&#x27;</span>: <span class="string">&quot;用户名或密码为空&quot;</span>&#125;)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            user = Users.objects.get(user_name=username)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(&#123;<span class="string">&#x27;errno&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;msg&#x27;</span>: <span class="string">&quot;用户不存在&quot;</span>&#125;)</span><br><span class="line">        <span class="keyword">if</span> password == user.pass_word:</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(&#123;<span class="string">&#x27;errno&#x27;</span>: <span class="number">0</span>, <span class="string">&#x27;msg&#x27;</span>: <span class="string">&quot;登录成功&quot;</span>, <span class="string">&#x27;username&#x27;</span>: username&#125;)</span><br><span class="line">        <span class="keyword">return</span> JsonResponse(&#123;<span class="string">&#x27;errno&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;msg&#x27;</span>: <span class="string">&quot;密码不正确&quot;</span>&#125;)</span><br><span class="line">    <span class="keyword">return</span> JsonResponse(&#123;<span class="string">&#x27;errno&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;msg&#x27;</span>: <span class="string">&quot;请求方法错误&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="前端-vue">前端-Vue</h2>
+<h3 id="初始化">初始化</h3>
+<p>创建项目：<code>vue create project_name</code>，选择<code>vuex</code>（前端状态存储管理）和<code>router</code>（路由管理）</p>
+<p>项目结构如下。其中<code>src</code>文件夹存放源代码，<code>dist</code>文件夹存放<code>npm run build</code>，命令编译后生成的文件：</p>
+<img src="/2022/12/09/3-Django+Vue/image-20221209175859510.png" class="">
+<p><code>src</code>文件夹结构如下：</p>
+<img src="/2022/12/09/3-Django+Vue/image-20221209180008500.png" class="">
+<p>各个目录或文件的说明如下：</p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>目录/文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>node_modules</td>
+<td>npm 加载的项目依赖模块</td>
+</tr>
+<tr class="even">
+<td>public</td>
+<td>静态资源，build 构建后为根目录，含网站导航栏图标、首页入口文件</td>
+</tr>
+<tr class="odd">
+<td>src</td>
+<td>开发做的事情基本都在这个目录下，含： • assets:
+放置一些图片、字体等资源 • components: 放置组件文件，一般为全局组件 •
+router: 网站路由跳转设置 • store: 前端数据存储 • views: 放置各页面文件 •
+App.vue: 项目入口文件 • main.js:
+项目的核心文件，在这里可以导入各种全局依赖</td>
+</tr>
+<tr class="even">
+<td>.xxx文件</td>
+<td>配置文件，包括语法配置、git配置(.gitignore)等</td>
+</tr>
+<tr class="odd">
+<td>package.json</td>
+<td>项目配置文件</td>
+</tr>
+<tr class="even">
+<td>README.md</td>
+<td>项目的说明文档</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文件结构理解">文件结构理解</h3>
+<ol type="1">
+<li><p>入口的<code>main.js</code>文件引入<code>vue</code>框架和<code>App.vue</code>主组件，然后实例化<code>vue</code>对象，在<code>components</code>属性中定义组件名</p></li>
+<li><p><code>App.vue</code>主组件，里面集合了<code>html, js, css</code>语法，分别对应<code>vue</code>文件的<code>&lt;template&gt;, &lt;script&gt;, &lt;style&gt;</code>部分。</p>
+<p>在此主组件文件中，也可以引用其他子组件，引用时在<code>script</code>标签所在的<code>js</code>中用<code>import</code>引入，然后在实例化<code>vue</code>对象中的<code>components</code>中定义名字，然后在<code>template</code>所在的<code>html</code>中运用</p></li>
+<li><p>子组件在<code>components</code>文件中，一般此文件夹中放置的都是子组件，被<code>App.vue</code>主组件引用</p></li>
+</ol>
+<h3 id="具体实现-1">具体实现</h3>
+<p>前端的实现在<code>appfront</code>文件夹的<code>views</code>文件夹中完成，在本项目中也就是<code>/appfront/views</code>。其中登录页面的代码如下所示，完整代码见Github仓库。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;login&quot; class=&quot;login&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;wrap&quot;&gt;</span><br><span class="line">      &lt;h1&gt;登 录&lt;/h1&gt;</span><br><span class="line">      &lt;h2 v-if=&quot;userInfo!=null&quot;&gt;您已经以 &#123;&#123;userInfo.user.username&#125;&#125; 的身份登录&lt;/h2&gt;</span><br><span class="line">      &lt;el-form ref=&quot;form&quot; class=&quot;form&quot;&gt;</span><br><span class="line">        &lt;el-form-item prop=&quot;username&quot;&gt;</span><br><span class="line">          &lt;el-input placeholder=&quot;用户名&quot; type=&quot;username&quot; v-model=&quot;username&quot; autocomplete=&quot;off&quot;&gt;&lt;/el-input&gt;</span><br><span class="line">        &lt;/el-form-item&gt;</span><br><span class="line">        &lt;el-form-item id=&quot;password&quot; prop=&quot;password&quot;&gt;</span><br><span class="line">          &lt;el-input placeholder=&quot;密码&quot; show-password type=&quot;password&quot; v-model=&quot;password&quot; autocomplete=&quot;off&quot; @keyup.enter.native=&quot;login&quot; &gt;&lt;/el-input&gt;</span><br><span class="line">        &lt;/el-form-item&gt;</span><br><span class="line">        &lt;div &gt;</span><br><span class="line">          &lt;el-button type=&quot;primary&quot; @click=&quot;click_login&quot;&gt;登&amp;nbsp;&amp;nbsp;录&lt;/el-button&gt;</span><br><span class="line">          &lt;el-button type=&quot;primary&quot; @click=&quot;click_register&quot;&gt;注&amp;nbsp;&amp;nbsp;册&lt;/el-button&gt;</span><br><span class="line">          &lt;el-button v-if=&quot;userInfo!=null&quot; type=&quot;danger&quot; @click=&quot;click_logout&quot;&gt;登&amp;nbsp;&amp;nbsp;出&lt;/el-button&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/el-form&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import qs from &quot;qs&quot;;</span><br><span class="line">import user from &quot;@/store/user&quot;</span><br><span class="line">const userInfo = user.getters.getUser(user.state());</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;login&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      userInfo,</span><br><span class="line">      username: &#x27;&#x27;,</span><br><span class="line">      password: &#x27;&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted: function() &#123;</span><br><span class="line">    this.username = userInfo.user.username</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    click_login() &#123;</span><br><span class="line">      this.$axios(&#123;</span><br><span class="line">        method: &#x27;post&#x27;,</span><br><span class="line">        url: &#x27;/api/login/&#x27;, </span><br><span class="line">        data: qs.stringify(&#123;</span><br><span class="line">          username: this.username,</span><br><span class="line">          password: this.password</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br><span class="line">      .then(res =&gt; &#123;</span><br><span class="line">        switch (res.data.errno) &#123;</span><br><span class="line">          case 0:</span><br><span class="line">            window.alert(&quot;登录成功！&quot;);</span><br><span class="line">            /* 将后端返回的 user 信息使用 vuex 存储起来 */</span><br><span class="line">            this.$store.dispatch(&#x27;saveUserInfo&#x27;, &#123;</span><br><span class="line">              user: &#123;</span><br><span class="line">                &#x27;username&#x27;: res.data.username</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            location.reload();</span><br><span class="line">            break;</span><br><span class="line">          default:</span><br><span class="line">            window.alert(&quot;登录失败！&quot; + res.data.msg);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">      .catch(err =&gt; &#123;</span><br><span class="line">        console.log(err);         /* 若出现异常则在终端输出相关信息 */</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    click_register() &#123;</span><br><span class="line">      this.$axios(&#123;</span><br><span class="line">        method: &#x27;post&#x27;,</span><br><span class="line">        url: &#x27;/api/register/&#x27;,</span><br><span class="line">        data: qs.stringify(&#123;</span><br><span class="line">          username: this.username,</span><br><span class="line">          password: this.password</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br><span class="line">      .then(res =&gt; &#123;</span><br><span class="line">        switch (res.data.errno) &#123;</span><br><span class="line">          case 0:</span><br><span class="line">            window.alert(&quot;注册成功！&quot;);</span><br><span class="line">            break;</span><br><span class="line">          default:</span><br><span class="line">            window.alert(&quot;注册失败！&quot; + res.data.msg);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">      .catch(err =&gt; &#123;</span><br><span class="line">        console.log(err);         /* 若出现异常则在终端输出相关信息 */</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    click_logout() &#123;</span><br><span class="line">      this.$store.dispatch(&#x27;clear&#x27;);</span><br><span class="line">      window.alert(&#x27;登出成功！&#x27;);</span><br><span class="line">      location.reload();</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">#login &#123;</span><br><span class="line">  font-family: &#x27;Noto Serif SC&#x27;, serif;</span><br><span class="line">  margin-top: 60px;</span><br><span class="line">&#125;</span><br><span class="line">#login &gt;&gt;&gt; .el-input__inner &#123;</span><br><span class="line">  font-family: &#x27;Noto Serif SC&#x27;, serif;</span><br><span class="line">&#125;</span><br><span class="line">#login .bgbox &#123;</span><br><span class="line">  display: block;</span><br><span class="line">  opacity: 1;</span><br><span class="line">  z-index: -3;</span><br><span class="line">  position: fixed;</span><br><span class="line">  left: 0;</span><br><span class="line">  top: 0;</span><br><span class="line">  width: 100%;</span><br><span class="line">  height: 100%;</span><br><span class="line">  object-fit: cover;</span><br><span class="line">  transition: opacity 1s,transform .25s,filter .25s;</span><br><span class="line">  backface-visibility: hidden;</span><br><span class="line">&#125;</span><br><span class="line">#login .logo &#123;</span><br><span class="line">  cursor: pointer;</span><br><span class="line">  overflow: hidden;</span><br><span class="line">  height: 150px;</span><br><span class="line">&#125;</span><br><span class="line">#login .wrap &#123;</span><br><span class="line">  width: 300px;</span><br><span class="line">  height: 315px;</span><br><span class="line">  padding: 0 25px 0 25px;</span><br><span class="line">  line-height: 40px;</span><br><span class="line">  position: relative;</span><br><span class="line">  display: inline-block;</span><br><span class="line">  background-color: rgba(255, 255, 255, 0.85);</span><br><span class="line">  border-radius: 20px;</span><br><span class="line">&#125;</span><br><span class="line">#login .btn_login &#123;</span><br><span class="line">  margin-top: 25px;</span><br><span class="line">  text-align: center;</span><br><span class="line">&#125;</span><br><span class="line">#login .btn_login button&#123;</span><br><span class="line">  line-height: 10px;</span><br><span class="line">  font-family: &#x27;Noto Serif SC&#x27;, serif;</span><br><span class="line">  width: 70%;</span><br><span class="line">  height: 38px;</span><br><span class="line">&#125;</span><br><span class="line">#login .suffix &#123;</span><br><span class="line">  font-size:14px;</span><br><span class="line">  line-height:10px;</span><br><span class="line">  color:#999;</span><br><span class="line">  cursor: pointer;</span><br><span class="line">  float:right;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="将vue与django绑定">将Vue与Django绑定</h2>
+<p>在前端文件夹下运行命令<code>npm run build</code>进行编译</p>
+<p>目前我们已经分别完成了Django后端和Vue前端工程的创建和编写，但实际上它们是运行在各自的服务器上。因此我们须要把Django的·TemplateView·指向我们刚才生成的前端dist文件。</p>
+<p>在<code>/DB_Lab3/urls.py</code>下进行如下设置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">&#x27;api/&#x27;</span>, include(<span class="string">&#x27;api.urls&#x27;</span>)),</span><br><span class="line">    url(<span class="string">r&#x27;^$&#x27;</span>, TemplateView.as_view(template_name=<span class="string">&quot;index.html&quot;</span>))</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>在<code>/DB_Lab3/settings.py</code>下进行如下设置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">TEMPLATES = [</span><br><span class="line">    &#123;</span><br><span class="line">        ...,</span><br><span class="line">        <span class="string">&#x27;DIRS&#x27;</span>: [<span class="string">&#x27;appfront/dist&#x27;</span>],</span><br><span class="line">        ...</span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">STATICFILES_DIRS = [</span><br><span class="line">    <span class="comment"># BASE_DIR / &quot;static&quot;,</span></span><br><span class="line">    os.path.join(BASE_DIR, <span class="string">&quot;appfront/dist/static&quot;</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>随后在项目根目录执行<code>python manage.py runserver</code>即可。</p>
+<h2 id="遇到的坑">遇到的坑</h2>
+<p>在使用<code>element-ui</code>时，遇到<code>el-table</code>表格不显示的问题，卡了两个小时才找到原因...</p>
+<p>原因：版本问题！！！</p>
+<p>解决办法：重新装一个低版本的包！！！</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall element-ui</span><br><span class="line">npm install element-ui@<span class="number">2.9</span><span class="number">.2</span> -S</span><br></pre></td></tr></table></figure>
+<h2 id="参考">参考</h2>
+<p>https://super-buaa-2021.github.io/Vuebook/</p>
+<p>https://cloud.tencent.com/developer/article/1005607</p>
+<p>http://t.zoukankan.com/smile-fanyin-p-11258300.html</p>
+<p>https://blog.csdn.net/weixin_48282959/article/details/124126667</p>
+<p>https://blog.csdn.net/m0_59023970/article/details/123427008</p>
+<p>https://blog.csdn.net/yehaocheng520/article/details/117025938</p>
+<p>https://blog.csdn.net/qq_41216743/article/details/104605524</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Yunsaijc
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yunsaijc.top/2022/12/09/3-Django+Vue/" title="Django+Vue 项目记录">http://yunsaijc.top/2022/12/09/3-Django+Vue/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Django/" rel="tag"># Django</a>
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+              <a href="/tags/Web/" rel="tag"># Web</a>
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/16/2-%E5%85%B3%E4%BA%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E6%9E%84%E9%80%A0N-iid%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E8%AE%B0%E5%BD%95/" rel="prev" title="关于联邦学习构造Non-IID数据集的记录">
+      <i class="fa fa-chevron-left"></i> 关于联邦学习构造Non-IID数据集的记录
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/01/08/4-%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0+%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/" rel="next" title="联邦学习+差分隐私项目记录">
+      联邦学习+差分隐私项目记录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF-django"><span class="nav-number">1.</span> <span class="nav-text">后端-Django</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">初始化与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.1.1.</span> <span class="nav-text">新建项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.1.2.</span> <span class="nav-text">连接数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%A8%E7%AB%99%E7%82%B9%E8%AF%B7%E6%B1%82%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.1.3.</span> <span class="nav-text">跨站点请求设置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF-vue"><span class="nav-number">2.</span> <span class="nav-text">前端-Vue</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E7%90%86%E8%A7%A3"><span class="nav-number">2.2.</span> <span class="nav-text">文件结构理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0-1"><span class="nav-number">2.3.</span> <span class="nav-text">具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86vue%E4%B8%8Edjango%E7%BB%91%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">将Vue与Django绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="nav-number">4.</span> <span class="nav-text">遇到的坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yunsaijc</p>
+  <div class="site-description" itemprop="description">Enjoy</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yunsaijc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+	<span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
