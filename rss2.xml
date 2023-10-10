@@ -9,11 +9,45 @@
     <atom:link href="http://yunsaijc.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>Enjoy</description>
-    <pubDate>Tue, 10 Oct 2023 08:48:02 GMT</pubDate>
+    <pubDate>Tue, 10 Oct 2023 15:03:59 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
-      <title>&lt;Knowledge Graphs- Opportunities and Challenges&gt;阅读笔记</title>
+      <title>&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记</title>
+      <link>http://yunsaijc.top/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
+      <guid>http://yunsaijc.top/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</guid>
+      <pubDate>Tue, 10 Oct 2023 09:28:12 GMT</pubDate>
+      
+        
+        
+      <description>&lt;blockquote&gt;
+&lt;p&gt;原文链接：&lt;a
+href=&quot;https://arxiv.org/abs/2305.13168&quot;&gt;https://arxiv.org/abs/2305.13168&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<blockquote><p>原文链接：<ahref="https://arxiv.org/abs/2305.13168">https://arxiv.org/abs/2305.13168</a></p></blockquote><h2 id="intro">Intro</h2><p>知识图（KG）是一个由实体、概念和关系组成的语义网络，它可以催化各种场景的应用，如推荐系统、搜索引擎和问答系统。通常，KG构建由几个任务组成，包括：</p><ul><li>命名实体识别(Named Entity Recognition, NER)</li><li>关系提取(Relation Extraction, RE)</li><li>事件提取（Event Extraction, EE）</li><li>实体链接（Entity Link, EL）</li></ul><p>另一方面，KG推理，通常被称为链接预测(LP)，在理解这些KG中发挥着重要作用。此外，通过对与问题相关的关系子图进行推理，可以在问答(QA)任务中使用KG</p><p>早期的KG构建与推理通常以监督学习的方式进行。本文以ChatGPT和GPT-4为例，调研了LLM在KG构建与推理方面的潜力。本文贡献可以归纳为以下几点：</p><ul><li>使用8个数据集，通过评估LLM（包括GPT-3.5、ChatGPT、GPT-4）在KG构建和推理方面的zero-shot和one-shot表现，以对他们的能力有一个初步的了解</li><li>设计了一个全新的虚拟知识抽取(Virtual KnowledgeExtraction)任务，构建了一个VINE数据集。通过评估LLM在这个数据集上的表现，本文证明了LLM具有强大的泛化能力</li><li>引入了新的概念AutoKG，使用通信代理来自动地进行KG构建与推理。利用LLM的知识库，通过迭代的对话，让LLM的多个代理来协助KG的构建和推理过程</li></ul><h2 id="相关工作">相关工作</h2><h3 id="大语言模型llm">大语言模型LLM</h3><p>LLM是在大量的文本数据上预先训练的，已经成为当代NLP研究的重要组成部分。NLP的进步导致了高性能LLM的开发，如GPT-3、ChatGPT和GPT-4，它们在各种NLP任务中表现出非凡的性能，包括机器翻译、文本求和和和问答。同时，先前的几项研究表明，LLMs可以在相关的下游任务中取得显著的结果，而在提示中只需很少甚至没有演示。这为LLMs的复杂性和通用性提供了进一步的证据</p><h3 id="chatgpt和gpt-4">ChatGPT和GPT-4</h3><p>ChatGPT是OpenAI开发的一种高级LLM，主要用于进行类似人类的对话。在微调过程中，ChatGPT利用RLHF，从而增强其与人类偏好和价值观的一致性。</p><p>GPT-4是在GPT-3和ChatGPT等前辈的成功基础上发展起来的。它在规模空前的计算和数据上进行了训练，在各个领域都表现出了非凡的泛化、引用和解决问题的能力。此外，作为一个大规模的多模态模型，GPT-4能够处理图像和文本输入</p><p>越来越多的研究人员正在探索LLM所具有的特定的涌现能力和优势。Bang等人（2023）对ChatGPT在多任务、多语言和多时间方面进行了深入分析。研究结果表明，Chat-GPT在各种任务中的零样本(zero-shot)学习方面表现出色，甚至在某些情况下优于微调模型。然而，当将其推广到低资源语言时，它面临着挑战。此外，在多模态方面，与其他先进的视觉语言模型相比，ChatGPT的能力仍然较为有限</p><p>ChatGPT在其他各个领域也受到了相当大的关注，包括信息提取、推理、文本摘要、问答和机器翻译。这体现了了它在更广阔的NLP领域的通用性和适用性</p><h2id="近期llm在kg构建和推理方面的能力">近期LLM在KG构建和推理方面的能力</h2><p>本文选择了代表性的ChatGPT和GPT-4，在八个不同数据集中，对他们在KG构建和推理中的表现进行了评估</p><h3 id="评估原则">评估原则</h3><p>首先，分析这些模型在零样本(zero-shot)和单样本(one-shot)NLP任务中的能力。我们的主要目的是检查他们在有限数据下的泛化能力，以及他们在没有演示(demonstration)的情况下有效使用预训练的知识的能力</p><p>其次，根据评估结果，我们全面分析了导致模型在不同任务中表现不同的因素。我们目的在于探究他们在某些任务中表现优异的原因和潜在的缺点</p><h3 id="kg构建与推理">KG构建与推理</h3><h4 id="实验设置数据集">实验设置（数据集）</h4><ul><li>实体、关系、事件提取(Entity, Relation and Event Extraction)<ul><li>DuIE2.0：业界最大的基于模式的中文关系提取数据集，包括超过21万个中文句子和48个预定义的关系类别</li><li>SciERC：一个由七个关系注释的科学摘要集</li><li>Re-TACRED：是用于关系提取的TACRED数据集的一个显著增强版本，包含分布在40个关系中的91000多个句子</li><li>MAVEN：是一个通用的领域事件提取基准，包含4480个文档和168个事件类型</li></ul></li><li>链接预测(Link Prediction)<ul><li>FB15K-237：被广泛用作评估KG嵌入模型在链接预测方面性能的基准，包括237个关系和14541个实体</li><li>ATOMIC2020：一个全面的综合常识库，包含133万个关于实体和事件的推理知识元组</li></ul></li><li>回答(Question Answering)<ul><li>FreebaseQA:一个基于Freebase知识图构建的开放域QA数据集，专门为知识图QA任务设计。包括来自各种来源的问答对，例如TriviaQA数据集等</li><li>MetaQA：是从WikiMovies数据集扩展而来的，提供了大量的单跳和多跳(hop)问答集，总数超过400000</li></ul></li></ul><h4 id="总体结果">总体结果</h4><h5 id="实体和关系提取">实体和关系提取</h5><p>本文在SciERC、Re-TACRED和DuIE2.0数据集上进行了实验，每个实验都涉及test/valid集中的20个样本，并使用标准微F1Score进行评估。本文使用PaddleNLP，PL-Marker，EXOBRAIN作为基准模型来进行评估（也就是State-of-the-art,SOTA）</p><p>结果如表1所示，在零样本和单样本任务中，GPT-4在这些数据集上都展现了相对不错的性能，也比ChatGPT有了一些进步，但仍然比不过全监督的小模型</p><img src="/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/1.png" class=""><h6 id="零样本">零样本</h6><p>GPT-4在零样本时的性能，展现出在3个数据集中都有进步，其中最显著的进步体现在DuIE2.0中。其中，GPT-4的Score为31.03，而ChatGPT的Score为10.3.。该结果进一步证明了GPT-4在提取复杂和新知识方面具有强大的泛化能力</p><p>如图2中的（1）和（2）所示，与ChatGPT相比，GPT-4在头尾(Head-to-tail)实体提取方面表现出更明显的进步。</p><p>在Re-TACRED的例句中，目标三元组是(Helen Keller Inter-national, org:alternate_names，HKI)。ChatGPT未能提取出这样的关系，可能是因为头部和尾部的位置非常接近，并且此时谓词较为模糊。而GPT-4成功提取了头部和尾部实体之间的“org:alternate_names”关系，完成了三重提取。这也在一定程度上证明了GPT-4增强了语言理解（阅读）能力</p><h6 id="单样本">单样本</h6><p>同时，文本指令的优化有助于提高GPT-4的性能。结果表明，在单样本的方式中，引入一个训练样本可以进一步提高GPT-4和ChatGPT的三重提取能力</p><p>以DuIE2.0数据集为例。考虑以下句子：“George Wilcombe was selected forthe Honduras national team in 2008, and he par- ticipated in the 2009North and Central America and Caribbean Gold Cup with theteam（乔治·威尔科姆于2008年入选洪都拉斯国家队，他曾与该队一起参加2009年北美、中美洲和加勒比金杯赛）”</p><p>相应的三元组应该是(George Wilcombe, Nationality,Honduras)。尽管文本中没有明确说明，但GPT-4成功地提取了这些信息。这不仅是因为我们提供了有价值的单个训练示例，也源于GPT-4的综合知识库——GPT-4根据乔治·威尔科姆加入了国家队这一事实，从而推断出他的国籍</p><p>尽管如此，但GPT-4的表现并不完美，而且在面对复杂的句子时表现不佳。需要注意的是，数据集噪声、类型歧义、复杂的句子上下文，都会导致这种结果。</p><p>此外，为了实现数据集上不同模型的公平、横向比较，实验没有在提示中指定提取实体的类型（这也可能会影响实验结果）。这一结果有助于解释为什么GPT-4在SciERC和Re-TACRED上的性能不如在DuIE2.0上的性能</p><h5 id="事件提取">事件提取</h5><p>我们对MAVEN数据集中的20个随机样本进行了事件检测(EventDetection)实验。此外，王等人（2022a）被用作微调过的SOTA</p><p>值得注意的是，GPT-4在没有演示的情况下取得了值得称赞的成果。此处使用F-Score作为评估指标</p><h6 id="零样本-1">零样本</h6><h6 id="单样本-1">单样本</h6>]]></content:encoded>
+      
+      
+      <category domain="http://yunsaijc.top/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">文献阅读</category>
+      
+      
+      <category domain="http://yunsaijc.top/tags/AI/">AI</category>
+      
+      <category domain="http://yunsaijc.top/tags/LLM/">LLM</category>
+      
+      <category domain="http://yunsaijc.top/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</category>
+      
+      
+      <comments>http://yunsaijc.top/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>&lt;Knowledge Graphs:  Opportunities and Challenges&gt;阅读笔记</title>
       <link>http://yunsaijc.top/2023/10/10/13-%3CKnowledge%20Graphs-%20Opportunities%20and%20Challenges%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
       <guid>http://yunsaijc.top/2023/10/10/13-%3CKnowledge%20Graphs-%20Opportunities%20and%20Challenges%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</guid>
       <pubDate>Tue, 10 Oct 2023 01:21:12 GMT</pubDate>
@@ -103,38 +137,6 @@ href=&quot;https://arxiv.org/abs/2303.18223&quot;&gt;https://arxiv.org/abs/2303.
     </item>
     
     <item>
-      <title>AI方向直博学习日志</title>
-      <link>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</link>
-      <guid>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</guid>
-      <pubDate>Sat, 07 Oct 2023 12:34:16 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;年&quot;&gt;2023年&lt;/h2&gt;
-&lt;h3 id=&quot;月&quot;&gt;10月&lt;/h3&gt;
-&lt;h4 id=&quot;日&quot;&gt;10日&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;文献阅读：&amp;lt;Knowledge Graphs: Opportunities and
-Challenges&amp;gt;&lt;/li&gt;
-&lt;li&gt;</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="年">2023年</h2><h3 id="月">10月</h3><h4 id="日">10日</h4><ul><li>文献阅读：&lt;Knowledge Graphs: Opportunities andChallenges&gt;</li><li>文献</li></ul><h4 id="日-1">9日</h4><ul><li>RLHF和InstructGPT：RLHF可以分为3步：<ul><li>根据采集的SFT数据集对GPT-3进行有监督的微调(Supervised FineTune,SFT)</li><li>收集人工标注的对比数据，训练奖励模型(Reword Model, RM)</li><li>使用RM作为强化学习的优化目标，利用PPO算法微调SFT模型InstructGPT是在GPT-3的基础上通过RLHF训练而来的 (<ahref="https://zhuanlan.zhihu.com/p/637419868">LLM 系列超详细解读(四)：InstructGPT：训练语言模型以遵从人类指令 - 知乎</a>，<ahref="https://zhuanlan.zhihu.com/p/590311003">https://zhuanlan.zhihu.com/p/590311003</a>)</li></ul></li><li>ChatGPT和InstructGPT：是一对姐妹模型，他们在模型结构、训练方式上都完全一致，即都使用了指示学习(InstructionLearning)和人类反馈的强化学习(RLHF)来指导模型的训练，它们不同的仅仅是采集数据的方式上有所差异</li><li>文献阅读笔记</li><li>激活函数的再理解：<ul><li>在神经元中的位置，是输入与权重相乘并相加之后，输出之前</li><li>一般引入非线性因素，来增加神经网络模型的非线性</li><li>否则网络中全部是线性部件，线性的组合还是线性，与单独一个线性分类器无异，这样就做不到用非线性来逼近任意函数（<ahref="https://blog.csdn.net/hhhhhhhhhhwwwwwwwwww/article/details/116863273#:~:text=CNN%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%201%201%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%28Activation%20functions%29%E5%AF%B9%E4%BA%8E%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20%E6%A8%A1%E5%9E%8B%E5%8E%BB%E5%AD%A6%E4%B9%A0%E3%80%81%E7%90%86%E8%A7%A3%E9%9D%9E%E5%B8%B8%E5%A4%8D%E6%9D%82%E5%92%8C%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%9A%84%E5%87%BD%E6%95%B0%E6%9D%A5%E8%AF%B4%E5%85%B7%E6%9C%89%E5%8D%81%E5%88%86%E9%87%8D%E8%A6%81%E7%9A%84%E4%BD%9C%E7%94%A8%E3%80%82%20%E5%AE%83%E4%BB%AC%E5%B0%86%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%89%B9%E6%80%A7%E5%BC%95%E5%85%A5%E5%88%B0%E6%88%91%E4%BB%AC%E7%9A%84%E7%BD%91%E7%BB%9C%E4%B8%AD%E3%80%82,%E8%BF%99%E6%A0%B7%E5%B0%B1%E5%81%9A%E4%B8%8D%E5%88%B0%E7%94%A8%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9D%A5%E9%80%BC%E8%BF%91%E4%BB%BB%E6%84%8F%E5%87%BD%E6%95%B0%E3%80%82%20...%204%204%E3%80%81%E5%B8%B8%E7%94%A8%E7%9A%84%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20sigmoid%20%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%BA%EF%BC%9A%20">CNN基础——激活函数</a>）</li></ul></li><li>Llama部署初尝试</li></ul><h4 id="日-2">8日</h4><ul><li>文献阅读：&lt;A Survey of Large Language Models&gt;</li><li>LLM建立的主要基础-Transformer架构：<ahref="https://zhuanlan.zhihu.com/p/338817680">https://zhuanlan.zhihu.com/p/338817680</a></li><li>循环神经网络(RNN)：个人理解-就像在CNN中采用了密码学的CBC/CFB/OFB工作模式一样，将上一轮结果反馈到下一轮，用于更好地处理前后文相关的序列信息（<ahref="https://zhuanlan.zhihu.com/p/30844905">https://zhuanlan.zhihu.com/p/30844905</a>）</li><li>机器学习中的正则化(Regulation)：<ahref="https://www.zhihu.com/question/20924039">https://www.zhihu.com/question/20924039</a></li><li>LLM微调学习：Hugging face Transformer文档初步阅读</li><li>实验环境初步搭建</li></ul><h4 id="日-3">7日</h4><ul><li>初步确定短期研究方向</li><li>监督学习：关键在于，数据中有无人工标注的标签（<ahref="https://zhuanlan.zhihu.com/p/376931561">https://zhuanlan.zhihu.com/p/376931561</a>）</li><li>泛化(Generalization)：是指模型很好地拟合以前未见过的新数据（从用于创建该模型的同一分布中抽取）的能力（<ahref="https://www.cnblogs.com/anliven/p/10264475.html">https://www.cnblogs.com/anliven/p/10264475.html</a>）</li><li>注意力机制：通过权重，将模型的注意力转移到重要的部位（<ahref="https://zhuanlan.zhihu.com/p/379722366">https://zhuanlan.zhihu.com/p/379722366</a>）</li><li>欧氏空间的通俗理解：<ahref="https://www.zhihu.com/question/27903807">https://www.zhihu.com/question/27903807</a></li><li>图神经网络(GNN)基本原理：<ahref="https://blog.csdn.net/weixin_45884316/article/details/115751272">https://blog.csdn.net/weixin_45884316/article/details/115751272</a></li></ul>]]></content:encoded>
-      
-      
-      <category domain="http://yunsaijc.top/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</category>
-      
-      
-      <category domain="http://yunsaijc.top/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/">学习日志</category>
-      
-      
-      <comments>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
       <title>将博客搬至CSDN</title>
       <link>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/</link>
       <guid>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/</guid>
@@ -154,6 +156,38 @@ Challenges&amp;gt;&lt;/li&gt;
       
       
       <comments>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>AI方向直博学习日志</title>
+      <link>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</link>
+      <guid>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</guid>
+      <pubDate>Sat, 07 Oct 2023 12:34:16 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;年&quot;&gt;2023年&lt;/h2&gt;
+&lt;h3 id=&quot;月&quot;&gt;10月&lt;/h3&gt;
+&lt;h4 id=&quot;日&quot;&gt;10日&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;文献阅读：&amp;lt;Knowledge Graphs: Opportunities and
+Challenges&amp;gt;&lt;/li&gt;
+&lt;li&gt;</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="年">2023年</h2><h3 id="月">10月</h3><h4 id="日">10日</h4><ul><li>文献阅读：&lt;Knowledge Graphs: Opportunities andChallenges&gt;</li><li>捣鼓LLM环境</li><li>文献阅读：&lt;LLMs for Knowledge Graph Construction andReasoning:Recent Capabilities and Future Opportunities&gt;</li><li>zero\one\few-shot：简单来说就是给了多少个学习样本（<ahref="https://zhuanlan.zhihu.com/p/624793654">https://zhuanlan.zhihu.com/p/624793654</a>）</li></ul><h4 id="日-1">9日</h4><ul><li>RLHF和InstructGPT：RLHF可以分为3步：<ul><li>根据采集的SFT数据集对GPT-3进行有监督的微调(Supervised FineTune,SFT)</li><li>收集人工标注的对比数据，训练奖励模型(Reword Model, RM)</li><li>使用RM作为强化学习的优化目标，利用PPO算法微调SFT模型InstructGPT是在GPT-3的基础上通过RLHF训练而来的 (<ahref="https://zhuanlan.zhihu.com/p/637419868">LLM 系列超详细解读(四)：InstructGPT：训练语言模型以遵从人类指令 - 知乎</a>，<ahref="https://zhuanlan.zhihu.com/p/590311003">https://zhuanlan.zhihu.com/p/590311003</a>)</li></ul></li><li>ChatGPT和InstructGPT：是一对姐妹模型，他们在模型结构、训练方式上都完全一致，即都使用了指示学习(InstructionLearning)和人类反馈的强化学习(RLHF)来指导模型的训练，它们不同的仅仅是采集数据的方式上有所差异</li><li>文献阅读笔记</li><li>激活函数的再理解：<ul><li>在神经元中的位置，是输入与权重相乘并相加之后，输出之前</li><li>一般引入非线性因素，来增加神经网络模型的非线性</li><li>否则网络中全部是线性部件，线性的组合还是线性，与单独一个线性分类器无异，这样就做不到用非线性来逼近任意函数（<ahref="https://blog.csdn.net/hhhhhhhhhhwwwwwwwwww/article/details/116863273#:~:text=CNN%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%201%201%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%28Activation%20functions%29%E5%AF%B9%E4%BA%8E%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20%E6%A8%A1%E5%9E%8B%E5%8E%BB%E5%AD%A6%E4%B9%A0%E3%80%81%E7%90%86%E8%A7%A3%E9%9D%9E%E5%B8%B8%E5%A4%8D%E6%9D%82%E5%92%8C%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%9A%84%E5%87%BD%E6%95%B0%E6%9D%A5%E8%AF%B4%E5%85%B7%E6%9C%89%E5%8D%81%E5%88%86%E9%87%8D%E8%A6%81%E7%9A%84%E4%BD%9C%E7%94%A8%E3%80%82%20%E5%AE%83%E4%BB%AC%E5%B0%86%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%89%B9%E6%80%A7%E5%BC%95%E5%85%A5%E5%88%B0%E6%88%91%E4%BB%AC%E7%9A%84%E7%BD%91%E7%BB%9C%E4%B8%AD%E3%80%82,%E8%BF%99%E6%A0%B7%E5%B0%B1%E5%81%9A%E4%B8%8D%E5%88%B0%E7%94%A8%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9D%A5%E9%80%BC%E8%BF%91%E4%BB%BB%E6%84%8F%E5%87%BD%E6%95%B0%E3%80%82%20...%204%204%E3%80%81%E5%B8%B8%E7%94%A8%E7%9A%84%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20sigmoid%20%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%BA%EF%BC%9A%20">CNN基础——激活函数</a>）</li></ul></li><li>Llama部署初尝试</li></ul><h4 id="日-2">8日</h4><ul><li>文献阅读：&lt;A Survey of Large Language Models&gt;</li><li>LLM建立的主要基础-Transformer架构：<ahref="https://zhuanlan.zhihu.com/p/338817680">https://zhuanlan.zhihu.com/p/338817680</a></li><li>循环神经网络(RNN)：个人理解-就像在CNN中采用了密码学的CBC/CFB/OFB工作模式一样，将上一轮结果反馈到下一轮，用于更好地处理前后文相关的序列信息（<ahref="https://zhuanlan.zhihu.com/p/30844905">https://zhuanlan.zhihu.com/p/30844905</a>）</li><li>机器学习中的正则化(Regulation)：<ahref="https://www.zhihu.com/question/20924039">https://www.zhihu.com/question/20924039</a></li><li>LLM微调学习：Hugging face Transformer文档初步阅读</li><li>实验环境初步搭建</li></ul><h4 id="日-3">7日</h4><ul><li>初步确定短期研究方向</li><li>监督学习：关键在于，数据中有无人工标注的标签（<ahref="https://zhuanlan.zhihu.com/p/376931561">https://zhuanlan.zhihu.com/p/376931561</a>）</li><li>泛化(Generalization)：是指模型很好地拟合以前未见过的新数据（从用于创建该模型的同一分布中抽取）的能力（<ahref="https://www.cnblogs.com/anliven/p/10264475.html">https://www.cnblogs.com/anliven/p/10264475.html</a>）</li><li>注意力机制：通过权重，将模型的注意力转移到重要的部位（<ahref="https://zhuanlan.zhihu.com/p/379722366">https://zhuanlan.zhihu.com/p/379722366</a>）</li><li>欧氏空间的通俗理解：<ahref="https://www.zhihu.com/question/27903807">https://www.zhihu.com/question/27903807</a></li><li>图神经网络(GNN)基本原理：<ahref="https://blog.csdn.net/weixin_45884316/article/details/115751272">https://blog.csdn.net/weixin_45884316/article/details/115751272</a></li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://yunsaijc.top/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</category>
+      
+      
+      <category domain="http://yunsaijc.top/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/">学习日志</category>
+      
+      
+      <comments>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/#disqus_thread</comments>
       
     </item>
     
@@ -276,39 +310,6 @@ href=&quot;https://app.hackthebox.com/mac</description>
       
       
       <comments>http://yunsaijc.top/2023/09/17/6-HTB-sau-Walkthrough/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>HTB-cozyhosting Walkthrough</title>
-      <link>http://yunsaijc.top/2023/09/10/5-HTB-cozyhosting-Walkthrough/</link>
-      <guid>http://yunsaijc.top/2023/09/10/5-HTB-cozyhosting-Walkthrough/</guid>
-      <pubDate>Sun, 10 Sep 2023 01:58:56 GMT</pubDate>
-      
-        
-        
-      <description>&lt;blockquote&gt;
-&lt;p&gt;运行环境：macOS 13.2.1; Parallel Desktop: Kali Linux 2022.2 ARM64;
-Windows 11&lt;/p&gt;
-&lt;p&gt;靶机链接：Seasonal靶机&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;过程</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<blockquote><p>运行环境：macOS 13.2.1; Parallel Desktop: Kali Linux 2022.2 ARM64;Windows 11</p><p>靶机链接：Seasonal靶机</p></blockquote><h2 id="过程">过程</h2><h3 id="信息收集">信息收集</h3><p>在<code>/etc/hosts</code>中添加域名DNS后，使用<code>dirsearch</code>进行子目录爆破：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/1.png" class=""><h3 id="web部分">Web部分</h3><p>访问<code>/actuator</code>，这是<code>spring</code>框架下的一个组件：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/2.png" class="" title="截屏2023-09-04 22.24.05"><p>查看<code>/actuator/sessions</code>可以获得该站点的<code>SESSIONID</code>，其中<code>jq</code>命令用于处理JSON数据：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/3.png" class="" title="截屏2023-09-05 10.17.15"><p>在登录页面输入，提交后抓包修改<code>SESSIONID</code>。此后每一个数据包均对<code>SESSIONID</code>进行修改，即可登录admin页面</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/4.png" class="" title="截屏2023-09-05 10.18.02"><p>登录admin页面后发现存在两处输入框。其中<code>username</code>参数存在RCE，尝试反弹shell：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/5.png" class="" title="截屏2023-09-05 11.06.24"><p>上述方式没有成功，尝试使用curl方式反弹shell。在kali的<code>/var/www/html</code>目录下创建脚本文件，并打开apache服务：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/6.png" class="" title="截屏2023-09-05 11.14.47"><p>使用curl命令反弹shell，可以发现已经成功获得shell：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/7.png" class="" title="截屏2023-09-05 11.15.07"><h3 id="主机立足">主机立足</h3><p>查看当前目录，发现存在一个jar文件。尝试scp方式，但服务器未开启ssh服务。转而使用python开启服务：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/8.png" class="" title="截屏2023-09-06 09.09.31"><p>从而在kali上可以下载到该文件：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/9.png" class="" title="截屏2023-09-06 09.09.37"><p>审阅该文件发现存在数据库的登录信息：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/10.png" class="" title="截屏2023-09-06 09.25.10"><p>还可以使用如下命令，无需打开jar包，直接对敏感信息进行查找：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/11.png" class="" title="截屏2023-09-06 09.32.13"><p>使用该登录信息登录数据库，查看现有数据库并切换到<code>cozyhosting</code>数据库：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/12.png" class="" title="截屏2023-09-06 10.19.45"><p>查看现有表，并查看<code>users</code>表中的内容，获得两个登录密码的哈希值：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/13.png" class="" title="截屏2023-09-06 10.22.05"><p>使用<code>john</code>破解得到某一用户的登录密码：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/14.png" class="" title="截屏2023-09-06 11.53.02"><p>查看<code>/home</code>目录，以查看登录所需的用户名：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/15.png" class="" title="截屏2023-09-06 11.53.57"><p>使用<code>josh</code>用户和破解得到的密码进行ssh登录：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/16.png" class="" title="截屏2023-09-06 11.54.40"><p>得到userflag：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/17.png" class="" title="截屏2023-09-06 11.57.22"><h3 id="提权">提权</h3><p>查看当前用户权限，可以免密以root身份运行ssh：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/18.png" class="" title="截屏2023-09-06 11.59.35"><p>在GTFOBins查找提权命令：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/19.png" class="" title="截屏2023-09-06 12.01.23"><p>提权成功，获得systemflag：</p><img src="/2023/09/10/5-HTB-cozyhosting-Walkthrough/20.png" class="" title="截屏2023-09-06 12.06.06"><h2 id="总结">总结</h2><ol type="1"><li>spring框架下的actuator组件，存在敏感信息泄漏漏洞。从而导致session会话劫持攻击</li><li>admin页面存在RCE漏洞</li><li>jar包存在敏感信息泄漏漏洞</li></ol>]]></content:encoded>
-      
-      
-      <category domain="http://yunsaijc.top/categories/%E9%9D%B6%E6%9C%BAWalkthrough/">靶机Walkthrough</category>
-      
-      
-      <category domain="http://yunsaijc.top/tags/HTB/">HTB</category>
-      
-      <category domain="http://yunsaijc.top/tags/RedTeam/">RedTeam</category>
-      
-      
-      <comments>http://yunsaijc.top/2023/09/10/5-HTB-cozyhosting-Walkthrough/#disqus_thread</comments>
       
     </item>
     
