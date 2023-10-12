@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI中的线性代数（有空更新） | Yunsaijc's Blog</title><meta name="author" content="Yunsaijc"><meta name="copyright" content="Yunsaijc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基本符号  \(A \in \mathbb{R}^{m\times n}\)表示一个\(m\)行\(n\)列的实数矩阵(matrix) \(x\in \mathbb{R}^n\)表示一个有\(n\)个元素的向量(vector)。通常来说，一个\(n\)维向量指的是一个\(n\times 1\)的矩阵（即列向量(column vector)）。通过转置(transpose)可以表示对应的\(1\ti">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI中的线性代数（有空更新） | Yunsaijc's Blog</title><meta name="author" content="Yunsaijc"><meta name="copyright" content="Yunsaijc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基本符号 $A \in \mathbb{R}^{m\times n}$表示一个$m$行$n$列的实数矩阵(matrix) $x\in \mathbb{R}^n$表示一个有$n$个元素的向量(vector)。通常来说，一个$n$维向量指的是一个$n\times 1$的矩阵（即列向量(column vector)）。通过转置(transpose)可以表示对应的$1\times n$矩阵（即行向量(ro">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AI中的线性代数（有空更新）">
 <meta property="og:url" content="http://yunsaijc.top/2023/10/05/9-AI%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/index.html">
 <meta property="og:site_name" content="Yunsaijc&#39;s Blog">
-<meta property="og:description" content="基本符号  \(A \in \mathbb{R}^{m\times n}\)表示一个\(m\)行\(n\)列的实数矩阵(matrix) \(x\in \mathbb{R}^n\)表示一个有\(n\)个元素的向量(vector)。通常来说，一个\(n\)维向量指的是一个\(n\times 1\)的矩阵（即列向量(column vector)）。通过转置(transpose)可以表示对应的\(1\ti">
+<meta property="og:description" content="基本符号 $A \in \mathbb{R}^{m\times n}$表示一个$m$行$n$列的实数矩阵(matrix) $x\in \mathbb{R}^n$表示一个有$n$个元素的向量(vector)。通常来说，一个$n$维向量指的是一个$n\times 1$的矩阵（即列向量(column vector)）。通过转置(transpose)可以表示对应的$1\times n$矩阵（即行向量(ro">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
 <meta property="article:published_time" content="2023-10-05T09:08:00.000Z">
@@ -183,165 +183,78 @@
     }
     detectApple()
     })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/rss2.xml" title="Yunsaijc's Blog" type="application/rss+xml">
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Yunsaijc's Blog"><span class="site-name">Yunsaijc's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">AI中的线性代数（有空更新）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-10-05T09:08:00.000Z" title="发表于 2023-10-05 17:08:00">2023-10-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">864</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="AI中的线性代数（有空更新）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="基本符号">基本符号</h2>
-<ul>
-<li><span class="math inline">\(A \in \mathbb{R}^{m\times
-n}\)</span>表示一个<span class="math inline">\(m\)</span>行<span
-class="math inline">\(n\)</span>列的实数矩阵(matrix)</li>
-<li><span class="math inline">\(x\in
-\mathbb{R}^n\)</span>表示一个有<span
-class="math inline">\(n\)</span>个元素的向量(vector)。通常来说，一个<span
-class="math inline">\(n\)</span>维向量指的是一个<span
-class="math inline">\(n\times 1\)</span>的矩阵（即列向量(column
-vector)）。通过转置(transpose)可以表示对应的<span
-class="math inline">\(1\times n\)</span>矩阵（即行向量(row
-vector)）</li>
-<li><span class="math inline">\(x_i\)</span>表示向量<span
-class="math inline">\(x\)</span>的第<span
-class="math inline">\(i\)</span>个元素</li>
-<li><span class="math inline">\(a_{ij}\ or\ A_{ij}\)</span>表示矩阵<span
-class="math inline">\(A\)</span>中<span
-class="math inline">\(i\)</span>行<span
-class="math inline">\(j\)</span>列的元素</li>
-<li><span class="math inline">\(a_j\ or\ A_{:,j}\)</span>表示矩阵<span
-class="math inline">\(A\)</span>的第<span
-class="math inline">\(j\)</span>列</li>
-<li><span class="math inline">\(a_i^T\ or\ A_{i,:}\)</span>表示矩阵<span
-class="math inline">\(A\)</span>的第<span
-class="math inline">\(i\)</span>行</li>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Yunsaijc's Blog"><span class="site-name">Yunsaijc's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">AI中的线性代数（有空更新）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-10-05T09:08:00.000Z" title="发表于 2023-10-05 17:08:00">2023-10-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">862</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="AI中的线性代数（有空更新）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="基本符号"><a href="#基本符号" class="headerlink" title="基本符号"></a>基本符号</h2><ul>
+<li>$A \in \mathbb{R}^{m\times n}$表示一个$m$行$n$列的实数矩阵(matrix)</li>
+<li>$x\in \mathbb{R}^n$表示一个有$n$个元素的向量(vector)。通常来说，一个$n$维向量指的是一个$n\times 1$的矩阵（即列向量(column vector)）。通过转置(transpose)可以表示对应的$1\times n$矩阵（即行向量(row vector)）</li>
+<li>$x_i$表示向量$x$的第$i$个元素</li>
+<li>$a<em>{ij}\ or\ A</em>{ij}$表示矩阵$A$中$i$行$j$列的元素</li>
+<li>$a<em>j\ or\ A</em>{:,j}$表示矩阵$A$的第$j$列</li>
+<li>$a<em>i^T\ or\ A</em>{i,:}$表示矩阵$A$的第$i$行</li>
 </ul>
-<h2 id="矩阵乘法matrix-multiplication">矩阵乘法(Matrix
-Multiplication)</h2>
-<ul>
-<li>矩阵<span class="math inline">\(A \in \mathbb{R}^{m\times
-n}\)</span>和矩阵<span class="math inline">\(B \in \mathbb{R}^{n\times
-p}\)</span>的乘积(product)是<span class="math inline">\(C=AB\in
-\mathbb{R}^{m\times p}\)</span>，其中<span
-class="math inline">\(C_{ij}=\sum^n_{k=1}A_{ik}B_{kj}\)</span></li>
-<li>性质
-<ul>
-<li>结合律(associative)：<span
-class="math inline">\((AB)C=A(BC)\)</span></li>
-<li>分配律(distributive)：<span
-class="math inline">\(A(B+C)=AB+AC\)</span></li>
-<li>不可交换(not commutative)：<span class="math inline">\(AB\neq
-BA\)</span></li>
-</ul></li>
+<h2 id="矩阵乘法-Matrix-Multiplication"><a href="#矩阵乘法-Matrix-Multiplication" class="headerlink" title="矩阵乘法(Matrix Multiplication)"></a>矩阵乘法(Matrix Multiplication)</h2><ul>
+<li>矩阵$A \in \mathbb{R}^{m\times n}$和矩阵$B \in \mathbb{R}^{n\times p}$的乘积(product)是$C=AB\in \mathbb{R}^{m\times p}$，其中$C<em>{ij}=\sum^n</em>{k=1}A<em>{ik}B</em>{kj}$</li>
+<li>性质<ul>
+<li>结合律(associative)：$(AB)C=A(BC)$</li>
+<li>分配律(distributive)：$A(B+C)=AB+AC$</li>
+<li>不可交换(not commutative)：$AB\neq BA$</li>
 </ul>
-<h2 id="操作与性质">操作与性质</h2>
-<h3
-id="单位矩阵identity-matrix与对角矩阵diagonal-matrix">单位矩阵(Identity
-Matrix)与对角矩阵(Diagonal Matrix)</h3>
-<ul>
-<li>单位阵<span class="math display">\[
-  I_{ij}=\left\{\begin{matrix}
-   1,\ i=j\\0,\ i\neq j \end{matrix}\right.
-  \]</span></li>
-<li>满足对任意<span class="math inline">\(A\in \mathbb{R}^{m\times
-n}\)</span>都有<span class="math inline">\(AI=A=IA\)</span></li>
-<li>对角阵，通常记为<span
-class="math inline">\(D=diag(d_1,d_2,...,d_n)\)</span>，有<span
-class="math display">\[ D_{ij}=\left\{\begin{matrix}
-   D_i,\ i=j\\0,\ i\neq j \end{matrix}\right.
-  \]</span></li>
+</li>
 </ul>
-<h3 id="转置transpose">转置(Transpose)</h3>
-<ul>
-<li><span class="math inline">\((A^T)_{ij}=A_{ji}\)</span></li>
-<li>性质
-<ul>
-<li><span class="math inline">\((A^T)^T=A\)</span></li>
-<li><span class="math inline">\((AB)^T=B^TA^T\)</span></li>
-<li><span class="math inline">\((A+B)^T=A^T+B^T\)</span></li>
-</ul></li>
+<h2 id="操作与性质"><a href="#操作与性质" class="headerlink" title="操作与性质"></a>操作与性质</h2><h3 id="单位矩阵-Identity-Matrix-与对角矩阵-Diagonal-Matrix"><a href="#单位矩阵-Identity-Matrix-与对角矩阵-Diagonal-Matrix" class="headerlink" title="单位矩阵(Identity Matrix)与对角矩阵(Diagonal Matrix)"></a>单位矩阵(Identity Matrix)与对角矩阵(Diagonal Matrix)</h3><ul>
+<li>单位阵<script type="math/tex">I_{ij}=\left\{\begin{matrix}
+   1,\ i=j\\0,\ i\neq j \end{matrix}\right.</script></li>
+<li>满足对任意$A\in \mathbb{R}^{m\times n}$都有$AI=A=IA$</li>
+<li>对角阵，通常记为$D=diag(d<em>1,d_2,…,d_n)$，有$$    D</em>{ij}=\left{\begin{matrix}<br>   D_i,\ i=j\0,\ i\neq j \end{matrix}\right.<br>  $$</li>
 </ul>
-<h3 id="对称矩阵symmetric-matrix">对称矩阵(Symmetric Matrix)</h3>
-<ul>
-<li>当<span class="math inline">\(A\in \mathbb{R}^{n\times
-n}\)</span>且<span class="math inline">\(A^T=A\)</span>，则<span
-class="math inline">\(A\)</span>为对称阵；若<span
-class="math inline">\(A=-A^T\)</span>则<span
-class="math inline">\(A\)</span>为反对称阵(anti-symmetric)</li>
-<li>对于任意<span class="math inline">\(A\in \mathbb{R}^{n\times
-n}\)</span>，<span class="math inline">\(A+A^T\)</span>是对称阵，<span
-class="math inline">\(A-A^T\)</span>是反对称阵</li>
-<li>因此任意方阵都可以表示为一个对称阵和一个反对称阵的和：<span
-class="math inline">\(A=\frac{1}{2}(A+A^T)+\frac{1}{2}(A-A^T)\)</span></li>
-<li>对称阵在实践中非常常见，通常将所有大小为<span
-class="math inline">\(n\)</span>（即<span class="math inline">\(n\times
-n\)</span>）的对称阵的集合记为<span
-class="math inline">\(\mathbb{S}^n\)</span></li>
+<h3 id="转置-Transpose"><a href="#转置-Transpose" class="headerlink" title="转置(Transpose)"></a>转置(Transpose)</h3><ul>
+<li>$(A^T)<em>{ij}=A</em>{ji}$</li>
+<li>性质<ul>
+<li>$(A^T)^T=A$</li>
+<li>$(AB)^T=B^TA^T$</li>
+<li>$(A+B)^T=A^T+B^T$</li>
 </ul>
-<h3 id="迹trace">迹(Trace)</h3>
-<ul>
-<li>方阵<span class="math inline">\(A\in \mathbb{R}^{n\times
-n}\)</span>的迹（记为<span
-class="math inline">\(tr(A)\)</span>）是对角线上元素的和：<span
-class="math display">\[trA=\sum^{n}_{i=1}A_{ii}\]</span></li>
+</li>
 </ul>
-<p>迹的性质：（以下矩阵均在<span
-class="math inline">\(\mathbb{R}^{n\times n}\)</span>中讨论）</p>
-<ul>
-<li><span class="math inline">\(trA=trA^T\)</span></li>
-<li><span class="math inline">\(tr(A+B)=trA+trB\)</span></li>
-<li><span class="math inline">\(t\in \mathbb{R},\ tr(tA)=t\
-trA\)</span></li>
-<li><span class="math inline">\(AB\)</span>是方阵，则<span
-class="math inline">\(trAB=trBA\)</span></li>
-<li><span class="math inline">\(ABC\)</span>是方阵，则<span
-class="math inline">\(trABC=trBCA=trCAB\)</span>，以此类推</li>
+<h3 id="对称矩阵-Symmetric-Matrix"><a href="#对称矩阵-Symmetric-Matrix" class="headerlink" title="对称矩阵(Symmetric Matrix)"></a>对称矩阵(Symmetric Matrix)</h3><ul>
+<li>当$A\in \mathbb{R}^{n\times n}$且$A^T=A$，则$A$为对称阵；若$A=-A^T$则$A$为反对称阵(anti-symmetric)</li>
+<li>对于任意$A\in \mathbb{R}^{n\times n}$，$A+A^T$是对称阵，$A-A^T$是反对称阵</li>
+<li>因此任意方阵都可以表示为一个对称阵和一个反对称阵的和：$A=\frac{1}{2}(A+A^T)+\frac{1}{2}(A-A^T)$</li>
+<li>对称阵在实践中非常常见，通常将所有大小为$n$（即$n\times n$）的对称阵的集合记为$\mathbb{S}^n$</li>
 </ul>
-<h3 id="范式norms">范式(Norms)</h3>
-<ul>
-<li>向量<span class="math inline">\(x\)</span>的范式<span
-class="math inline">\(||x||\)</span>，不正式地来讲，是该向量“长度”的度量。例如，常用的欧几里得范式/
-<span class="math inline">\(\ell_2\)</span>范式为：<span
-class="math display">\[||x||_2=\sqrt{\sum_{i=1}^{n}x^2_i}\]</span>
-注意，<span class="math inline">\(||x||^2_2=x^Tx\)</span></li>
+<h3 id="迹-Trace"><a href="#迹-Trace" class="headerlink" title="迹(Trace)"></a>迹(Trace)</h3><ul>
+<li>方阵$A\in \mathbb{R}^{n\times n}$的迹（记为$tr(A)$）是对角线上元素的和：<script type="math/tex">trA=\sum^{n}_{i=1}A_{ii}</script></li>
 </ul>
-<p>正式地来讲，范式是一个满足以下4个条件的任意函数<span
-class="math inline">\(f\ :\
-\mathbb{R}^n\rightarrow\mathbb{R}\)</span>：</p>
+<p>迹的性质：（以下矩阵均在$\mathbb{R}^{n\times n}$中讨论）</p>
 <ul>
-<li>非负性(non-negativity)：对于任意<span
-class="math inline">\(x\in\mathbb{R}^n\)</span>，<span
-class="math inline">\(f(x)\geq0\)</span></li>
-<li>确定性(definiteness, 不确定这个翻译对不对)：<span
-class="math inline">\(f(x)=0\)</span>当且仅当<span
-class="math inline">\(x=0\)</span></li>
-<li>齐次性(homogeneity)：对于任意<span
-class="math inline">\(x\in\mathbb{R}^n,\ t\in\mathbb{R}\)</span>，<span
-class="math inline">\(f(tx)=|t|f(x)\)</span></li>
-<li>三角不等式(triangle inequality)：<span class="math inline">\(x,\
-y\in\mathbb{R}^n,\ t\in\mathbb{R}\)</span>，<span
-class="math inline">\(f(x+y)\leq f(x)+f(y)\)</span></li>
+<li>$trA=trA^T$</li>
+<li>$tr(A+B)=trA+trB$</li>
+<li>$t\in \mathbb{R},\ tr(tA)=t\ trA$</li>
+<li>$AB$是方阵，则$trAB=trBA$</li>
+<li>$ABC$是方阵，则$trABC=trBCA=trCAB$，以此类推</li>
+</ul>
+<h3 id="范式-Norms"><a href="#范式-Norms" class="headerlink" title="范式(Norms)"></a>范式(Norms)</h3><ul>
+<li>向量$x$的范式$||x||$，不正式地来讲，是该向量“长度”的度量。例如，常用的欧几里得范式/ $\ell<em>2$范式为：$$||x||_2=\sqrt{\sum</em>{i=1}^{n}x^2_i}$$<br>  注意，$||x||^2_2=x^Tx$</li>
+</ul>
+<p>正式地来讲，范式是一个满足以下4个条件的任意函数$f\ :\ \mathbb{R}^n\rightarrow\mathbb{R}$：</p>
+<ul>
+<li>非负性(non-negativity)：对于任意$x\in\mathbb{R}^n$，$f(x)\geq0$</li>
+<li>确定性(definiteness, 不确定这个翻译对不对)：$f(x)=0$当且仅当$x=0$</li>
+<li>齐次性(homogeneity)：对于任意$x\in\mathbb{R}^n,\ t\in\mathbb{R}$，$f(tx)=|t|f(x)$</li>
+<li>三角不等式(triangle inequality)：$x,\ y\in\mathbb{R}^n,\ t\in\mathbb{R}$，$f(x+y)\leq f(x)+f(y)$</li>
 </ul>
 <p>常用的范式如：</p>
 <ul>
-<li><span class="math inline">\(\ell_1\)</span>范式：<span
-class="math inline">\(||x||_1=\sum^n_{i=1}|x_i|\)</span></li>
-<li><span class="math inline">\(\ell_{\infty}\)</span>范式：<span
-class="math inline">\(||x||_\infty=max_i|x_i|\)</span></li>
+<li>$\ell<em>1$范式：$||x||_1=\sum^n</em>{i=1}|x_i|$</li>
+<li>$\ell<em>{\infty}$范式：$||x||</em>\infty=max_i|x_i|$</li>
 </ul>
-<p>事实上，以上的3种范式属于<span class="math inline">\(\ell_p\
-(p\geq1)\)</span>范式，它的定义为：<span
-class="math display">\[||x||_p=(\sum_{i=1}^{n}|x_i|^p)^\frac{1}{p}\]</span></p>
-<p>矩阵也可以定义范式，例如Frobenius范式：<span class="math display">\[
-||A||_F=\sqrt{\sum^m_{i=1}\sum^n_{j=1}A^2_{ij}}=\sqrt{tr(A^TA)}
-\]</span> 还存在其他的矩阵范式，此处不再叙述</p>
-<h3 id="线性相关linear-independence与秩rank">线性相关(Linear
-Independence)与秩(Rank)</h3>
-<h2 id="参考">参考</h2>
-<blockquote>
-<p><a
-target="_blank" rel="noopener" href="https://www.yanxishe.com/TextTranslation/2965">https://www.yanxishe.com/TextTranslation/2965</a></p>
-<p><a
-target="_blank" rel="noopener" href="https://cs229.stanford.edu/section/cs229-linalg.pdf">https://cs229.stanford.edu/section/cs229-linalg.pdf</a></p>
+<p>事实上，以上的3种范式属于$\ell<em>p\ (p\geq1)$范式，它的定义为：$$||x||_p=(\sum</em>{i=1}^{n}|x_i|^p)^\frac{1}{p}$$</p>
+<p>矩阵也可以定义范式，例如Frobenius范式：$$<br>||A||<em>F=\sqrt{\sum^m</em>{i=1}\sum^n<em>{j=1}A^2</em>{ij}}=\sqrt{tr(A^TA)}</p>
+<p>$$<br>还存在其他的矩阵范式，此处不再叙述</p>
+<h3 id="线性相关-Linear-Independence-与秩-Rank"><a href="#线性相关-Linear-Independence-与秩-Rank" class="headerlink" title="线性相关(Linear Independence)与秩(Rank)"></a>线性相关(Linear Independence)与秩(Rank)</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.yanxishe.com/TextTranslation/2965">https://www.yanxishe.com/TextTranslation/2965</a></p>
+<p><a target="_blank" rel="noopener" href="https://cs229.stanford.edu/section/cs229-linalg.pdf">https://cs229.stanford.edu/section/cs229-linalg.pdf</a></p>
 </blockquote>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://yunsaijc.top">Yunsaijc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yunsaijc.top/2023/10/05/9-AI%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">http://yunsaijc.top/2023/10/05/9-AI%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yunsaijc.top" target="_blank">Yunsaijc's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/" title="将博客搬至CSDN"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">将博客搬至CSDN</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/03/8-%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" title="信息安全数学基础总结（有空更新）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">信息安全数学基础总结（有空更新）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-10</div><div class="title">&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记</div></div></a></div><div><a href="/2023/10/09/12-Llama%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E8%A1%8C%E5%88%9D%E5%B0%9D%E8%AF%95/" title="Llama部署与运行初尝试"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-09</div><div class="title">Llama部署与运行初尝试</div></div></a></div><div><a href="/2023/10/08/11-%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;A Survey of Large Language Models&gt;阅读笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-08</div><div class="title">&lt;A Survey of Large Language Models&gt;阅读笔记</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Yunsaijc</div><div class="author-info__description">Enjoy</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yunsaijc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/yunsaijc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1434044898@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">利利是是！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%AC%A6%E5%8F%B7"><span class="toc-number">1.</span> <span class="toc-text">基本符号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95matrix-multiplication"><span class="toc-number">2.</span> <span class="toc-text">矩阵乘法(Matrix
-Multiplication)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E4%B8%8E%E6%80%A7%E8%B4%A8"><span class="toc-number">3.</span> <span class="toc-text">操作与性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BD%8D%E7%9F%A9%E9%98%B5identity-matrix%E4%B8%8E%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5diagonal-matrix"><span class="toc-number">3.1.</span> <span class="toc-text">单位矩阵(Identity
-Matrix)与对角矩阵(Diagonal Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E7%BD%AEtranspose"><span class="toc-number">3.2.</span> <span class="toc-text">转置(Transpose)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5symmetric-matrix"><span class="toc-number">3.3.</span> <span class="toc-text">对称矩阵(Symmetric Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%B9trace"><span class="toc-number">3.4.</span> <span class="toc-text">迹(Trace)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8C%83%E5%BC%8Fnorms"><span class="toc-number">3.5.</span> <span class="toc-text">范式(Norms)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E7%9B%B8%E5%85%B3linear-independence%E4%B8%8E%E7%A7%A9rank"><span class="toc-number">3.6.</span> <span class="toc-text">线性相关(Linear
-Independence)与秩(Rank)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记">&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记</a><time datetime="2023-10-10T09:28:12.000Z" title="发表于 2023-10-10 17:28:12">2023-10-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/13-%3CKnowledge%20Graphs-%20Opportunities%20and%20Challenges%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;Knowledge Graphs:  Opportunities and Challenges&gt;阅读笔记">&lt;Knowledge Graphs:  Opportunities and Challenges&gt;阅读笔记</a><time datetime="2023-10-10T01:21:12.000Z" title="发表于 2023-10-10 09:21:12">2023-10-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/09/12-Llama%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E8%A1%8C%E5%88%9D%E5%B0%9D%E8%AF%95/" title="Llama部署与运行初尝试">Llama部署与运行初尝试</a><time datetime="2023-10-09T07:03:23.000Z" title="发表于 2023-10-09 15:03:23">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/08/11-%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;A Survey of Large Language Models&gt;阅读笔记">&lt;A Survey of Large Language Models&gt;阅读笔记</a><time datetime="2023-10-08T11:47:08.000Z" title="发表于 2023-10-08 19:47:08">2023-10-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/" title="AI方向直博学习日志">AI方向直博学习日志</a><time datetime="2023-10-07T12:34:16.000Z" title="发表于 2023-10-07 20:34:16">2023-10-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Yunsaijc</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://yunsaijc.top">Yunsaijc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yunsaijc.top/2023/10/05/9-AI%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">http://yunsaijc.top/2023/10/05/9-AI%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yunsaijc.top" target="_blank">Yunsaijc's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/" title="将博客搬至CSDN"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">将博客搬至CSDN</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/03/8-%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" title="信息安全数学基础总结（有空更新）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">信息安全数学基础总结（有空更新）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-10</div><div class="title">&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记</div></div></a></div><div><a href="/2023/10/09/12-Llama%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E8%A1%8C%E5%88%9D%E5%B0%9D%E8%AF%95/" title="Llama部署与运行初尝试"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-09</div><div class="title">Llama部署与运行初尝试</div></div></a></div><div><a href="/2023/10/09/15-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/" title="ML的4个指标——准确率、精确率、召回率与F1 score"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-09</div><div class="title">ML的4个指标——准确率、精确率、召回率与F1 score</div></div></a></div><div><a href="/2023/10/08/11-%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;A Survey of Large Language Models&gt;阅读笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-08</div><div class="title">&lt;A Survey of Large Language Models&gt;阅读笔记</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Yunsaijc</div><div class="author-info__description">Enjoy</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yunsaijc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/yunsaijc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1434044898@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">利利是是！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%AC%A6%E5%8F%B7"><span class="toc-number">1.</span> <span class="toc-text">基本符号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95-Matrix-Multiplication"><span class="toc-number">2.</span> <span class="toc-text">矩阵乘法(Matrix Multiplication)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E4%B8%8E%E6%80%A7%E8%B4%A8"><span class="toc-number">3.</span> <span class="toc-text">操作与性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BD%8D%E7%9F%A9%E9%98%B5-Identity-Matrix-%E4%B8%8E%E5%AF%B9%E8%A7%92%E7%9F%A9%E9%98%B5-Diagonal-Matrix"><span class="toc-number">3.1.</span> <span class="toc-text">单位矩阵(Identity Matrix)与对角矩阵(Diagonal Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E7%BD%AE-Transpose"><span class="toc-number">3.2.</span> <span class="toc-text">转置(Transpose)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5-Symmetric-Matrix"><span class="toc-number">3.3.</span> <span class="toc-text">对称矩阵(Symmetric Matrix)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%B9-Trace"><span class="toc-number">3.4.</span> <span class="toc-text">迹(Trace)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8C%83%E5%BC%8F-Norms"><span class="toc-number">3.5.</span> <span class="toc-text">范式(Norms)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E7%9B%B8%E5%85%B3-Linear-Independence-%E4%B8%8E%E7%A7%A9-Rank"><span class="toc-number">3.6.</span> <span class="toc-text">线性相关(Linear Independence)与秩(Rank)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记">&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记</a><time datetime="2023-10-10T09:28:12.000Z" title="发表于 2023-10-10 17:28:12">2023-10-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/13-%3CKnowledge%20Graphs-%20Opportunities%20and%20Challenges%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;Knowledge Graphs:  Opportunities and Challenges&gt;阅读笔记">&lt;Knowledge Graphs:  Opportunities and Challenges&gt;阅读笔记</a><time datetime="2023-10-10T01:21:12.000Z" title="发表于 2023-10-10 09:21:12">2023-10-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/09/12-Llama%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E8%A1%8C%E5%88%9D%E5%B0%9D%E8%AF%95/" title="Llama部署与运行初尝试">Llama部署与运行初尝试</a><time datetime="2023-10-09T07:03:23.000Z" title="发表于 2023-10-09 15:03:23">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/09/15-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/" title="ML的4个指标——准确率、精确率、召回率与F1 score">ML的4个指标——准确率、精确率、召回率与F1 score</a><time datetime="2023-10-09T07:03:23.000Z" title="发表于 2023-10-09 15:03:23">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/08/11-%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;A Survey of Large Language Models&gt;阅读笔记">&lt;A Survey of Large Language Models&gt;阅读笔记</a><time datetime="2023-10-08T11:47:08.000Z" title="发表于 2023-10-08 19:47:08">2023-10-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Yunsaijc</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
   window.MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
