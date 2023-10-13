@@ -9,8 +9,67 @@
     <atom:link href="http://yunsaijc.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>Enjoy</description>
-    <pubDate>Wed, 11 Oct 2023 08:40:07 GMT</pubDate>
+    <pubDate>Fri, 13 Oct 2023 06:15:50 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>与PLM有关的KG构建相关文献-阅读笔记</title>
+      <link>http://yunsaijc.top/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
+      <guid>http://yunsaijc.top/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</guid>
+      <pubDate>Thu, 12 Oct 2023 02:07:12 GMT</pubDate>
+      
+        
+        
+      <description>&lt;blockquote&gt;
+&lt;p&gt;原文链接：&lt;/p&gt;
+&lt;p&gt;(2023)PiVe: Prompting with Iterative Verification Improving Graph-based Generative Capability of LLMs &lt;a href=&quot;</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<blockquote><p>原文链接：</p><p>(2023)PiVe: Prompting with Iterative Verification Improving Graph-based Generative Capability of LLMs <a href="https://arxiv.org/abs/2305.12392">https://arxiv.org/abs/2305.12392</a></p><p>(2021)Grapher: Grapher: Multi-Stage Knowledge Graph Construction using Pretrained Language Models <a href="https://research.ibm.com/publications/grapher-multi-stage-knowledge-graph-construction-using-pretrained-language-models">https://research.ibm.com/publications/grapher-multi-stage-knowledge-graph-construction-using-pretrained-language-models</a></p></blockquote><h1 id="PiVe"><a href="#PiVe" class="headerlink" title="PiVe"></a>PiVe</h1><p>现有的LLM大多基于非结构化的数据进行预训练，所以对于“将文本组织成机器可读的结构化的格式”的任务，它们的表现并不理想</p><p>语义图是一种图结构的数据，存储着机器可以访问的信息。从文本生成语义图，成为text-to-graph(T2G)。过去的T2G主要依靠微调的小语言模型来完成。然而对于LLM来说，即使在少样本的条件下，LLM（如GPT-3.5）仍然存在错误</p><p>本文中，我们重点讨论了如何提高LLM生成图的能力。为此，我们提出了Prompting through Iterative Verification (PiVe)的框架，如图1所示。PiVe利用外部验证模块（即一个小得多的LM），并将验证模块的反馈合并到prompt中。PiVe反复使用验证器模块，并在将prompt发送回LLM之前，通过纠正指令来完善prompt，从而大大提高生成的语义图的质量</p><p>训练验证模块的方法：我们从一个种子数据集开始（包含文本和图的(T, G)对），通过在种子集上随意选取一个图G，并对其中的实体、关系或三元组进行任意的扰动，从而构造成一个图扰动数据集。文本、扰动后的图、以及校正描述（用于逆转施加的扰动）组成了一个验证数据集中的三元组，供验证模块进行自监督学习。随后，我们设计了微调(fine-tuning)和指令调优(instruction-tuning)来分别训练特定领域和通用的验证模块</p><p>在通过LLM生成T2G的过程中，验证器从LLM获取文本T和输出的图G，并向LLM发送校正信号（例如，“将文本转换为语义图，并将给定的三元组添加到生成的语义图”）。此过程将持续到验证模块验证输出是否正确为止，称之为Iterative Promoting。此外，验证器模块还有另一种（效率更高的）模式，它一开始调用LLM来以获得一个初始的图，然后剩下的校正步骤都会在验证模块中循环地以离线方式进行，我们称之为迭代离线校正(Iterative Offline Correction)</p><p>我们在3个图数据集上的实验结果表明，通过迭代地校正，PiVe框架的有效性在3个数据集上平均提升了26%。我们还表明，验证模块可以用作数据增强工具，以帮助创建高质量的并行文本和图数据集。我们还表明了如何利用PiVe作为一种数据增强技术，来提高自动构建的文本-图数据集的质量</p><h1 id="Grapher"><a href="#Grapher" class="headerlink" title="Grapher"></a>Grapher</h1><h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>关于先前KG的构建：</p><ul><li>一些方法考虑简单的图补全问题，给定一个不完全的三元组（如缺少其中一个实体），目标是通过生成缺失的实体、或对给定的候选集进行排序，来补全三元组。该方法的缺点是，它们仅限于通过局部的修改来扩展现有的KG，不适合构建整个KG</li><li>其他方法提出查询PLM，以提取所学的事实和常识。他们促使PLM像做完形填空一样来预测三元组中缺失的部分。同上，该方法只适用于局部KG修补</li></ul><p>对于构建整个KG：</p><ul><li>有使用GraphGNN来构建KG的。但其序列性和贪婪性可能无法带来最优的图架构</li><li>CycleGT是一个text-to-graph的无监督方法。首先依据现成的实体提取器来提取实体，然后通过分类器来预测关系。但它对外部模块的依赖破坏了系统的连续性，可能导致不好的结果</li><li>DualTKBe采用无监督循环损失来实现图文双向翻译。但他们的方法只适用于单句的KG生成，限制了对大型图的适用性</li><li>BT5提出利用PLM T5模型来线性化地生成KG，其中对象-谓词-主体三元组连接在一起，整个T2G问题被视为序列到序列的建模问题。这种方法的问题是，图线性化不是唯一的，并且由于图组件多次重复而效率低下，导致长序列和增加复杂性</li><li>MaMa中，实体和关系首先使用LM向前传递的注意力权重矩阵进行匹配。然后将它们映射到现有的KG模式以生成最终的图</li></ul><p>本文提出了一个新的KG构建架构。首先生成节点，然后生成节点之间的边：</p><h2 id="节点生成"><a href="#节点生成" class="headerlink" title="节点生成"></a>节点生成</h2><p>以下是Grapher节点生成框架的选择过程</p><h3 id="Text-Nodes方法"><a href="#Text-Nodes方法" class="headerlink" title="Text Nodes方法"></a>Text Nodes方法</h3><p>给定文本输入，该模块的目标是生成一组唯一的节点。我们使用预训练的编码器-解码器语言模型(PLM)，例如说T5。通过PLM，我们可以将节点的生成描述为一个从<strong>序列到序列</strong>的问题，将文本输入转换为由特殊标记分离的节点序列，即，\<PAD\>NODE1\<NODE_SEP\>NODE2\<NODE_SEP\>NODE3\&lt;\s>，其中NODE_i表示一个或多个单词</p><p>如图3所示，该模块还提供了节点的特征，来为KG生成边做准备。由于每个节点可以有多个相关的单词，因此我们对生成的字符串进行贪婪解码，用分隔令牌&lt; NODE_SEP &gt;来分割节点，并对解码器最后一层的隐藏状态进行平均池化。注意，在实践中，我们提前设定了生成节点的最大数量，并用一个特殊的&lt; NO_NODE &gt;符号填充缺失的节点</p><h3 id="Query-Nodes方法"><a href="#Query-Nodes方法" class="headerlink" title="Query Nodes方法"></a>Query Nodes方法</h3><p>在上述方法中，生成的节点序列是有顺序的，而在一个图中的节点不必是有顺序的，可以同等地看待这些节点。因此，我们提出了第二种架构（灵感来自DETR图像对象检测方法）。如图4所示，我们首先学习节点的查询以获得节点特征，然后估计（节点的）排列，以与目标节点顺序保持一致</p><ul><li>可学习节点查询：解码器接收一组可学习节点查询作为输入，以嵌入矩阵的形式输入。我们还禁用因果masking，以确保Transformer能够同时处理所有查询。这与传统的编码器-解码器架构形成对比，传统的编码器架构通常在训练期间将目标序列与因果masking作为输入嵌入，或者在推理期间嵌入自生成序列。</li></ul><p>解码器的输出现在可以直接读取为N维的节点特征$F_n\in\mathbb{R}^{d\times N}$，并传递给预测器(LSTM或GRU)解码为节点逻辑(logits) $L_n\in \mathbb{R}^{S\times V\times N}$，其中S为生成的节点序列长度，V为词汇表大小。</p><ul><li>为了避免系统记住节点的顺序并使序列的顺序不变，我们将逻辑和特征排列为$L’_n(s)=L_n(s)P,\ F’_n(s)=F_n(s)P$，其中$s=1,…,S$，$P$是用二部匹配算法在目标节点和贪婪解码节点之间得到的置换矩阵。我们使用交叉熵损失作为匹配的损失函数。排列的节点特征$F’_n$现在与目标是齐次的，可以在边的生成阶段使用</li></ul><h2 id="生成边"><a href="#生成边" class="headerlink" title="生成边"></a>生成边</h2><p>随后使用上一步的节点特征进行边的生成，如图5。给定一对节点特征，预测头决定它们各自节点之间存在(或不存在)一条边。</p><ul><li>一种选择是使用类似于Query Nodes中的预测器（或生成器，LSTM或GRU）来生成边</li><li>另一种选择是使用分类器来预测边</li></ul><p>这两种选择各有利弊，具体选择取决于应用的领域。优点：能够构造任何的边序列，包括在训练过程中未见过的边序列，但风险是，结果可能不会与目标边序列完全匹配。</p><p>另一方面，如果可能关系的集合是固定且已知的，那么分类器会更有效、准确；但是如果训练中对所有可能的边的覆盖有限（没有考虑到所有可能的边），则系统在推理过程中可能会误分类</p><h2 id="不平衡的边分布"><a href="#不平衡的边分布" class="headerlink" title="不平衡的边分布"></a>不平衡的边分布</h2><p>我们观察到，由于我们需要检查所有节点对之间是否存在边，我们必须生成或预测多达$N^2$条边，其中N是节点的数量。当生成的节点之一是\<NO_NODE\>符号时，可以通过忽略他们之间的边来节省时间。当两点之间没有边时，用\<NO_EDGE\>符号来表示。</p><p>此外，由于通常实际边的数量很小而\<NO_EDGE\>很大，生成和分类任务对\<NO_EDGE\>符号是不平衡的。为了解决这个问题，我们提出了两种解决方案：</p><ul><li>修改交叉熵损失：将交叉熵(CE)替换为焦点损失(Focal Loss, 主要用于解决类别不平衡问题)。它的主要思想是降低分类效果好的样本的CE的权重（在我们的实验中即\<NO_EDGE\>），增加容易误分类的样本的CE的权重，也就是写成如下的形式：<script type="math/tex">\begin{aligned}  CE(p,\ t)&=-log(p_t)\\  FL(p,\ t,\ \gamma)&=-(1-p_t)^\gamma log(p_t)  \end{aligned}</script><br>  其中，$p$表示一条边对应的概率分布，$t$表示目标类，$\gamma$是一个权重参数，当为0时所有的损失都相等。将这种损失应用于分类器非常直观，而对于生成器，我们先根据边序列的长度来累加（每条边的）预测概率，得到与$p_t$地位相等的量，然后将其应用到损失上。在实践中，我们观察到FL提高了分类器的准确性，而对于生成器的性能没有显着变化</li><li>改变训练范式：通过使邻接矩阵变得稀疏来修改训练设置，以删除大部分的\<NO_EDGE\>边，手动地重新进行平衡，如图6所示。<br>  这里，我们保留所有实际的边，只留下一些随机选择的\<NO_EDGE\>边（注意，这种修改只是为了提高训练效率，在推理过程中，系统仍然需要输出所有的边），因为它们的真实位置是未知的，如图5所示。在实践中，除了将准确率提高了10-20%之外，还观察到使用稀疏边比使用完全邻接矩阵的训练时间快了10%</li></ul><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><ol><li><p>WebNLG+ corpus v3.0：是2020年WebNLG挑战赛的数据集，提供了两个任务：从一组RDF三元组(主语-谓语-宾语)生成文本，以及语义解析的反向任务，将文本描述转换为RDF三元组。本文使用文本到RDF任务上的算法，其统计信息如表1所示。</p><p> 每个三元组集合都与一个或多个文本相关联，因此当将一个三元组集合分配给所有（相关的）文本时，训练、开发和测试集的总大小如表1的第二行所示。数据由16个DBpedia类别组成：11个只在训练和开发部分出现，5个不可见的类别仅在测试部分出现</p><p> 我们对数据预处理，删除下划线和引号以减少数据中的噪声。此外，由于T5的tokenizer和WebNLG数据集的词汇覆盖范围不匹配，WebNLG中的一些字符在T5的词汇表中不存在，在tokenization的过程中被忽略。我们将数据规范化，把缺失的字符映射到最接近的可用字符，例如，将’ ø ‘转换为’ o ‘，或将’ ã ‘转换为’ a ‘</p> <p> WebNLG是一个相当小的数据集，我们还使用TEKGEN数据集的数据来进行扩展。由于WebNLG不使用DBpedia模式，而TEKGEN基于Wikidata KG，因此我们将Wikidata的谓词近似地映射到DBpedia的谓词。我们只映射训练集中的谓词。例如，TEKGEN三元组(SUBJECT， ‘ location of formation ‘ OBJECT)被转换为WebNLG三元组(SUBJECT， ‘ foundationPlace ‘， OBJECT)。</p><p> 总的来说，我们向WebNLG数据集添加了17855对，使总训练集的大小为53,281。为了为Grapher训练准备数据，我们将三元组分为节点(subject和object)和边(提取谓词)。然后，这些节点要么连续地连接成为⟨PAD⟩NODE1⟨NODE_SEP⟩NODE2⟩⟩(文本节点)或单独传递作为⟨PAD⟩NODE1⟩/S⟩，⟩PAD⟩NODE2⟩/S⟩(查询节点)，如果必要，填充⟩NO_NODE⟩。对于边，邻接矩阵的每个元素i、j都充满了⟨PAD⟩EDGEi，如果在NODEi和NODEj之间有一条边缘，则⟩j /S⟩，否则⟩PAD⟩NO_EDGE⟩。在使用稀疏边的情况下，我们首先对邻接矩阵进行稀疏化，然后将其扁平化为一组边，与节点类似。最后，对于分类边头，我们扫描训练集，并收集所有唯一谓词作为边类列表。在我们的train split中有407个边缘类，包括NO_EDGE⟩类。</p></li></ol>]]></content:encoded>
+      
+      
+      <category domain="http://yunsaijc.top/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">文献阅读</category>
+      
+      
+      <category domain="http://yunsaijc.top/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</category>
+      
+      <category domain="http://yunsaijc.top/tags/AI/">AI</category>
+      
+      <category domain="http://yunsaijc.top/tags/LLM/">LLM</category>
+      
+      
+      <comments>http://yunsaijc.top/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>ML的4个指标——准确率、精确率、召回率与F1 score</title>
+      <link>http://yunsaijc.top/2023/10/11/15-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/</link>
+      <guid>http://yunsaijc.top/2023/10/11/15-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/</guid>
+      <pubDate>Wed, 11 Oct 2023 12:55:23 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;机器学习的分类任务中，准确率(accuracy)、精确率(precision)、召回率(recall)与F1 score是常见的4个评估指标。之前对于这些指标有粗略的了解，如今加深一下理解&lt;/p&gt;
+&lt;h1 id=&quot;混淆矩阵-Confusion-Matrix&quot;&gt;&lt;a href</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>机器学习的分类任务中，准确率(accuracy)、精确率(precision)、召回率(recall)与F1 score是常见的4个评估指标。之前对于这些指标有粗略的了解，如今加深一下理解</p><h1 id="混淆矩阵-Confusion-Matrix"><a href="#混淆矩阵-Confusion-Matrix" class="headerlink" title="混淆矩阵(Confusion Matrix)"></a>混淆矩阵(Confusion Matrix)</h1><p>混淆矩阵如图所示：</p><p>四个值的具体解释为：</p><ul><li>TP(True Positive)：被正确预测的正例。即真实值为正，预测值为正</li><li>TN：被正确预测的反例</li><li>FP：被错误预测的正例。即真实值为负，预测值为正</li><li>FN(False Negative)：被错误预测的反例</li></ul><blockquote><p>即，第一个字母指的是预测正误，第二个字母指的是预测结果</p></blockquote><h1 id="准确率-Accuracy"><a href="#准确率-Accuracy" class="headerlink" title="准确率(Accuracy)"></a>准确率(Accuracy)</h1><p>表示分类正确的样本占总样本个数的比例，即：<script type="math/tex">Accuracy=\frac{TP+TN}{TP+TN+FP+FN}</script></p><p>这是最直接的指标，但缺陷在于：当不同类别的样本占比不平衡时，占比大的类别会是影响准确率的最主要因素</p><p>举例：当数据集中99%为正例，那么只要分类器一直预测为正，即可达到很高的准确率</p><p>因此只有当数据集中各个类别样本比例均衡时，准确率才有较大的参考意义</p><h1 id="精确率-Precision"><a href="#精确率-Precision" class="headerlink" title="精确率(Precision)"></a>精确率(Precision)</h1><p>表示被预测为正的样本中，实际为正样本的比例。即：<script type="math/tex">Precision=\frac{TP}{TP+FP}</script></p><p>个人理解一下：</p><ul><li>首先，能够影响精确率的只有被预测为正的样本</li><li>被预测为正的样本中，如果其他不变<ul><li>TP增大（被正确地判断为正的样本增多），精确率变大</li><li>FP增大（被错误地判断为正的样本增多），精确率变小</li></ul></li></ul><p>所以，精确率越高，将负样本误判为正的概率越小</p><p>换句话说，提升精确率，是为了不将负样本误判为正（不错判）</p><h1 id="召回率-Recall"><a href="#召回率-Recall" class="headerlink" title="召回率(Recall)"></a>召回率(Recall)</h1><p>表示实际为正的样本中，被预测为正的样本所占比例。即：<script type="math/tex">Recall=\frac{TP}{TP+FN}</script></p><blockquote><p>可以发现，上述文字定义就是将精确率的文字定义倒转过来</p></blockquote><p>个人理解一下：</p><ul><li>首先，能够影响召回率的只有实际为正的样本</li><li>实际为正的样本中，如果其他不变：<ul><li>TP增大（被正确地判断为正的样本增多），召回率变大</li><li>FN增大（被错误地判断为负的样本增多），召回率变小</li></ul></li></ul><p>所以，召回率越高，将正样本误判为负的概率越小</p><p>换句话说，提高精确率，是为了不将正样本误判为负（不漏判）</p><h1 id="F1-Score"><a href="#F1-Score" class="headerlink" title="F1 Score"></a>F1 Score</h1><p>通过上述分析可以发现，精确率和召回率是两难全的。综合一下<br>两者，F1 score是精确率和召回率的一个加权平均：<script type="math/tex">F1=2\times\frac{Precision\times Recall}{Precision+Recall}</script></p><p>因为精确率体现分类器不错判的能力，召回率体现不漏判的能力，所以F1 Score越高，模型越稳健</p><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://zhuanlan.zhihu.com/p/405658103">https://zhuanlan.zhihu.com/p/405658103</a></p><p><a href="https://zhuanlan.zhihu.com/p/93107394">https://zhuanlan.zhihu.com/p/93107394</a></p><p><a href="https://zhuanlan.zhihu.com/p/93586831">https://zhuanlan.zhihu.com/p/93586831</a></p></blockquote>]]></content:encoded>
+      
+      
+      <category domain="http://yunsaijc.top/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</category>
+      
+      
+      <category domain="http://yunsaijc.top/tags/AI/">AI</category>
+      
+      
+      <comments>http://yunsaijc.top/2023/10/11/15-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>&lt;LLMs for Knowledge Graph Construction and Reasoning: Recent Capabilities and Future Opportunities&gt;阅读笔记</title>
@@ -34,11 +93,11 @@
       <category domain="http://yunsaijc.top/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">文献阅读</category>
       
       
+      <category domain="http://yunsaijc.top/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</category>
+      
       <category domain="http://yunsaijc.top/tags/AI/">AI</category>
       
       <category domain="http://yunsaijc.top/tags/LLM/">LLM</category>
-      
-      <category domain="http://yunsaijc.top/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</category>
       
       
       <comments>http://yunsaijc.top/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#disqus_thread</comments>
@@ -102,33 +161,6 @@
     </item>
     
     <item>
-      <title>ML的4个指标——准确率、精确率、召回率与F1 score</title>
-      <link>http://yunsaijc.top/2023/10/09/15-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/</link>
-      <guid>http://yunsaijc.top/2023/10/09/15-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/</guid>
-      <pubDate>Mon, 09 Oct 2023 07:03:23 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;机器学习的分类任务中，准确率(accuracy)、精确率(precision)、召回率(recall)与F1 score是常见的4个评估指标。之前对于这些指标有粗略的了解，如今加深一下理解&lt;/p&gt;
-&lt;h1 id=&quot;混淆矩阵-Confusion-Matrix&quot;&gt;&lt;a href</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p>机器学习的分类任务中，准确率(accuracy)、精确率(precision)、召回率(recall)与F1 score是常见的4个评估指标。之前对于这些指标有粗略的了解，如今加深一下理解</p><h1 id="混淆矩阵-Confusion-Matrix"><a href="#混淆矩阵-Confusion-Matrix" class="headerlink" title="混淆矩阵(Confusion Matrix)"></a>混淆矩阵(Confusion Matrix)</h1><p>混淆矩阵如图所示：</p><p>四个值的具体解释为：</p><ul><li>TP(True Positive)：被正确预测的正例。即真实值为正，预测值为正</li><li>TN：被正确预测的反例</li><li>FP：被错误预测的正例。即真实值为负，预测值为正</li><li>FN(False Negative)：被错误预测的反例</li></ul><blockquote><p>即，第一个字母指的是预测正误，第二个字母指的是预测结果</p></blockquote><h1 id="准确率-Accuracy"><a href="#准确率-Accuracy" class="headerlink" title="准确率(Accuracy)"></a>准确率(Accuracy)</h1><p>表示分类正确的样本占总样本个数的比例，即：<script type="math/tex">Accuracy=\frac{TP+TN}{TP+TN+FP+FN}</script></p><p>这是最直接的指标，但缺陷在于：当不同类别的样本占比不平衡时，占比大的类别会是影响准确率的最主要因素</p><p>举例：当数据集中99%为正例，那么只要分类器一直预测为正，即可达到很高的准确率</p><p>因此只有当数据集中各个类别样本比例均衡时，准确率才有较大的参考意义</p><h1 id="精确率-Precision"><a href="#精确率-Precision" class="headerlink" title="精确率(Precision)"></a>精确率(Precision)</h1><p>表示被预测为正的样本中，实际为正样本的比例。即：<script type="math/tex">Precision=\frac{TP}{TP+FP}</script></p><p>个人理解一下：</p><ul><li>首先，能够影响精确率的只有被预测为正的样本</li><li>被预测为正的样本中，如果其他不变<ul><li>TP增大（被正确地判断为正的样本增多），精确率变大</li><li>FP增大（被错误地判断为正的样本增多），精确率变小</li></ul></li></ul><p>所以，精确率越高，将负样本误判为正的概率越小</p><p>换句话说，提升精确率，是为了不将负样本误判为正（不错判）</p><h1 id="召回率-Recall"><a href="#召回率-Recall" class="headerlink" title="召回率(Recall)"></a>召回率(Recall)</h1><p>表示实际为正的样本中，被预测为正的样本所占比例。即：<script type="math/tex">Recall=\frac{TP}{TP+FN}</script></p><blockquote><p>可以发现，上述文字定义就是将精确率的文字定义倒转过来</p></blockquote><p>个人理解一下：</p><ul><li>首先，能够影响召回率的只有实际为正的样本</li><li>实际为正的样本中，如果其他不变：<ul><li>TP增大（被正确地判断为正的样本增多），召回率变大</li><li>FN增大（被错误地判断为负的样本增多），召回率变小</li></ul></li></ul><p>所以，召回率越高，将正样本误判为负的概率越小</p><p>换句话说，提高精确率，是为了不将正样本误判为负（不漏判）</p><h1 id="F1-Score"><a href="#F1-Score" class="headerlink" title="F1 Score"></a>F1 Score</h1><p>通过上述分析可以发现，精确率和召回率是两难全的。综合一下<br>两者，F1 score是精确率和召回率的一个加权平均：<script type="math/tex">F1=2\times\frac{Precision\times Recall}{Precision+Recall}</script></p><p>因为精确率体现分类器不错判的能力，召回率体现不漏判的能力，所以F1 Score越高，模型越稳健</p><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote><p><a href="https://zhuanlan.zhihu.com/p/405658103">https://zhuanlan.zhihu.com/p/405658103</a></p><p><a href="https://zhuanlan.zhihu.com/p/93107394">https://zhuanlan.zhihu.com/p/93107394</a></p><p><a href="https://zhuanlan.zhihu.com/p/93586831">https://zhuanlan.zhihu.com/p/93586831</a></p></blockquote>]]></content:encoded>
-      
-      
-      <category domain="http://yunsaijc.top/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</category>
-      
-      
-      <category domain="http://yunsaijc.top/tags/AI/">AI</category>
-      
-      
-      <comments>http://yunsaijc.top/2023/10/09/15-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
       <title>&lt;A Survey of Large Language Models&gt;阅读笔记</title>
       <link>http://yunsaijc.top/2023/10/08/11-%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
       <guid>http://yunsaijc.top/2023/10/08/11-%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</guid>
@@ -172,7 +204,7 @@
       
       
       
-      <content:encoded><![CDATA[<h2 id="2023年"><a href="#2023年" class="headerlink" title="2023年"></a>2023年</h2><h3 id="10月"><a href="#10月" class="headerlink" title="10月"></a>10月</h3><h4 id="12日"><a href="#12日" class="headerlink" title="12日"></a>12日</h4><h4 id="11日"><a href="#11日" class="headerlink" title="11日"></a>11日</h4><ul><li>文献继续精读：\<LLMs for Knowledge Graph Construction and Reasoning:Recent Capabilities and Future Opportunities\></li><li>继续捣鼓LLM环境…（网站被墙，下载模型好难）</li><li>长尾分布：也就是数据量分布不均衡，少部分类别有大量样本，就好像少部分人有大量资产一样（<a href="https://zhuanlan.zhihu.com/p/422558527">https://zhuanlan.zhihu.com/p/422558527</a>）</li><li>上述文献总结</li><li>准确率(accuracy)，精确率(precision)，召回率(recall)与F1 score：<a href="https://zhuanlan.zhihu.com/p/405658103">https://zhuanlan.zhihu.com/p/405658103</a></li></ul><h4 id="10日"><a href="#10日" class="headerlink" title="10日"></a>10日</h4><ul><li>文献阅读：\<Knowledge Graphs: Opportunities and Challenges\></li><li>捣鼓LLM环境</li><li>文献阅读：\<LLMs for Knowledge Graph Construction and Reasoning:Recent Capabilities and Future Opportunities\></li><li>zero\one\few-shot：简单来说就是给了多少个学习样本（<a href="https://zhuanlan.zhihu.com/p/624793654">https://zhuanlan.zhihu.com/p/624793654</a>）</li></ul><h4 id="9日"><a href="#9日" class="headerlink" title="9日"></a>9日</h4><ul><li>RLHF和InstructGPT：RLHF可以分为3步：<ul><li>根据采集的SFT数据集对GPT-3进行有监督的微调(Supervised FineTune, SFT)</li><li>收集人工标注的对比数据，训练奖励模型(Reword Model, RM)</li><li>使用RM作为强化学习的优化目标，利用PPO算法微调SFT模型<br>InstructGPT是在GPT-3的基础上通过RLHF训练而来的<br>(<a href="https://zhuanlan.zhihu.com/p/637419868">LLM 系列超详细解读 (四)：InstructGPT：训练语言模型以遵从人类指令 - 知乎</a>，<a href="https://zhuanlan.zhihu.com/p/590311003">https://zhuanlan.zhihu.com/p/590311003</a>)</li></ul></li><li>ChatGPT和InstructGPT：是一对姐妹模型，他们在模型结构、训练方式上都完全一致，即都使用了指示学习(Instruction Learning)和人类反馈的强化学习(RLHF)来指导模型的训练，它们不同的仅仅是采集数据的方式上有所差异</li><li>文献阅读笔记</li><li>激活函数的再理解：<ul><li>在神经元中的位置，是输入与权重相乘并相加之后，输出之前</li><li>一般引入非线性因素，来增加神经网络模型的非线性</li><li>否则网络中全部是线性部件，线性的组合还是线性，与单独一个线性分类器无异，这样就做不到用非线性来逼近任意函数<br>（<a href="https://blog.csdn.net/hhhhhhhhhhwwwwwwwwww/article/details/116863273#:~:text=CNN%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%201%201%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%28Activation%20functions%29%E5%AF%B9%E4%BA%8E%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20%E6%A8%A1%E5%9E%8B%E5%8E%BB%E5%AD%A6%E4%B9%A0%E3%80%81%E7%90%86%E8%A7%A3%E9%9D%9E%E5%B8%B8%E5%A4%8D%E6%9D%82%E5%92%8C%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%9A%84%E5%87%BD%E6%95%B0%E6%9D%A5%E8%AF%B4%E5%85%B7%E6%9C%89%E5%8D%81%E5%88%86%E9%87%8D%E8%A6%81%E7%9A%84%E4%BD%9C%E7%94%A8%E3%80%82%20%E5%AE%83%E4%BB%AC%E5%B0%86%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%89%B9%E6%80%A7%E5%BC%95%E5%85%A5%E5%88%B0%E6%88%91%E4%BB%AC%E7%9A%84%E7%BD%91%E7%BB%9C%E4%B8%AD%E3%80%82,%E8%BF%99%E6%A0%B7%E5%B0%B1%E5%81%9A%E4%B8%8D%E5%88%B0%E7%94%A8%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9D%A5%E9%80%BC%E8%BF%91%E4%BB%BB%E6%84%8F%E5%87%BD%E6%95%B0%E3%80%82%20...%204%204%E3%80%81%E5%B8%B8%E7%94%A8%E7%9A%84%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20sigmoid%20%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%BA%EF%BC%9A%20">CNN基础——激活函数</a>）</li></ul></li><li>Llama部署初尝试</li></ul><h4 id="8日"><a href="#8日" class="headerlink" title="8日"></a>8日</h4><ul><li>文献阅读：\<A Survey of Large Language Models\></li><li>LLM建立的主要基础-Transformer架构：<a href="https://zhuanlan.zhihu.com/p/338817680">https://zhuanlan.zhihu.com/p/338817680</a></li><li>循环神经网络(RNN)：个人理解-就像在CNN中采用了密码学的 CBC/CFB/OFB工作模式一样，将上一轮结果反馈到下一轮，用于更好地处理前后文相关的序列信息（<a href="https://zhuanlan.zhihu.com/p/30844905">https://zhuanlan.zhihu.com/p/30844905</a>）</li><li>机器学习中的正则化(Regulation)：<a href="https://www.zhihu.com/question/20924039">https://www.zhihu.com/question/20924039</a></li><li>LLM微调学习：Hugging face Transformer文档初步阅读</li><li>实验环境初步搭建</li></ul><h4 id="7日"><a href="#7日" class="headerlink" title="7日"></a>7日</h4><ul><li>初步确定短期研究方向</li><li>监督学习：关键在于，数据中有无人工标注的标签（<a href="https://zhuanlan.zhihu.com/p/376931561">https://zhuanlan.zhihu.com/p/376931561</a>）</li><li>泛化(Generalization)：是指模型很好地拟合以前未见过的新数据（从用于创建该模型的同一分布中抽取）的能力（<a href="https://www.cnblogs.com/anliven/p/10264475.html">https://www.cnblogs.com/anliven/p/10264475.html</a>）</li><li>注意力机制：通过权重，将模型的注意力转移到重要的部位（<a href="https://zhuanlan.zhihu.com/p/379722366">https://zhuanlan.zhihu.com/p/379722366</a>）</li><li>欧氏空间的通俗理解：<a href="https://www.zhihu.com/question/27903807">https://www.zhihu.com/question/27903807</a></li><li>图神经网络(GNN)基本原理：<a href="https://blog.csdn.net/weixin_45884316/article/details/115751272">https://blog.csdn.net/weixin_45884316/article/details/115751272</a></li></ul>]]></content:encoded>
+      <content:encoded><![CDATA[<h2 id="2023年"><a href="#2023年" class="headerlink" title="2023年"></a>2023年</h2><h3 id="10月"><a href="#10月" class="headerlink" title="10月"></a>10月</h3><h4 id="13日"><a href="#13日" class="headerlink" title="13日"></a>13日</h4><ul><li>文献继续精读：Grapher</li></ul><h4 id="12日"><a href="#12日" class="headerlink" title="12日"></a>12日</h4><ul><li>文献阅读：\<PiVe: Prompting with Iterative Verification Improving Graph-based Generative Capability of LLMs\></li><li>文献粗读：\<Packed Levitated Marker for Entity and Relation Extraction\>（看不太懂）</li><li>文献阅读：\<Grapher: Multi-Stage Knowledge Graph Construction using Pretrained Language Models\></li></ul><h4 id="11日"><a href="#11日" class="headerlink" title="11日"></a>11日</h4><ul><li>文献继续精读：\<LLMs for Knowledge Graph Construction and Reasoning:Recent Capabilities and Future Opportunities\></li><li>继续捣鼓LLM环境…（网站被墙，下载模型好难）</li><li>长尾分布：也就是数据量分布不均衡，少部分类别有大量样本，就好像少部分人有大量资产一样（<a href="https://zhuanlan.zhihu.com/p/422558527">https://zhuanlan.zhihu.com/p/422558527</a>）</li><li>上述文献总结</li><li>准确率(accuracy)，精确率(precision)，召回率(recall)与F1 score：<a href="https://zhuanlan.zhihu.com/p/405658103">https://zhuanlan.zhihu.com/p/405658103</a></li></ul><h4 id="10日"><a href="#10日" class="headerlink" title="10日"></a>10日</h4><ul><li>文献阅读：\<Knowledge Graphs: Opportunities and Challenges\></li><li>捣鼓LLM环境</li><li>文献阅读：\<LLMs for Knowledge Graph Construction and Reasoning:Recent Capabilities and Future Opportunities\></li><li>zero\one\few-shot：简单来说就是给了多少个学习样本（<a href="https://zhuanlan.zhihu.com/p/624793654">https://zhuanlan.zhihu.com/p/624793654</a>）</li></ul><h4 id="9日"><a href="#9日" class="headerlink" title="9日"></a>9日</h4><ul><li>RLHF和InstructGPT：RLHF可以分为3步：<ul><li>根据采集的SFT数据集对GPT-3进行有监督的微调(Supervised FineTune, SFT)</li><li>收集人工标注的对比数据，训练奖励模型(Reword Model, RM)</li><li>使用RM作为强化学习的优化目标，利用PPO算法微调SFT模型<br>InstructGPT是在GPT-3的基础上通过RLHF训练而来的<br>(<a href="https://zhuanlan.zhihu.com/p/637419868">LLM 系列超详细解读 (四)：InstructGPT：训练语言模型以遵从人类指令 - 知乎</a>，<a href="https://zhuanlan.zhihu.com/p/590311003">https://zhuanlan.zhihu.com/p/590311003</a>)</li></ul></li><li>ChatGPT和InstructGPT：是一对姐妹模型，他们在模型结构、训练方式上都完全一致，即都使用了指示学习(Instruction Learning)和人类反馈的强化学习(RLHF)来指导模型的训练，它们不同的仅仅是采集数据的方式上有所差异</li><li>文献阅读笔记</li><li>激活函数的再理解：<ul><li>在神经元中的位置，是输入与权重相乘并相加之后，输出之前</li><li>一般引入非线性因素，来增加神经网络模型的非线性</li><li>否则网络中全部是线性部件，线性的组合还是线性，与单独一个线性分类器无异，这样就做不到用非线性来逼近任意函数<br>（<a href="https://blog.csdn.net/hhhhhhhhhhwwwwwwwwww/article/details/116863273#:~:text=CNN%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%201%201%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%28Activation%20functions%29%E5%AF%B9%E4%BA%8E%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20%E6%A8%A1%E5%9E%8B%E5%8E%BB%E5%AD%A6%E4%B9%A0%E3%80%81%E7%90%86%E8%A7%A3%E9%9D%9E%E5%B8%B8%E5%A4%8D%E6%9D%82%E5%92%8C%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%9A%84%E5%87%BD%E6%95%B0%E6%9D%A5%E8%AF%B4%E5%85%B7%E6%9C%89%E5%8D%81%E5%88%86%E9%87%8D%E8%A6%81%E7%9A%84%E4%BD%9C%E7%94%A8%E3%80%82%20%E5%AE%83%E4%BB%AC%E5%B0%86%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%89%B9%E6%80%A7%E5%BC%95%E5%85%A5%E5%88%B0%E6%88%91%E4%BB%AC%E7%9A%84%E7%BD%91%E7%BB%9C%E4%B8%AD%E3%80%82,%E8%BF%99%E6%A0%B7%E5%B0%B1%E5%81%9A%E4%B8%8D%E5%88%B0%E7%94%A8%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9D%A5%E9%80%BC%E8%BF%91%E4%BB%BB%E6%84%8F%E5%87%BD%E6%95%B0%E3%80%82%20...%204%204%E3%80%81%E5%B8%B8%E7%94%A8%E7%9A%84%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20sigmoid%20%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%20%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%BA%EF%BC%9A%20">CNN基础——激活函数</a>）</li></ul></li><li>Llama部署初尝试</li></ul><h4 id="8日"><a href="#8日" class="headerlink" title="8日"></a>8日</h4><ul><li>文献阅读：\<A Survey of Large Language Models\></li><li>Transformer架构（LLM建立的主要基础）：<a href="https://zhuanlan.zhihu.com/p/338817680">https://zhuanlan.zhihu.com/p/338817680</a></li><li>循环神经网络(RNN)：个人理解-就像在CNN中采用了密码学的 CBC/CFB/OFB工作模式一样，将上一轮结果反馈到下一轮，用于更好地处理前后文相关的序列信息（<a href="https://zhuanlan.zhihu.com/p/30844905">https://zhuanlan.zhihu.com/p/30844905</a>）</li><li>机器学习中的正则化(Regulation)：<a href="https://www.zhihu.com/question/20924039">https://www.zhihu.com/question/20924039</a></li><li>LLM微调学习：Hugging face Transformer文档初步阅读</li><li>实验环境初步搭建</li></ul><h4 id="7日"><a href="#7日" class="headerlink" title="7日"></a>7日</h4><ul><li>初步确定短期研究方向</li><li>监督学习：关键在于，数据中有无人工标注的标签（<a href="https://zhuanlan.zhihu.com/p/376931561">https://zhuanlan.zhihu.com/p/376931561</a>）</li><li>泛化(Generalization)：是指模型很好地拟合以前未见过的新数据（从用于创建该模型的同一分布中抽取）的能力（<a href="https://www.cnblogs.com/anliven/p/10264475.html">https://www.cnblogs.com/anliven/p/10264475.html</a>）</li><li>注意力机制：通过权重，将模型的注意力转移到重要的部位（<a href="https://zhuanlan.zhihu.com/p/379722366">https://zhuanlan.zhihu.com/p/379722366</a>）</li><li>欧氏空间的通俗理解：<a href="https://www.zhihu.com/question/27903807">https://www.zhihu.com/question/27903807</a></li><li>图神经网络(GNN)基本原理：<a href="https://blog.csdn.net/weixin_45884316/article/details/115751272">https://blog.csdn.net/weixin_45884316/article/details/115751272</a></li></ul>]]></content:encoded>
       
       
       <category domain="http://yunsaijc.top/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</category>
@@ -264,32 +296,6 @@
       
       
       <comments>http://yunsaijc.top/2023/10/03/8-%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>关于HTTP反向代理的理解</title>
-      <link>http://yunsaijc.top/2023/09/27/7-%E5%85%B3%E4%BA%8EHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%9A%84%E7%90%86%E8%A7%A3/</link>
-      <guid>http://yunsaijc.top/2023/09/27/7-%E5%85%B3%E4%BA%8EHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
-      <pubDate>Wed, 27 Sep 2023 05:48:59 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;正向代理-Forward-Proxy&quot;&gt;&lt;a href=&quot;#正向代理-Forward-Proxy&quot; class=&quot;headerlink&quot; title=&quot;正向代理(Forward Proxy)&quot;&gt;&lt;/a&gt;正向代理(Forward Proxy)&lt;/h2&gt;&lt;p&gt;正向代理</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="正向代理-Forward-Proxy"><a href="#正向代理-Forward-Proxy" class="headerlink" title="正向代理(Forward Proxy)"></a>正向代理(Forward Proxy)</h2><p>正向代理通常直接称为代理(<code>Proxy</code>)，也就是日常情景下使用的各种<code>BrupSuite、梯子</code>等的代理，需要我们手动进行配置。</p><h3 id="代理的作用"><a href="#代理的作用" class="headerlink" title="代理的作用"></a>代理的作用</h3><ul><li>便于安全审计：所有流量经过一台代理服务器，那么安全审计就容易得多</li><li>加速访问/节省带宽：代理服务器可以返回缓存好的内容，无需向外网发出请求，从而加快访问速度、节省带宽</li><li>保护个人信息：使用代理隐藏自己的真实IP地址</li><li>突破访问限制：有时自己的地址被禁止访问，可以连接白名单上的代理服务器来进行访问</li></ul><h2 id="反向代理-Reverse-Proxy"><a href="#反向代理-Reverse-Proxy" class="headerlink" title="反向代理((Reverse Proxy)"></a>反向代理((Reverse Proxy)</h2><p>个人理解：类似于计算机网络中的NAT(网络地址转发)技术。用户并不知道自己被“反向代理”了，反向代理服务器(如<code>Nginx</code>)接收到请求后，转发给Web服务器(如<code>Apache</code>)进行处理。</p><p>为了方便阅读，此处开始用<code>Nginx</code>来指代<code>反向代理服务器</code>。</p><h3 id="反向代理作用"><a href="#反向代理作用" class="headerlink" title="反向代理作用"></a>反向代理作用</h3><ul><li>负载均衡：访问压力大时，<code>Nginx</code>可以将请求分配给多个不同的Web服务器进行处理，而用户访问的地址仍然是相同的地址(即<code>Nginx</code>服务器的地址)</li><li>提高安全性：Web服务器对外不可见，此时<code>Nginx</code>相当于一个防火墙</li><li>节省IP资源：如上述对反向代理的个人理解所说，类似于NAT，能够节省IP资源</li><li>加速访问：<code>Nginx</code>同样可以缓存网页内容</li></ul><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>可以理解为：</p><ul><li>正向代理是面向用户的代理</li><li>反向代理是面向服务器的代理，对用户透明（也就是说把服务器也当成用户，服务器在给用户返回请求时自己挂了一个代理）</li></ul><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote><p><a href="https://zhuanlan.zhihu.com/p/464965616">https://zhuanlan.zhihu.com/p/464965616</a></p><p><a href="https://www.zhihu.com/question/388303662">https://www.zhihu.com/question/388303662</a></p><p><a href="https://zhuanlan.zhihu.com/p/486180243">https://zhuanlan.zhihu.com/p/486180243</a></p></blockquote>]]></content:encoded>
-      
-      
-      <category domain="http://yunsaijc.top/categories/%E5%AD%A6%E4%B9%A0%E6%9D%82%E8%AE%B0/">学习杂记</category>
-      
-      
-      <category domain="http://yunsaijc.top/tags/Web/">Web</category>
-      
-      
-      <comments>http://yunsaijc.top/2023/09/27/7-%E5%85%B3%E4%BA%8EHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%9A%84%E7%90%86%E8%A7%A3/#disqus_thread</comments>
       
     </item>
     
