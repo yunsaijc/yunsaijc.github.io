@@ -9,7 +9,7 @@
     <atom:link href="http://yunsaijc.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>Enjoy</description>
-    <pubDate>Fri, 13 Oct 2023 06:15:50 GMT</pubDate>
+    <pubDate>Fri, 13 Oct 2023 13:52:48 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -27,17 +27,17 @@
       
       
       
-      <content:encoded><![CDATA[<blockquote><p>原文链接：</p><p>(2023)PiVe: Prompting with Iterative Verification Improving Graph-based Generative Capability of LLMs <a href="https://arxiv.org/abs/2305.12392">https://arxiv.org/abs/2305.12392</a></p><p>(2021)Grapher: Grapher: Multi-Stage Knowledge Graph Construction using Pretrained Language Models <a href="https://research.ibm.com/publications/grapher-multi-stage-knowledge-graph-construction-using-pretrained-language-models">https://research.ibm.com/publications/grapher-multi-stage-knowledge-graph-construction-using-pretrained-language-models</a></p></blockquote><h1 id="PiVe"><a href="#PiVe" class="headerlink" title="PiVe"></a>PiVe</h1><p>现有的LLM大多基于非结构化的数据进行预训练，所以对于“将文本组织成机器可读的结构化的格式”的任务，它们的表现并不理想</p><p>语义图是一种图结构的数据，存储着机器可以访问的信息。从文本生成语义图，成为text-to-graph(T2G)。过去的T2G主要依靠微调的小语言模型来完成。然而对于LLM来说，即使在少样本的条件下，LLM（如GPT-3.5）仍然存在错误</p><p>本文中，我们重点讨论了如何提高LLM生成图的能力。为此，我们提出了Prompting through Iterative Verification (PiVe)的框架，如图1所示。PiVe利用外部验证模块（即一个小得多的LM），并将验证模块的反馈合并到prompt中。PiVe反复使用验证器模块，并在将prompt发送回LLM之前，通过纠正指令来完善prompt，从而大大提高生成的语义图的质量</p><p>训练验证模块的方法：我们从一个种子数据集开始（包含文本和图的(T, G)对），通过在种子集上随意选取一个图G，并对其中的实体、关系或三元组进行任意的扰动，从而构造成一个图扰动数据集。文本、扰动后的图、以及校正描述（用于逆转施加的扰动）组成了一个验证数据集中的三元组，供验证模块进行自监督学习。随后，我们设计了微调(fine-tuning)和指令调优(instruction-tuning)来分别训练特定领域和通用的验证模块</p><p>在通过LLM生成T2G的过程中，验证器从LLM获取文本T和输出的图G，并向LLM发送校正信号（例如，“将文本转换为语义图，并将给定的三元组添加到生成的语义图”）。此过程将持续到验证模块验证输出是否正确为止，称之为Iterative Promoting。此外，验证器模块还有另一种（效率更高的）模式，它一开始调用LLM来以获得一个初始的图，然后剩下的校正步骤都会在验证模块中循环地以离线方式进行，我们称之为迭代离线校正(Iterative Offline Correction)</p><p>我们在3个图数据集上的实验结果表明，通过迭代地校正，PiVe框架的有效性在3个数据集上平均提升了26%。我们还表明，验证模块可以用作数据增强工具，以帮助创建高质量的并行文本和图数据集。我们还表明了如何利用PiVe作为一种数据增强技术，来提高自动构建的文本-图数据集的质量</p><h1 id="Grapher"><a href="#Grapher" class="headerlink" title="Grapher"></a>Grapher</h1><h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>关于先前KG的构建：</p><ul><li>一些方法考虑简单的图补全问题，给定一个不完全的三元组（如缺少其中一个实体），目标是通过生成缺失的实体、或对给定的候选集进行排序，来补全三元组。该方法的缺点是，它们仅限于通过局部的修改来扩展现有的KG，不适合构建整个KG</li><li>其他方法提出查询PLM，以提取所学的事实和常识。他们促使PLM像做完形填空一样来预测三元组中缺失的部分。同上，该方法只适用于局部KG修补</li></ul><p>对于构建整个KG：</p><ul><li>有使用GraphGNN来构建KG的。但其序列性和贪婪性可能无法带来最优的图架构</li><li>CycleGT是一个text-to-graph的无监督方法。首先依据现成的实体提取器来提取实体，然后通过分类器来预测关系。但它对外部模块的依赖破坏了系统的连续性，可能导致不好的结果</li><li>DualTKBe采用无监督循环损失来实现图文双向翻译。但他们的方法只适用于单句的KG生成，限制了对大型图的适用性</li><li>BT5提出利用PLM T5模型来线性化地生成KG，其中对象-谓词-主体三元组连接在一起，整个T2G问题被视为序列到序列的建模问题。这种方法的问题是，图线性化不是唯一的，并且由于图组件多次重复而效率低下，导致长序列和增加复杂性</li><li>MaMa中，实体和关系首先使用LM向前传递的注意力权重矩阵进行匹配。然后将它们映射到现有的KG模式以生成最终的图</li></ul><p>本文提出了一个新的KG构建架构。首先生成节点，然后生成节点之间的边：</p><h2 id="节点生成"><a href="#节点生成" class="headerlink" title="节点生成"></a>节点生成</h2><p>以下是Grapher节点生成框架的选择过程</p><h3 id="Text-Nodes方法"><a href="#Text-Nodes方法" class="headerlink" title="Text Nodes方法"></a>Text Nodes方法</h3><p>给定文本输入，该模块的目标是生成一组唯一的节点。我们使用预训练的编码器-解码器语言模型(PLM)，例如说T5。通过PLM，我们可以将节点的生成描述为一个从<strong>序列到序列</strong>的问题，将文本输入转换为由特殊标记分离的节点序列，即，\<PAD\>NODE1\<NODE_SEP\>NODE2\<NODE_SEP\>NODE3\&lt;\s>，其中NODE_i表示一个或多个单词</p><p>如图3所示，该模块还提供了节点的特征，来为KG生成边做准备。由于每个节点可以有多个相关的单词，因此我们对生成的字符串进行贪婪解码，用分隔令牌&lt; NODE_SEP &gt;来分割节点，并对解码器最后一层的隐藏状态进行平均池化。注意，在实践中，我们提前设定了生成节点的最大数量，并用一个特殊的&lt; NO_NODE &gt;符号填充缺失的节点</p><h3 id="Query-Nodes方法"><a href="#Query-Nodes方法" class="headerlink" title="Query Nodes方法"></a>Query Nodes方法</h3><p>在上述方法中，生成的节点序列是有顺序的，而在一个图中的节点不必是有顺序的，可以同等地看待这些节点。因此，我们提出了第二种架构（灵感来自DETR图像对象检测方法）。如图4所示，我们首先学习节点的查询以获得节点特征，然后估计（节点的）排列，以与目标节点顺序保持一致</p><ul><li>可学习节点查询：解码器接收一组可学习节点查询作为输入，以嵌入矩阵的形式输入。我们还禁用因果masking，以确保Transformer能够同时处理所有查询。这与传统的编码器-解码器架构形成对比，传统的编码器架构通常在训练期间将目标序列与因果masking作为输入嵌入，或者在推理期间嵌入自生成序列。</li></ul><p>解码器的输出现在可以直接读取为N维的节点特征$F_n\in\mathbb{R}^{d\times N}$，并传递给预测器(LSTM或GRU)解码为节点逻辑(logits) $L_n\in \mathbb{R}^{S\times V\times N}$，其中S为生成的节点序列长度，V为词汇表大小。</p><ul><li>为了避免系统记住节点的顺序并使序列的顺序不变，我们将逻辑和特征排列为$L’_n(s)=L_n(s)P,\ F’_n(s)=F_n(s)P$，其中$s=1,…,S$，$P$是用二部匹配算法在目标节点和贪婪解码节点之间得到的置换矩阵。我们使用交叉熵损失作为匹配的损失函数。排列的节点特征$F’_n$现在与目标是齐次的，可以在边的生成阶段使用</li></ul><h2 id="生成边"><a href="#生成边" class="headerlink" title="生成边"></a>生成边</h2><p>随后使用上一步的节点特征进行边的生成，如图5。给定一对节点特征，预测头决定它们各自节点之间存在(或不存在)一条边。</p><ul><li>一种选择是使用类似于Query Nodes中的预测器（或生成器，LSTM或GRU）来生成边</li><li>另一种选择是使用分类器来预测边</li></ul><p>这两种选择各有利弊，具体选择取决于应用的领域。优点：能够构造任何的边序列，包括在训练过程中未见过的边序列，但风险是，结果可能不会与目标边序列完全匹配。</p><p>另一方面，如果可能关系的集合是固定且已知的，那么分类器会更有效、准确；但是如果训练中对所有可能的边的覆盖有限（没有考虑到所有可能的边），则系统在推理过程中可能会误分类</p><h2 id="不平衡的边分布"><a href="#不平衡的边分布" class="headerlink" title="不平衡的边分布"></a>不平衡的边分布</h2><p>我们观察到，由于我们需要检查所有节点对之间是否存在边，我们必须生成或预测多达$N^2$条边，其中N是节点的数量。当生成的节点之一是\<NO_NODE\>符号时，可以通过忽略他们之间的边来节省时间。当两点之间没有边时，用\<NO_EDGE\>符号来表示。</p><p>此外，由于通常实际边的数量很小而\<NO_EDGE\>很大，生成和分类任务对\<NO_EDGE\>符号是不平衡的。为了解决这个问题，我们提出了两种解决方案：</p><ul><li>修改交叉熵损失：将交叉熵(CE)替换为焦点损失(Focal Loss, 主要用于解决类别不平衡问题)。它的主要思想是降低分类效果好的样本的CE的权重（在我们的实验中即\<NO_EDGE\>），增加容易误分类的样本的CE的权重，也就是写成如下的形式：<script type="math/tex">\begin{aligned}  CE(p,\ t)&=-log(p_t)\\  FL(p,\ t,\ \gamma)&=-(1-p_t)^\gamma log(p_t)  \end{aligned}</script><br>  其中，$p$表示一条边对应的概率分布，$t$表示目标类，$\gamma$是一个权重参数，当为0时所有的损失都相等。将这种损失应用于分类器非常直观，而对于生成器，我们先根据边序列的长度来累加（每条边的）预测概率，得到与$p_t$地位相等的量，然后将其应用到损失上。在实践中，我们观察到FL提高了分类器的准确性，而对于生成器的性能没有显着变化</li><li>改变训练范式：通过使邻接矩阵变得稀疏来修改训练设置，以删除大部分的\<NO_EDGE\>边，手动地重新进行平衡，如图6所示。<br>  这里，我们保留所有实际的边，只留下一些随机选择的\<NO_EDGE\>边（注意，这种修改只是为了提高训练效率，在推理过程中，系统仍然需要输出所有的边），因为它们的真实位置是未知的，如图5所示。在实践中，除了将准确率提高了10-20%之外，还观察到使用稀疏边比使用完全邻接矩阵的训练时间快了10%</li></ul><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><ol><li><p>WebNLG+ corpus v3.0：是2020年WebNLG挑战赛的数据集，提供了两个任务：从一组RDF三元组(主语-谓语-宾语)生成文本，以及语义解析的反向任务，将文本描述转换为RDF三元组。本文使用文本到RDF任务上的算法，其统计信息如表1所示。</p><p> 每个三元组集合都与一个或多个文本相关联，因此当将一个三元组集合分配给所有（相关的）文本时，训练、开发和测试集的总大小如表1的第二行所示。数据由16个DBpedia类别组成：11个只在训练和开发部分出现，5个不可见的类别仅在测试部分出现</p><p> 我们对数据预处理，删除下划线和引号以减少数据中的噪声。此外，由于T5的tokenizer和WebNLG数据集的词汇覆盖范围不匹配，WebNLG中的一些字符在T5的词汇表中不存在，在tokenization的过程中被忽略。我们将数据规范化，把缺失的字符映射到最接近的可用字符，例如，将’ ø ‘转换为’ o ‘，或将’ ã ‘转换为’ a ‘</p> <p> WebNLG是一个相当小的数据集，我们还使用TEKGEN数据集的数据来进行扩展。由于WebNLG不使用DBpedia模式，而TEKGEN基于Wikidata KG，因此我们将Wikidata的谓词近似地映射到DBpedia的谓词。我们只映射训练集中的谓词。例如，TEKGEN三元组(SUBJECT， ‘ location of formation ‘ OBJECT)被转换为WebNLG三元组(SUBJECT， ‘ foundationPlace ‘， OBJECT)。</p><p> 总的来说，我们向WebNLG数据集添加了17855对，使总训练集的大小为53,281。为了为Grapher训练准备数据，我们将三元组分为节点(subject和object)和边(提取谓词)。然后，这些节点要么连续地连接成为⟨PAD⟩NODE1⟨NODE_SEP⟩NODE2⟩⟩(文本节点)或单独传递作为⟨PAD⟩NODE1⟩/S⟩，⟩PAD⟩NODE2⟩/S⟩(查询节点)，如果必要，填充⟩NO_NODE⟩。对于边，邻接矩阵的每个元素i、j都充满了⟨PAD⟩EDGEi，如果在NODEi和NODEj之间有一条边缘，则⟩j /S⟩，否则⟩PAD⟩NO_EDGE⟩。在使用稀疏边的情况下，我们首先对邻接矩阵进行稀疏化，然后将其扁平化为一组边，与节点类似。最后，对于分类边头，我们扫描训练集，并收集所有唯一谓词作为边类列表。在我们的train split中有407个边缘类，包括NO_EDGE⟩类。</p></li></ol>]]></content:encoded>
+      <content:encoded><![CDATA[<blockquote><p>原文链接：</p><p>(2023)PiVe: Prompting with Iterative Verification Improving Graph-based Generative Capability of LLMs <a href="https://arxiv.org/abs/2305.12392">https://arxiv.org/abs/2305.12392</a></p><p>(2021)Grapher: Grapher: Multi-Stage Knowledge Graph Construction using Pretrained Language Models <a href="https://research.ibm.com/publications/grapher-multi-stage-knowledge-graph-construction-using-pretrained-language-models">https://research.ibm.com/publications/grapher-multi-stage-knowledge-graph-construction-using-pretrained-language-models</a></p></blockquote><h1 id="PiVe"><a href="#PiVe" class="headerlink" title="PiVe"></a>PiVe</h1><p>现有的LLM大多基于非结构化的数据进行预训练，所以对于“将文本组织成机器可读的结构化的格式”的任务，它们的表现并不理想</p><p>语义图是一种图结构的数据，存储着机器可以访问的信息。从文本生成语义图，成为text-to-graph(T2G)。过去的T2G主要依靠微调的小语言模型来完成。然而对于LLM来说，即使在少样本的条件下，LLM（如GPT-3.5）仍然存在错误</p><p>本文中，我们重点讨论了如何提高LLM生成图的能力。为此，我们提出了Prompting through Iterative Verification (PiVe)的框架，如图1所示。PiVe利用外部验证模块（即一个小得多的LM），并将验证模块的反馈合并到prompt中。PiVe反复使用验证器模块，并在将prompt发送回LLM之前，通过纠正指令来完善prompt，从而大大提高生成的语义图的质量</p><p>训练验证模块的方法：我们从一个种子数据集开始（包含文本和图的(T, G)对），通过在种子集上随意选取一个图G，并对其中的实体、关系或三元组进行任意的扰动，从而构造成一个图扰动数据集。文本、扰动后的图、以及校正描述（用于逆转施加的扰动）组成了一个验证数据集中的三元组，供验证模块进行自监督学习。随后，我们设计了微调(fine-tuning)和指令调优(instruction-tuning)来分别训练特定领域和通用的验证模块</p><p>在通过LLM生成T2G的过程中，验证器从LLM获取文本T和输出的图G，并向LLM发送校正信号（例如，“将文本转换为语义图，并将给定的三元组添加到生成的语义图”）。此过程将持续到验证模块验证输出是否正确为止，称之为Iterative Promoting。此外，验证器模块还有另一种（效率更高的）模式，它一开始调用LLM来以获得一个初始的图，然后剩下的校正步骤都会在验证模块中循环地以离线方式进行，我们称之为迭代离线校正(Iterative Offline Correction)</p><p>我们在3个图数据集上的实验结果表明，通过迭代地校正，PiVe框架的有效性在3个数据集上平均提升了26%。我们还表明，验证模块可以用作数据增强工具，以帮助创建高质量的并行文本和图数据集。我们还表明了如何利用PiVe作为一种数据增强技术，来提高自动构建的文本-图数据集的质量</p><h1 id="Grapher"><a href="#Grapher" class="headerlink" title="Grapher"></a>Grapher</h1><h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>关于先前KG的构建：</p><ul><li>一些方法考虑简单的图补全问题，给定一个不完全的三元组（如缺少其中一个实体），目标是通过生成缺失的实体、或对给定的候选集进行排序，来补全三元组。该方法的缺点是，它们仅限于通过局部的修改来扩展现有的KG，不适合构建整个KG</li><li>其他方法提出查询PLM，以提取所学的事实和常识。他们促使PLM像做完形填空一样来预测三元组中缺失的部分。同上，该方法只适用于局部KG修补</li></ul><p>对于构建整个KG：</p><ul><li>有使用GraphGNN来构建KG的。但其序列性和贪婪性可能无法带来最优的图架构</li><li>CycleGT是一个text-to-graph的无监督方法。首先依据现成的实体提取器来提取实体，然后通过分类器来预测关系。但它对外部模块的依赖破坏了系统的连续性，可能导致不好的结果</li><li>DualTKBe采用无监督循环损失来实现图文双向翻译。但他们的方法只适用于单句的KG生成，限制了对大型图的适用性</li><li>BT5提出利用PLM T5模型来线性化地生成KG，其中对象-谓词-主体三元组连接在一起，整个T2G问题被视为序列到序列的建模问题。这种方法的问题是，图线性化不是唯一的，并且由于图组件多次重复而效率低下，导致长序列和增加复杂性</li><li>MaMa中，实体和关系首先使用LM向前传递的注意力权重矩阵进行匹配。然后将它们映射到现有的KG模式以生成最终的图</li></ul><p>本文提出了一个新的KG构建架构。首先生成节点，然后生成节点之间的边：</p><h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><h3 id="节点生成"><a href="#节点生成" class="headerlink" title="节点生成"></a>节点生成</h3><p>以下是Grapher节点生成框架的选择过程</p><h4 id="Text-Nodes方法"><a href="#Text-Nodes方法" class="headerlink" title="Text Nodes方法"></a>Text Nodes方法</h4><p>给定文本输入，该模块的目标是生成一组唯一的节点。我们使用预训练的编码器-解码器语言模型(PLM)，例如说T5。通过PLM，我们可以将节点的生成描述为一个从<strong>序列到序列</strong>的问题，将文本输入转换为由特殊标记分离的节点序列，即，\<PAD\>NODE1\<NODE_SEP\>NODE2\<NODE_SEP\>NODE3\&lt;\s>，其中NODE_i表示一个或多个单词</p><p>如图3所示，该模块还提供了节点的特征，来为KG生成边做准备。由于每个节点可以有多个相关的单词，因此我们对生成的字符串进行贪婪解码，用分隔令牌&lt; NODE_SEP &gt;来分割节点，并对解码器最后一层的隐藏状态进行平均池化。注意，在实践中，我们提前设定了生成节点的最大数量，并用一个特殊的&lt; NO_NODE &gt;符号填充缺失的节点</p><h4 id="Query-Nodes方法"><a href="#Query-Nodes方法" class="headerlink" title="Query Nodes方法"></a>Query Nodes方法</h4><p>在上述方法中，生成的节点序列是有顺序的，而在一个图中的节点不必是有顺序的，可以同等地看待这些节点。因此，我们提出了第二种架构（灵感来自DETR图像对象检测方法）。如图4所示，我们首先学习节点的查询以获得节点特征，然后估计（节点的）排列，以与目标节点顺序保持一致</p><ul><li>可学习节点查询：解码器接收一组可学习节点查询作为输入，以嵌入矩阵的形式输入。我们还禁用因果masking，以确保Transformer能够同时处理所有查询。这与传统的编码器-解码器架构形成对比，传统的编码器架构通常在训练期间将目标序列与因果masking作为输入嵌入，或者在推理期间嵌入自生成序列。</li></ul><p>解码器的输出现在可以直接读取为N维的节点特征$F_n\in\mathbb{R}^{d\times N}$，并传递给预测器(LSTM或GRU)解码为节点逻辑(logits) $L_n\in \mathbb{R}^{S\times V\times N}$，其中S为生成的节点序列长度，V为词汇表大小。</p><ul><li>为了避免系统记住节点的顺序并使序列的顺序不变，我们将逻辑和特征排列为$L’_n(s)=L_n(s)P,\ F’_n(s)=F_n(s)P$，其中$s=1,…,S$，$P$是用二部匹配算法在目标节点和贪婪解码节点之间得到的置换矩阵。我们使用交叉熵损失作为匹配的损失函数。排列的节点特征$F’_n$现在与目标是齐次的，可以在边的生成阶段使用</li></ul><h3 id="生成边"><a href="#生成边" class="headerlink" title="生成边"></a>生成边</h3><p>随后使用上一步的节点特征进行边的生成，如图5。给定一对节点特征，预测头决定它们各自节点之间存在(或不存在)一条边。</p><ul><li>一种选择是使用类似于Query Nodes中的预测器（或生成器，LSTM或GRU）来生成边</li><li>另一种选择是使用分类器来预测边</li></ul><p>这两种选择各有利弊，具体选择取决于应用的领域</p><ul><li>生成器的优点：能够构造任何的边序列，包括在训练过程中未见过的边序列，但风险是，结果可能不会与目标边序列完全匹配。</li><li>另一方面，如果可能关系的集合是固定且已知的，那么分类器会更有效、准确；但是如果训练中对所有可能的边的覆盖有限（没有考虑到所有可能的边），则系统在推理过程中可能会误分类</li></ul><h3 id="不平衡的边分布"><a href="#不平衡的边分布" class="headerlink" title="不平衡的边分布"></a>不平衡的边分布</h3><p>我们观察到，由于我们需要检查所有节点对之间是否存在边，我们必须生成或预测多达$N^2$条边，其中N是节点的数量。当生成的节点之一是\<NO_NODE\>符号时，可以通过忽略他们之间的边来节省时间。当两点之间没有边时，用\<NO_EDGE\>符号来表示。</p><p>此外，由于通常实际边的数量很小而\<NO_EDGE\>很大，生成和分类任务对\<NO_EDGE\>符号是不平衡的。为了解决这个问题，我们提出了两种解决方案：</p><ul><li>修改交叉熵损失（针对分类器提出）：将交叉熵(CE)替换为焦点损失(Focal Loss, 主要用于解决类别不平衡问题)。它的主要思想是降低分类效果好的样本的CE的权重（在我们的实验中即\<NO_EDGE\>），增加容易误分类的样本的CE的权重，也就是写成如下的形式：<script type="math/tex">\begin{aligned}  CE(p,\ t)&=-log(p_t)\\  FL(p,\ t,\ \gamma)&=-(1-p_t)^\gamma log(p_t)  \end{aligned}</script><br>  其中，$p$表示一条边对应的概率分布，$t$表示目标类，$\gamma$是一个权重参数，当为0时所有的损失都相等。将这种损失应用于分类器非常直观，而对于生成器，我们先根据边序列的长度来累加（每条边的）预测概率，得到与$p_t$地位相等的量，然后将其应用到损失上。在实践中，我们观察到FL提高了分类器的准确性，而对于生成器的性能没有显着变化</li><li>改变训练范式（针对生成器提出）：通过使邻接矩阵变得稀疏来修改训练设置，以删除大部分的\<NO_EDGE\>边，手动地重新进行平衡，如图6所示。<br>  这里，我们保留所有实际的边，只留下一些随机选择的\<NO_EDGE\>边（注意，这种修改只是为了提高训练效率，在推理过程中，系统仍然需要输出所有的边），因为它们的真实位置是未知的，如图5所示。在实践中，除了将准确率提高了10-20%之外，还观察到使用稀疏边比使用完全邻接矩阵的训练时间快了10%</li></ul><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><ol><li><p>WebNLG+ corpus v3.0：是2020年WebNLG挑战赛的数据集，提供了两个任务：从一组RDF三元组(主语-谓语-宾语)生成文本，以及语义解析的反向任务，将文本描述转换为RDF三元组。本文使用文本到RDF任务上的算法，其统计信息如表1所示。</p><p> 每个三元组集合都与一个或多个文本相关联，因此当将一个三元组集合分配给所有（相关的）文本时，训练、开发和测试集的总大小如表1的第二行所示。数据由16个DBpedia类别组成：11个只在训练和开发部分出现，5个不可见的类别仅在测试部分出现</p><p> 我们对数据预处理，删除下划线和引号以减少数据中的噪声。此外，由于T5的tokenizer和WebNLG数据集的词汇覆盖范围不匹配，WebNLG中的一些字符在T5的词汇表中不存在，在tokenization的过程中被忽略。我们将数据规范化，把缺失的字符映射到最接近的可用字符，例如，将’ ø ‘转换为’ o ‘，或将’ ã ‘转换为’ a ‘</p> <p> WebNLG是一个相当小的数据集，所以我们使用TEKGEN数据集的数据来对其进行扩展。由于WebNLG不使用DBpedia模式，而TEKGEN基于Wikidata KG，因此我们将Wikidata的谓词近似地映射到DBpedia的谓词。我们只映射训练集中的谓词。例如，TEKGEN三元组(SUBJECT， ‘ location of formation ‘ OBJECT)被转换为WebNLG三元组(SUBJECT， ‘ foundationPlace ‘， OBJECT)。总的来说，我们向WebNLG数据集添加了17855对，使总训练集的大小扩展到了53,281。</p></li><li><p>TEKGEN：是将Wikidata KG与Wikipedia文本对齐而构建的大规模并行文本-图数据集，其统计数据如表2第一行所示。使用TEKGEN的主要困难是三元组的数据形式为 (SUBJECT PREDICATE1 OBJECT1, PREDICATE2 OBJECT2，…)用逗号分隔，而谓词有可能由多个词组成，那么多个单词的时候就可能无法判断该词是属于谓词还是subject/ object</p> <p> 然而，上述困难可以通过使用Wikidata的谓词列表和人工制作的启发式方法来解决，另外过滤掉包含超过7个谓词的三元组，三元组组件长度超过100个字符，</p><p> 这样做是为了和WebNLG数据的设置更接近，并降低评分函数的计算复杂性。数据集的最终统计信息显示在表2的第二行中。注意，为了进一步管理有限的计算资源，我们只在Dev和Test集的一半上评估结果</p></li></ol><h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><ul><li>PLM：T5 large，参数量770M</li><li>learnable embedding matrix：$M\in \mathbb{R}^{H\times N}$，$H=1024$是T5的隐藏大小，$N=8$是一个图中可能节点的最大数量</li><li>node generation head：单层GRU解码器，$H_{GRU}=1024$，紧跟一个投射到大小为32,128的词汇表的线性变换</li><li>edge generation head：同上</li><li>一个图中可能边的最大数量：7</li><li>edge classification head：用ReLU定义全连接层，将输出投射到大小为407的边的类型空间</li><li>全参数微调，使用AdamW优化器，学习率为$10^{-4}$，$\beta$默认值为$[0.9,\ 0.999]$，权重衰减默认值为$10^{-2}$</li><li>batch_size：10（WebNLG-一个A100）； 100（TEKGEN-10个A100）</li></ul><ol><li>完成WebNLG的一个训练epoch大约需要5300步，每1000步进行一次验证，我们得到的模型大约在6-7小时内达到其最佳性能</li><li>对于TEKGEN，每个epoch大约需要56,000步，每1,000步进行一次评估，我们训练和验证模型进行25,000次迭代，大约需要6天的计算时间。</li></ol><h3 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h3><p>我们使用WebNLG 2020挑战赛排行榜上报告的最佳表现团队作为基准：</p><ul><li>Amazon AI (Shanghai) 是Text-to-RDF任务的冠军。他们使用一种简单的启发式方法，首先进行实体链接以匹配输入文本中出现的实体与DBpedia的实体，然后查询DBpedia数据库以提取它们之间的关系</li><li>BT5是第二位，使用T5模型以线性形式生成KG，其中 （object-谓词-subject）三元组被连接在一起，整个T2G问题被视为传统的序列到序列建模</li><li>第三名CycleGT，使用了一种无监督的方法进行文本到图和图到文本的生成，其中KB构建部分依赖于现成的实体提取模块来识别输入文本中的实体，以及多标签分类器来预测实体对之间的关系。</li><li>Stanford CoreNLP Open IE：是一种无监督方法，在测试集的输入文本部分上运行，以提取主题、关系和对象，以产生输出三元组，以提供WebNLG 2020挑战赛的基准性能</li><li>ReGen：利用T5和强化学习(RL)进行双向文本到图和图到文本的生成，与BT5类似，也遵循线性化的图表示方法。</li></ul><h3 id="指标"><a href="#指标" class="headerlink" title="指标"></a>指标</h3><p>为了对生成的图进行评分，我们使用了WebNLG 2020挑战赛的评估脚本，它计算了输出三元组相对于真实值的精度、召回率和F1 Score。使用基于命名实体评价的指标以不同的方式衡量准确率、召回率和F1值：</p><ul><li>Exact：结果应该精确匹配参考结果，而类型(主语、谓语、宾语)不重要</li><li>Partial：结果应该至少部分匹配参考结果，而类型(主语、谓语、宾语)是不相关的</li><li>Strict：结果应该完全匹配参考结果，元素类型(主语、谓语、宾语)也应该完全匹配</li></ul><h3 id="WebNLG实验结果"><a href="#WebNLG实验结果" class="headerlink" title="WebNLG实验结果"></a>WebNLG实验结果</h3><p>如上图所示，黑色粗体为top，蓝色为second。可以发现使用T Nodes比Q Nodes要好；C Edges比G Edges要好。（T Nodes更好的可能原因：当前模型和数据集较小）</p><p>在使用T Nodes、C Edges时，用不同的随机初始化设置来实验，以检验模型的变化。从表4中的结果可知，结果非常稳定</p><p>针对边分布不平衡的问题，由于C Edges使用方法是用FL代替CE，所以本文使用不同的$\gamma$来进行实验。结果表明当$\gamma=3$时的效果最好</p><p>图8暂时没读懂…</p><h3 id="TEKGEN实验结果"><a href="#TEKGEN实验结果" class="headerlink" title="TEKGEN实验结果"></a>TEKGEN实验结果</h3><p>如图，T Nodes仍然比Q Nodes要好，但G Edges与C Edges几乎完全一样（在较小的数据集WebNLG中，C Edges表现更好）。</p><p>如图，可以发现数据量的增加对于边的生成器帮助很大；同时到了20000步之后，两种方式的F1值都开始趋于收敛，说明数据量增加带来的帮助有限</p><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>本文通过Grapher解决了从文本构建KG的问题，将KG的生成分割成了节点生成和边生成两个环节，并对于每个环节提出了不同的方法来实现。此外，本文还解决了边的分布不平衡的问题。结果表明Grapher在两个数据集上的表现都非常不错</p>]]></content:encoded>
       
       
       <category domain="http://yunsaijc.top/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">文献阅读</category>
       
       
-      <category domain="http://yunsaijc.top/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</category>
-      
       <category domain="http://yunsaijc.top/tags/AI/">AI</category>
       
       <category domain="http://yunsaijc.top/tags/LLM/">LLM</category>
+      
+      <category domain="http://yunsaijc.top/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</category>
       
       
       <comments>http://yunsaijc.top/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#disqus_thread</comments>
@@ -93,11 +93,11 @@
       <category domain="http://yunsaijc.top/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">文献阅读</category>
       
       
-      <category domain="http://yunsaijc.top/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</category>
-      
       <category domain="http://yunsaijc.top/tags/AI/">AI</category>
       
       <category domain="http://yunsaijc.top/tags/LLM/">LLM</category>
+      
+      <category domain="http://yunsaijc.top/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</category>
       
       
       <comments>http://yunsaijc.top/2023/10/10/14-%3CLLMs%20for%20Knowledge%20Graph%20Construction%20and%20Reasoning-Recent%20Capabilities%20and%20Future%20Opportunities%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/#disqus_thread</comments>
@@ -192,6 +192,28 @@
     </item>
     
     <item>
+      <title>将博客搬至CSDN</title>
+      <link>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/</link>
+      <guid>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/</guid>
+      <pubDate>Sat, 07 Oct 2023 12:34:16 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;2023年&quot;&gt;&lt;a href=&quot;#2023年&quot; class=&quot;headerlink&quot; title=&quot;2023年&quot;&gt;&lt;/a&gt;2023年&lt;/h2&gt;</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="2023年"><a href="#2023年" class="headerlink" title="2023年"></a>2023年</h2>]]></content:encoded>
+      
+      
+      
+      
+      <comments>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
       <title>AI方向直博学习日志</title>
       <link>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</link>
       <guid>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</guid>
@@ -214,28 +236,6 @@
       
       
       <comments>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>将博客搬至CSDN</title>
-      <link>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/</link>
-      <guid>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/</guid>
-      <pubDate>Sat, 07 Oct 2023 12:34:16 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;2023年&quot;&gt;&lt;a href=&quot;#2023年&quot; class=&quot;headerlink&quot; title=&quot;2023年&quot;&gt;&lt;/a&gt;2023年&lt;/h2&gt;</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="2023年"><a href="#2023年" class="headerlink" title="2023年"></a>2023年</h2>]]></content:encoded>
-      
-      
-      
-      
-      <comments>http://yunsaijc.top/2023/10/07/11-%E5%B0%86%E5%8D%9A%E5%AE%A2%E6%90%AC%E8%87%B3CSDN/#disqus_thread</comments>
       
     </item>
     

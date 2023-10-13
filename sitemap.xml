@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</loc>
+    <loc>http://yunsaijc.top/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2023-10-13</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>http://yunsaijc.top/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</loc>
+    <loc>http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</loc>
     
     <lastmod>2023-10-13</lastmod>
     
@@ -214,7 +214,14 @@
   </url>
   
   <url>
-    <loc>http://yunsaijc.top/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</loc>
+    <loc>http://yunsaijc.top/tags/AI/</loc>
+    <lastmod>2023-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yunsaijc.top/tags/LLM/</loc>
     <lastmod>2023-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -228,14 +235,7 @@
   </url>
   
   <url>
-    <loc>http://yunsaijc.top/tags/AI/</loc>
-    <lastmod>2023-10-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yunsaijc.top/tags/LLM/</loc>
+    <loc>http://yunsaijc.top/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</loc>
     <lastmod>2023-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -321,13 +321,6 @@
   </url>
   
   <url>
-    <loc>http://yunsaijc.top/categories/AI%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2023-10-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yunsaijc.top/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/</loc>
     <lastmod>2023-10-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -336,6 +329,13 @@
   
   <url>
     <loc>http://yunsaijc.top/categories/%E9%A1%B9%E7%9B%AE%E8%AE%B0%E5%BD%95/</loc>
+    <lastmod>2023-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yunsaijc.top/categories/AI%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2023-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
