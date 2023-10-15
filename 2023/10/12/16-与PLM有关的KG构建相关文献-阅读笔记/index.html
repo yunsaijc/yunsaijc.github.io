@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
 <meta property="article:published_time" content="2023-10-12T02:07:12.000Z">
-<meta property="article:modified_time" content="2023-10-13T13:57:16.318Z">
+<meta property="article:modified_time" content="2023-10-13T14:02:14.128Z">
 <meta property="article:author" content="Yunsaijc">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="LLM">
@@ -60,7 +60,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2023-10-13 21:57:16'
+  postUpdate: '2023-10-13 22:02:14'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -284,7 +284,8 @@ class="math inline">\(p\)</span>表示一条边对应的概率分布，<span
 class="math inline">\(t\)</span>表示目标类，<span
 class="math inline">\(\gamma\)</span>是一个权重参数，当为0时所有的损失都相等。将这种损失应用于分类器非常直观，而对于生成器，我们先根据边序列的长度来累加（每条边的）预测概率，得到与<span
 class="math inline">\(p_t\)</span>地位相等的量，然后将其应用到损失上。在实践中，我们观察到FL提高了分类器的准确性，而对于生成器的性能没有显着变化</li>
-<li>改变训练范式（针对生成器提出）：通过使邻接矩阵变得稀疏来修改训练设置，以删除大部分的&lt;NO_EDGE&gt;边，手动地重新进行平衡，如图6所示。<img src="/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/7.png" class="">
+<li>改变训练范式（针对生成器提出）：通过使邻接矩阵变得稀疏来修改训练设置，以删除大部分的&lt;NO_EDGE&gt;边，手动地重新进行平衡，如图6所示。
+<img src="/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/7.png" class="">
 这里，我们保留所有实际的边，只留下一些随机选择的&lt;NO_EDGE&gt;边（注意，这种修改只是为了提高训练效率，在推理过程中，系统仍然需要输出所有的边），因为它们的真实位置是未知的，如图5所示。在实践中，除了将准确率提高了10-20%之外，还观察到使用稀疏边比使用完全邻接矩阵的训练时间快了10%</li>
 </ul>
 <h2 id="数据集">数据集</h2>
@@ -293,7 +294,8 @@ class="math inline">\(p_t\)</span>地位相等的量，然后将其应用到损�
 v3.0：是2020年WebNLG挑战赛的数据集，提供了两个任务：从一组RDF三元组(主语-谓语-宾语)生成文本，以及语义解析的反向任务，将文本描述转换为RDF三元组。本文使用文本到RDF任务上的算法，其统计信息如表1所示。</p>
 <p>每个三元组集合都与一个或多个文本相关联，因此当将一个三元组集合分配给所有（相关的）文本时，训练、开发和测试集的总大小如表1的第二行所示。数据由16个DBpedia类别组成：11个只在训练和开发部分出现，5个不可见的类别仅在测试部分出现</p>
 <p>我们对数据预处理，删除下划线和引号以减少数据中的噪声。此外，由于T5的tokenizer和WebNLG数据集的词汇覆盖范围不匹配，WebNLG中的一些字符在T5的词汇表中不存在，在tokenization的过程中被忽略。我们将数据规范化，把缺失的字符映射到最接近的可用字符，例如，将'
-ø '转换为' o '，或将' ã '转换为' a ' <img src="/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/8.png" class=""></p>
+ø '转换为' o '，或将' ã '转换为' a '</p>
+<p><img src="/2023/10/12/16-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84KG%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/8.png" class=""></p>
 <p>WebNLG是一个相当小的数据集，所以我们使用TEKGEN数据集的数据来对其进行扩展。由于WebNLG不使用DBpedia模式，而TEKGEN基于Wikidata
 KG，因此我们将Wikidata的谓词近似地映射到DBpedia的谓词。我们只映射训练集中的谓词。例如，TEKGEN三元组(SUBJECT，
 ' location of formation ' OBJECT)被转换为WebNLG三元组(SUBJECT， '
