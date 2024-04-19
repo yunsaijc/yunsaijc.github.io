@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI学习日志 | Yunsaijc's Blog</title><meta name="author" content="Yunsaijc"><meta name="copyright" content="Yunsaijc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="2024年 1月 29日  位置编码及其外推：推理阶段确保模型能处理远超预训练时的文本长度（https:&#x2F;&#x2F;www.zhihu.com&#x2F;tardis&#x2F;zm&#x2F;art&#x2F;675243992?source_id&#x3D;1005） 旋转位置编码RoPE：https:&#x2F;&#x2F;www.zhihu.com&#x2F;tardis&#x2F;zm&#x2F;art&#x2F;647109286?source_id&#x3D;1005 RoPE编码从进制角度理解：https:">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI学习日志 | Yunsaijc's Blog</title><meta name="author" content="Yunsaijc"><meta name="copyright" content="Yunsaijc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="2024年 4月 15～16日  逻辑回归(Logistic Regression) “逻辑”是音译，不代表有逻辑性 过程是回归，但目的是分类：在回归的值上加个阈值就能分类 二分类的散点和阶跃函数非常相似，但阶跃不可导，故选sigmoid作为拟合函数 然后做最大似然估计 损失函数如果用残差平方和，不是凸函数不好优化，所以取负对数似然 尤其适用于二分类问题，不要求自变量和因变量是线性关系 （http">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AI学习日志">
 <meta property="og:url" content="http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/index.html">
 <meta property="og:site_name" content="Yunsaijc&#39;s Blog">
-<meta property="og:description" content="2024年 1月 29日  位置编码及其外推：推理阶段确保模型能处理远超预训练时的文本长度（https:&#x2F;&#x2F;www.zhihu.com&#x2F;tardis&#x2F;zm&#x2F;art&#x2F;675243992?source_id&#x3D;1005） 旋转位置编码RoPE：https:&#x2F;&#x2F;www.zhihu.com&#x2F;tardis&#x2F;zm&#x2F;art&#x2F;647109286?source_id&#x3D;1005 RoPE编码从进制角度理解：https:">
+<meta property="og:description" content="2024年 4月 15～16日  逻辑回归(Logistic Regression) “逻辑”是音译，不代表有逻辑性 过程是回归，但目的是分类：在回归的值上加个阈值就能分类 二分类的散点和阶跃函数非常相似，但阶跃不可导，故选sigmoid作为拟合函数 然后做最大似然估计 损失函数如果用残差平方和，不是凸函数不好优化，所以取负对数似然 尤其适用于二分类问题，不要求自变量和因变量是线性关系 （http">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
 <meta property="article:published_time" content="2023-10-07T12:34:16.000Z">
-<meta property="article:modified_time" content="2024-02-01T03:41:15.350Z">
+<meta property="article:modified_time" content="2024-04-18T10:57:36.287Z">
 <meta property="article:author" content="Yunsaijc">
 <meta property="article:tag" content="学习日志">
 <meta name="twitter:card" content="summary">
@@ -58,7 +58,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-02-01 11:41:15'
+  postUpdate: '2024-04-18 18:57:36'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -182,9 +182,74 @@
     }
     detectApple()
     })(window)</script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/rss2.xml" title="Yunsaijc's Blog" type="application/rss+xml">
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Yunsaijc's Blog"><span class="site-name">Yunsaijc's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">AI学习日志</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-10-07T12:34:16.000Z" title="发表于 2023-10-07 20:34:16">2023-10-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="AI学习日志"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="年">2024年</h2>
-<h3 id="月">1月</h3>
-<h4 id="日">29日</h4>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Yunsaijc's Blog"><span class="site-name">Yunsaijc's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">AI学习日志</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-10-07T12:34:16.000Z" title="发表于 2023-10-07 20:34:16">2023-10-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI%E5%9F%BA%E7%A1%80/">AI基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="AI学习日志"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="年">2024年</h2>
+<h3 id="月">4月</h3>
+<h4 id="日">15～16日</h4>
+<ul>
+<li>逻辑回归(Logistic Regression) “逻辑”是音译，不代表有逻辑性
+过程是回归，但目的是分类：在回归的值上加个阈值就能分类
+二分类的散点和阶跃函数非常相似，但阶跃不可导，故选sigmoid作为拟合函数
+然后做最大似然估计
+损失函数如果用残差平方和，不是凸函数不好优化，所以取负对数似然
+尤其适用于二分类问题，不要求自变量和因变量是线性关系 （<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/139122386">https://zhuanlan.zhihu.com/p/139122386</a>）</li>
+<li>线性模型的本质 <span
+class="math inline">\(y=g^{-1}(w^Tx+b)\)</span>，其中<span
+class="math inline">\(g^{-1}\)</span>单调可微，称为联系函数
+本质：决策边界是线性
+如果一个乘法式子中自变量x前的系数w只影响一个x，则是线性的；否则非线性
+（<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147599207">https://zhuanlan.zhihu.com/p/147599207</a>，<a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/362676570">https://www.zhihu.com/question/362676570</a>）</li>
+</ul>
+<h3 id="月-1">3月</h3>
+<h4 id="日-1">8~10日</h4>
+<ul>
+<li>LLM LoRA微调实践： <a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/649315197">https://zhuanlan.zhihu.com/p/649315197</a>；<a
+target="_blank" rel="noopener" href="https://xtx0o8yn7x.feishu.cn/docx/XjvpdaeQcoF8d3xhpbCcoOJNn9b">https://xtx0o8yn7x.feishu.cn/docx/XjvpdaeQcoF8d3xhpbCcoOJNn9b</a>；<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/659154202">https://zhuanlan.zhihu.com/p/659154202</a>；<a
+target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2372297">https://cloud.tencent.com/developer/article/2372297</a></li>
+</ul>
+<h4 id="日-2">6～7日</h4>
+<ul>
+<li>GPT与BERT的自回归与自编码：（<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/625714067">https://zhuanlan.zhihu.com/p/625714067</a>）</li>
+<li>prompt/ prefix-tuning 区别：
+prompt：只在embedding层，在输入序列前加入一个可学习的embedding矩阵
+prefix：不仅在输入中加前缀，而是在每个多头注意力机制的KV矩阵中都加入可学习的前缀向量
+“Prompt-tuning主要关注于输入序列的修改，而Prefix-tuning则是对模型内部自回归过程的初始化状态进行调整”
+（<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/632009060">https://zhuanlan.zhihu.com/p/632009060</a>；<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43863869/article/details/134760405">https://blog.csdn.net/weixin_43863869/article/details/134760405</a>；<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/682938889">https://zhuanlan.zhihu.com/p/682938889</a>）</li>
+</ul>
+<h4 id="日-3">5日</h4>
+<ul>
+<li>实验</li>
+<li>重新确定论文实验计划</li>
+<li>huggingface模型大小文件分开下载： 用wget有时候会有unauthorized的问题
+通过git lfs 的某些操作可以避开wget （<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/flyingluohaipeng/article/details/130788293">https://blog.csdn.net/flyingluohaipeng/article/details/130788293</a>）</li>
+</ul>
+<h3 id="月-2">2月</h3>
+<h4 id="日-4">26~28日</h4>
+<ul>
+<li>LangChain：<a
+target="_blank" rel="noopener" href="https://python.langchain.com.cn/docs/">https://python.langchain.com.cn/docs/</a></li>
+<li>VAE：目的和GAN一样，都是进行分布之间的变换（<a
+target="_blank" rel="noopener" href="https://spaces.ac.cn/archives/5253">https://spaces.ac.cn/archives/5253</a>）</li>
+<li>GAN为什么是拟合分布的：（GAN的本质）
+“GAN模型以及所有的生成模型都一样，做的事情只有一件：拟合训练数据的分布“
+（<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/307527293">https://zhuanlan.zhihu.com/p/307527293</a>）</li>
+<li>torch中<code>.backward()</code>对应的具体作用：
+将正向传播中的损失函数传入反向传播过程，==逐层求出损失函数对各神经元权重的<strong>偏导数</strong>==，作为目标函数对权重的梯度
+（下一步的优化器则使用该梯度来更新权重） （<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/fsfjdtpzus/article/details/106256925">https://blog.csdn.net/fsfjdtpzus/article/details/106256925</a>）
+### 1月</li>
+</ul>
+<h4 id="日-5">29日</h4>
 <ul>
 <li>位置编码及其外推：推理阶段确保模型能处理远超预训练时的文本长度（<a
 target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/675243992?source_id=1005">https://www.zhihu.com/tardis/zm/art/675243992?source_id=1005</a>）</li>
@@ -193,7 +258,7 @@ target="_blank" rel="noopener" href="https://www.zhihu.com/tardis/zm/art/6471092
 <li>RoPE编码从进制角度理解：<a
 target="_blank" rel="noopener" href="https://spaces.ac.cn/archives/9675">https://spaces.ac.cn/archives/9675</a></li>
 </ul>
-<h4 id="日-1">19~20日</h4>
+<h4 id="日-6">19~20日</h4>
 <ul>
 <li>wandb：<a
 target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40507857/article/details/112791111">https://blog.csdn.net/qq_40507857/article/details/112791111</a>，<a
@@ -206,29 +271,29 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/486130584">htt
 训练——推理的3～4倍（粗略） （<a
 target="_blank" rel="noopener" href="https://www.zhihu.com/question/612046818">https://www.zhihu.com/question/612046818</a>）</li>
 </ul>
-<h4 id="日-2">2～6日</h4>
+<h4 id="日-7">2～6日</h4>
 <ul>
 <li>softmax：每一个元素的范围都在 ( 0 , 1 )
 之间，并且所有元素的和为1（<a
 target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Softmax%E5%87%BD%E6%95%B0">https://zh.wikipedia.org/wiki/Softmax%E5%87%BD%E6%95%B0</a>）</li>
-<li>先验，后验，似然： 先验：猜参数服从啥分布
-后验：学习经验后有根据地猜参数服从啥分布
-似然：猜参数是多少，才最能解释某些实验结果 （<a
+<li>先验，后验，似然： 先验概率：猜参数服从啥分布
+后验概率：学习经验后有根据地猜参数服从啥分布
+似然估计：猜参数是多少，才最能解释某些实验结果 （<a
 target="_blank" rel="noopener" href="https://www.zhihu.com/question/24261751">https://www.zhihu.com/question/24261751</a>）</li>
 <li>强化学习的 state, action, reward, policy：<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/358787399">https://zhuanlan.zhihu.com/p/358787399</a></li>
 </ul>
 <h2 id="年-1">2023年</h2>
-<h3 id="月-1">12月</h3>
-<h4 id="日-3">30～31日</h4>
+<h3 id="月-3">12月</h3>
+<h4 id="日-8">30～31日</h4>
 <ul>
 <li>联邦学习 SCAFFOLD: <a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/538941775">https://zhuanlan.zhihu.com/p/538941775</a></li>
 </ul>
-<h4 id="日-4">18~29日</h4>
+<h4 id="日-9">18~29日</h4>
 <ul>
 <li>实验</li>
-<li>LLM发展及现状总结：<a
+<li>LLM发展及现状总结/ 综述/ 入门：<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/612181615">https://zhuanlan.zhihu.com/p/612181615</a></li>
 <li>ACE2005 数据预处理：<a
 target="_blank" rel="noopener" href="https://blog.csdn.net/wmq104/article/details/129613296">https://blog.csdn.net/wmq104/article/details/129613296</a></li>
@@ -238,7 +303,7 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/614115887">htt
 作为一个组件对原始语言模型的输出作后处理 （<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/591474085">https://zhuanlan.zhihu.com/p/591474085</a>）</li>
 </ul>
-<h4 id="日-5">1～17日</h4>
+<h4 id="日-10">1～17日</h4>
 <ul>
 <li>实验</li>
 <li>终生学习 (Lifelong Learning)：<a
@@ -248,8 +313,8 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/73953567">http
 <li>kNN：<a
 target="_blank" rel="noopener" href="https://blog.csdn.net/chenhepg/article/details/105409153">https://blog.csdn.net/chenhepg/article/details/105409153</a></li>
 </ul>
-<h3 id="月-2">11月</h3>
-<h4 id="日-6">24～30 日</h4>
+<h3 id="月-4">11月</h3>
+<h4 id="日-11">24～30 日</h4>
 <ul>
 <li>实验</li>
 <li>In-Context Learning (ICL) 与 Few-shot
@@ -261,7 +326,7 @@ target="_blank" rel="noopener" href="https://www.zhihu.com/question/616130636">h
 <li>LLM输出参数与解码策略：<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/653926703">https://zhuanlan.zhihu.com/p/653926703</a></li>
 </ul>
-<h4 id="日-7">21~23 日</h4>
+<h4 id="日-12">21~23 日</h4>
 <ul>
 <li>实验，增加webnlg数据集</li>
 <li>粗读论文：(2023) &lt;Large Language Model Is Not a Good Few-shot
@@ -270,7 +335,7 @@ Information Extractor, but a Good Reranker for Hard Samples!&gt;</li>
 <li>读论文：&lt;CODEIE: Large Code Generation Models are Better Few-Shot
 Information Extractors&gt;</li>
 </ul>
-<h4 id="日-8">10~20 日</h4>
+<h4 id="日-13">10~20 日</h4>
 <ul>
 <li>读论文：(2020 T5)&lt;Exploring the Limits of Transfer Learning with
 a Unified Text-to-Text Transformer&gt;</li>
@@ -282,7 +347,7 @@ Models&gt;</li>
 <li>寻找数据集</li>
 <li>总结论文</li>
 </ul>
-<h4 id="日-9">9日</h4>
+<h4 id="日-14">9日</h4>
 <ul>
 <li>Elmo和BERT：<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/51682879">https://zhuanlan.zhihu.com/p/51682879</a></li>
@@ -300,7 +365,7 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/618871247">htt
 target="_blank" rel="noopener" href="https://www.datalearner.com/blog/1051681306547159">https://www.datalearner.com/blog/1051681306547159</a>）</li>
 <li>重构实验代码</li>
 </ul>
-<h4 id="日-10">6～7日</h4>
+<h4 id="日-15">6～7日</h4>
 <ul>
 <li>实验</li>
 <li>读论文：(2020 MAMA) &lt;LANGUAGE MODELS ARE OPEN KNOWLEDGE
@@ -311,7 +376,7 @@ Unified Text-to-Triple Translation&gt;</li>
 <li>读论文：(2020 OpenIE6) &lt;OpenIE6- Iterative Grid Labeling and
 Coordination Analysis for Open Information Extraction&gt;</li>
 </ul>
-<h4 id="日-11">5日</h4>
+<h4 id="日-16">5日</h4>
 <ul>
 <li>读论文：&lt;Open Information Extraction from 2007 to 2022 – A
 Survey&gt;</li>
@@ -319,7 +384,7 @@ Survey&gt;</li>
 target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42536162/article/details/131307509">https://blog.csdn.net/qq_42536162/article/details/131307509</a>，<a
 target="_blank" rel="noopener" href="https://www.reddit.com/r/MachineLearning/comments/ofivs2/d_difference_between_representation_vs_latent_vs/?rdt=57328">https://www.reddit.com/r/MachineLearning/comments/ofivs2/d_difference_between_representation_vs_latent_vs/?rdt=57328</a>）</li>
 </ul>
-<h4 id="日-12">1～4日</h4>
+<h4 id="日-17">1～4日</h4>
 <ul>
 <li>实验</li>
 <li>读论文：&lt;DEEPSTRUCT- Pretraining of Language Models for Structure
@@ -330,13 +395,13 @@ Extraction&gt;</li>
 Supervision)：利用已存在的KG，给数据做自动标注，属于半监督（<a
 target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43734080/article/details/126823650">https://blog.csdn.net/weixin_43734080/article/details/126823650</a>）</li>
 </ul>
-<h3 id="月-3">10月</h3>
-<h4 id="日-13">30/31 日</h4>
+<h3 id="月-5">10月</h3>
+<h4 id="日-18">30/31 日</h4>
 <ul>
 <li>实验</li>
 <li>寻找数据集...</li>
 </ul>
-<h4 id="日-14">27日</h4>
+<h4 id="日-19">27日</h4>
 <ul>
 <li>实验</li>
 <li>LLM输出参数中的temperature/ top_k/
@@ -347,7 +412,7 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/631786282">htt
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/631847634">https://zhuanlan.zhihu.com/p/631847634</a>，<a
 target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/generation_strategies#text-generation-strategies">https://huggingface.co/docs/transformers/generation_strategies#text-generation-strategies</a>）</li>
 </ul>
-<h4 id="日-15">26日</h4>
+<h4 id="日-20">26日</h4>
 <ul>
 <li>尝试基于LLM的KG实验（以调用为主）</li>
 <li>langchain：<a
@@ -355,7 +420,7 @@ target="_blank" rel="noopener" href="https://www.langchain.com.cn/getting_starte
 <li>python中的星号*：单星号接受任意多个非关键字参数，在函数中将其转化为元组；双星号接受任意多个关键字参数，在函数中转化为词典（<a
 target="_blank" rel="noopener" href="https://www.cnblogs.com/empty16/p/6229538.html">https://www.cnblogs.com/empty16/p/6229538.html</a>）</li>
 </ul>
-<h4 id="日-16">25日</h4>
+<h4 id="日-21">25日</h4>
 <ul>
 <li>论文阅读：(PURE) &lt;A Frustratingly Easy Approach for Entity and
 Relation Extraction&gt;</li>
@@ -365,7 +430,7 @@ Discovery in Heterogeneous Information Networks&gt;</li>
 <li>论文阅读：&lt;A Comprehensive Survey on Automatic Knowledge Graph
 Construction&gt;</li>
 </ul>
-<h4 id="日-17">23～24日</h4>
+<h4 id="日-22">23～24日</h4>
 <ul>
 <li>为什么LLM大多是decoder-only架构：encoder的双向注意力会存在低秩问题，这可能会削弱模型表达能力（<a
 target="_blank" rel="noopener" href="https://kexue.fm/archives/9529">https://kexue.fm/archives/9529</a>）</li>
@@ -374,7 +439,7 @@ target="_blank" rel="noopener" href="https://kexue.fm/archives/9529">https://kex
 <li>阅读Grapher代码</li>
 <li>LLM+KG文章继续检索</li>
 </ul>
-<h4 id="日-18">20～22日</h4>
+<h4 id="日-23">20～22日</h4>
 <ul>
 <li>RLHF和Instruction Tuning的关系：
 <ul>
@@ -386,7 +451,7 @@ target="_blank" rel="noopener" href="https://news.ycombinator.com/item?id=359253
 <li>前期调研总结整理</li>
 <li>训练Grapher模型</li>
 </ul>
-<h4 id="日-19">19日</h4>
+<h4 id="日-24">19日</h4>
 <ul>
 <li>LSTM：基本的RNN难以解决长期依赖（<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/123857569">https://zhuanlan.zhihu.com/p/123857569</a>）</li>
@@ -401,7 +466,7 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/274568639">htt
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/452448670">https://zhuanlan.zhihu.com/p/452448670</a>）</li>
 <li>前期调研总结整理</li>
 </ul>
-<h4 id="日-20">18日</h4>
+<h4 id="日-25">18日</h4>
 <ul>
 <li>残差连接：解决深度网络中的梯度消散问题；同时因为不确定某层的效果是否正向，保留部分上一层的信息（<a
 target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39852676/article/details/105886743">https://blog.csdn.net/qq_39852676/article/details/105886743</a>，<a
@@ -411,27 +476,27 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/642537175">htt
 <li>CNN结构加深记忆：<a
 target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_57643648/article/details/123990029">https://blog.csdn.net/weixin_57643648/article/details/123990029</a></li>
 </ul>
-<h4 id="日-21">17日</h4>
+<h4 id="日-26">17日</h4>
 <ul>
 <li>文献精读：&lt;Attention is all you need&gt;</li>
 <li>多头注意力的理解：<a
 target="_blank" rel="noopener" href="https://www.zhihu.com/question/341222779">https://www.zhihu.com/question/341222779</a></li>
 </ul>
-<h4 id="日-22">16日</h4>
+<h4 id="日-27">16日</h4>
 <ul>
 <li>文献精读：&lt;Building Knowledge Graph using Pre-trained Language
 Model for Learning Entity-aware Relationships&gt;</li>
 <li>文献精读：&lt;Constructing Chinese Historical Literature Knowledge
 Graph Based on BERT&gt;</li>
 </ul>
-<h4 id="日-23">15日</h4>
+<h4 id="日-28">15日</h4>
 <ul>
 <li>运行llama成功初尝试</li>
 <li>阅读Grapher代码</li>
 <li>pytorch-lightning：<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/556040754">https://zhuanlan.zhihu.com/p/556040754</a></li>
 </ul>
-<h4 id="日-24">13日</h4>
+<h4 id="日-29">13日</h4>
 <ul>
 <li>文献继续精读：Grapher</li>
 <li>卷积和池化的重新理解：不同的卷积核能够提取不同的特征信息（如边缘）或进行不同的变化（如锐化）；池化用于在保留主要特征的同时减少参数和计算量，防止过拟合（<a
@@ -441,7 +506,7 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/78760534">http
 个人理解：池化是一个特殊形状和步长的卷积，相当于等比例缩小图片。不太应该翻译为“池化”，可以理解为把东西都聚到一个池子里的操作</li>
 <li>Llama代码简单浏览</li>
 </ul>
-<h4 id="日-25">12日</h4>
+<h4 id="日-30">12日</h4>
 <ul>
 <li>文献阅读：&lt;PiVe: Prompting with Iterative Verification Improving
 Graph-based Generative Capability of LLMs&gt;</li>
@@ -450,7 +515,7 @@ Extraction&gt;（看不太懂）</li>
 <li>文献阅读：&lt;Grapher: Multi-Stage Knowledge Graph Construction
 using Pretrained Language Models&gt;</li>
 </ul>
-<h4 id="日-26">11日</h4>
+<h4 id="日-31">11日</h4>
 <ul>
 <li>文献继续精读：&lt;LLMs for Knowledge Graph Construction and
 Reasoning:Recent Capabilities and Future Opportunities&gt;</li>
@@ -461,7 +526,7 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/422558527">htt
 <li>准确率(accuracy)，精确率(precision)，召回率(recall)与F1 score：<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/405658103">https://zhuanlan.zhihu.com/p/405658103</a></li>
 </ul>
-<h4 id="日-27">10日</h4>
+<h4 id="日-32">10日</h4>
 <ul>
 <li>文献阅读：&lt;Knowledge Graphs: Opportunities and
 Challenges&gt;</li>
@@ -471,7 +536,7 @@ Reasoning:Recent Capabilities and Future Opportunities&gt;</li>
 <li>zero\one\few-shot：简单来说就是给了多少个学习样本（<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/624793654">https://zhuanlan.zhihu.com/p/624793654</a>）</li>
 </ul>
-<h4 id="日-28">9日</h4>
+<h4 id="日-33">9日</h4>
 <ul>
 <li>RLHF和InstructGPT：RLHF可以分为3步：
 <ul>
@@ -498,7 +563,7 @@ target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/94087040">http
 </ul></li>
 <li>Llama部署初尝试</li>
 </ul>
-<h4 id="日-29">8日</h4>
+<h4 id="日-34">8日</h4>
 <ul>
 <li>文献阅读：&lt;A Survey of Large Language Models&gt;</li>
 <li>Transformer架构（LLM建立的主要基础）：<a
@@ -511,7 +576,7 @@ target="_blank" rel="noopener" href="https://www.zhihu.com/question/20924039">ht
 <li>LLM微调学习：Hugging face Transformer文档初步阅读</li>
 <li>实验环境初步搭建</li>
 </ul>
-<h4 id="日-30">7日</h4>
+<h4 id="日-35">7日</h4>
 <ul>
 <li>初步确定短期研究方向</li>
 <li>监督学习：关键在于，数据中有无人工标注的标签（<a
@@ -525,7 +590,7 @@ target="_blank" rel="noopener" href="https://www.zhihu.com/question/27903807">ht
 <li>图神经网络(GNN)基本原理：<a
 target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45884316/article/details/115751272">https://blog.csdn.net/weixin_45884316/article/details/115751272</a></li>
 </ul>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://yunsaijc.top">Yunsaijc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/">http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yunsaijc.top" target="_blank">Yunsaijc's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/">学习日志</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/10/08/11-%E7%BB%BC%E8%BF%B0%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="综述&lt;A Survey of Large Language Models&gt;阅读笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">综述&lt;A Survey of Large Language Models&gt;阅读笔记</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/05/9-AI%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" title="AI中的线性代数（有空更新）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">AI中的线性代数（有空更新）</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Yunsaijc</div><div class="author-info__description">Enjoy</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yunsaijc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/yunsaijc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1434044898@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">利利是是！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B4"><span class="toc-number">1.</span> <span class="toc-text">2024年</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88"><span class="toc-number">1.1.</span> <span class="toc-text">1月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5"><span class="toc-number">1.1.1.</span> <span class="toc-text">29日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-1"><span class="toc-number">1.1.2.</span> <span class="toc-text">19~20日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-2"><span class="toc-number">1.1.3.</span> <span class="toc-text">2～6日</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B4-1"><span class="toc-number">2.</span> <span class="toc-text">2023年</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88-1"><span class="toc-number">2.1.</span> <span class="toc-text">12月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-3"><span class="toc-number">2.1.1.</span> <span class="toc-text">30～31日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-4"><span class="toc-number">2.1.2.</span> <span class="toc-text">18~29日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-5"><span class="toc-number">2.1.3.</span> <span class="toc-text">1～17日</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88-2"><span class="toc-number">2.2.</span> <span class="toc-text">11月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-6"><span class="toc-number">2.2.1.</span> <span class="toc-text">24～30 日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-7"><span class="toc-number">2.2.2.</span> <span class="toc-text">21~23 日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-8"><span class="toc-number">2.2.3.</span> <span class="toc-text">10~20 日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-9"><span class="toc-number">2.2.4.</span> <span class="toc-text">9日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-10"><span class="toc-number">2.2.5.</span> <span class="toc-text">6～7日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-11"><span class="toc-number">2.2.6.</span> <span class="toc-text">5日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-12"><span class="toc-number">2.2.7.</span> <span class="toc-text">1～4日</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88-3"><span class="toc-number">2.3.</span> <span class="toc-text">10月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-13"><span class="toc-number">2.3.1.</span> <span class="toc-text">30&#x2F;31 日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-14"><span class="toc-number">2.3.2.</span> <span class="toc-text">27日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-15"><span class="toc-number">2.3.3.</span> <span class="toc-text">26日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-16"><span class="toc-number">2.3.4.</span> <span class="toc-text">25日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-17"><span class="toc-number">2.3.5.</span> <span class="toc-text">23～24日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-18"><span class="toc-number">2.3.6.</span> <span class="toc-text">20～22日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-19"><span class="toc-number">2.3.7.</span> <span class="toc-text">19日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-20"><span class="toc-number">2.3.8.</span> <span class="toc-text">18日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-21"><span class="toc-number">2.3.9.</span> <span class="toc-text">17日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-22"><span class="toc-number">2.3.10.</span> <span class="toc-text">16日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-23"><span class="toc-number">2.3.11.</span> <span class="toc-text">15日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-24"><span class="toc-number">2.3.12.</span> <span class="toc-text">13日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-25"><span class="toc-number">2.3.13.</span> <span class="toc-text">12日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-26"><span class="toc-number">2.3.14.</span> <span class="toc-text">11日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-27"><span class="toc-number">2.3.15.</span> <span class="toc-text">10日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-28"><span class="toc-number">2.3.16.</span> <span class="toc-text">9日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-29"><span class="toc-number">2.3.17.</span> <span class="toc-text">8日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-30"><span class="toc-number">2.3.18.</span> <span class="toc-text">7日</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/17/15-Transformer%E5%8E%9F%E6%96%87%3CAttention%20Is%20All%20You%20Need%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="Transformer原文&lt;Attention Is All You Need&gt;阅读笔记">Transformer原文&lt;Attention Is All You Need&gt;阅读笔记</a><time datetime="2023-10-17T00:54:12.000Z" title="发表于 2023-10-17 08:54:12">2023-10-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/12/14-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="与PLM有关的知识图谱构建相关文献-阅读笔记">与PLM有关的知识图谱构建相关文献-阅读笔记</a><time datetime="2023-10-12T09:28:12.000Z" title="发表于 2023-10-12 17:28:12">2023-10-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/11/13-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/" title="ML的4个指标——准确率、精确率、召回率与F1 score">ML的4个指标——准确率、精确率、召回率与F1 score</a><time datetime="2023-10-11T12:55:23.000Z" title="发表于 2023-10-11 20:55:23">2023-10-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/09/12-Llama%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E8%A1%8C/" title="Llama部署与运行">Llama部署与运行</a><time datetime="2023-10-09T07:03:23.000Z" title="发表于 2023-10-09 15:03:23">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/08/11-%E7%BB%BC%E8%BF%B0%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="综述&lt;A Survey of Large Language Models&gt;阅读笔记">综述&lt;A Survey of Large Language Models&gt;阅读笔记</a><time datetime="2023-10-08T11:47:08.000Z" title="发表于 2023-10-08 19:47:08">2023-10-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Yunsaijc</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://yunsaijc.top">Yunsaijc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/">http://yunsaijc.top/2023/10/07/10-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yunsaijc.top" target="_blank">Yunsaijc's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/">学习日志</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/10/08/11-%E7%BB%BC%E8%BF%B0%3CA%20Survey%20of%20Large%20Language%20Models%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="综述&lt;A Survey of Large Language Models&gt;阅读笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">综述&lt;A Survey of Large Language Models&gt;阅读笔记</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/05/9-AI%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" title="AI中的线性代数（有空更新）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">AI中的线性代数（有空更新）</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Yunsaijc</div><div class="author-info__description">Enjoy</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yunsaijc"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/yunsaijc" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1434044898@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">利利是是！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B4"><span class="toc-number">1.</span> <span class="toc-text">2024年</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88"><span class="toc-number">1.1.</span> <span class="toc-text">4月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5"><span class="toc-number">1.1.1.</span> <span class="toc-text">15～16日</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88-1"><span class="toc-number">1.2.</span> <span class="toc-text">3月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">8~10日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-2"><span class="toc-number">1.2.2.</span> <span class="toc-text">6～7日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-3"><span class="toc-number">1.2.3.</span> <span class="toc-text">5日</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88-2"><span class="toc-number">1.3.</span> <span class="toc-text">2月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-4"><span class="toc-number">1.3.1.</span> <span class="toc-text">26~28日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-5"><span class="toc-number">1.3.2.</span> <span class="toc-text">29日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-6"><span class="toc-number">1.3.3.</span> <span class="toc-text">19~20日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-7"><span class="toc-number">1.3.4.</span> <span class="toc-text">2～6日</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B4-1"><span class="toc-number">2.</span> <span class="toc-text">2023年</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88-3"><span class="toc-number">2.1.</span> <span class="toc-text">12月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-8"><span class="toc-number">2.1.1.</span> <span class="toc-text">30～31日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-9"><span class="toc-number">2.1.2.</span> <span class="toc-text">18~29日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-10"><span class="toc-number">2.1.3.</span> <span class="toc-text">1～17日</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88-4"><span class="toc-number">2.2.</span> <span class="toc-text">11月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-11"><span class="toc-number">2.2.1.</span> <span class="toc-text">24～30 日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-12"><span class="toc-number">2.2.2.</span> <span class="toc-text">21~23 日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-13"><span class="toc-number">2.2.3.</span> <span class="toc-text">10~20 日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-14"><span class="toc-number">2.2.4.</span> <span class="toc-text">9日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-15"><span class="toc-number">2.2.5.</span> <span class="toc-text">6～7日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-16"><span class="toc-number">2.2.6.</span> <span class="toc-text">5日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-17"><span class="toc-number">2.2.7.</span> <span class="toc-text">1～4日</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%88-5"><span class="toc-number">2.3.</span> <span class="toc-text">10月</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-18"><span class="toc-number">2.3.1.</span> <span class="toc-text">30&#x2F;31 日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-19"><span class="toc-number">2.3.2.</span> <span class="toc-text">27日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-20"><span class="toc-number">2.3.3.</span> <span class="toc-text">26日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-21"><span class="toc-number">2.3.4.</span> <span class="toc-text">25日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-22"><span class="toc-number">2.3.5.</span> <span class="toc-text">23～24日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-23"><span class="toc-number">2.3.6.</span> <span class="toc-text">20～22日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-24"><span class="toc-number">2.3.7.</span> <span class="toc-text">19日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-25"><span class="toc-number">2.3.8.</span> <span class="toc-text">18日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-26"><span class="toc-number">2.3.9.</span> <span class="toc-text">17日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-27"><span class="toc-number">2.3.10.</span> <span class="toc-text">16日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-28"><span class="toc-number">2.3.11.</span> <span class="toc-text">15日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-29"><span class="toc-number">2.3.12.</span> <span class="toc-text">13日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-30"><span class="toc-number">2.3.13.</span> <span class="toc-text">12日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-31"><span class="toc-number">2.3.14.</span> <span class="toc-text">11日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-32"><span class="toc-number">2.3.15.</span> <span class="toc-text">10日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-33"><span class="toc-number">2.3.16.</span> <span class="toc-text">9日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-34"><span class="toc-number">2.3.17.</span> <span class="toc-text">8日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5-35"><span class="toc-number">2.3.18.</span> <span class="toc-text">7日</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/18/16-%3CML%E7%AC%94%E8%AE%B0%3E%20%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E3%80%81Logistic%E5%9B%9E%E5%BD%92%E4%B8%8ESoftmax%E5%9B%9E%E5%BD%92/" title="&lt;ML笔记&gt; 线性回归、Logistic回归与Softmax回归">&lt;ML笔记&gt; 线性回归、Logistic回归与Softmax回归</a><time datetime="2024-04-18T10:59:13.000Z" title="发表于 2024-04-18 18:59:13">2024-04-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/01/15-%3CPLM&amp;LLM%E7%B3%BB%E5%88%97%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%3EGPT-1%E5%8E%9F%E6%96%87%22Improving%20Language%20Understandingby%20Generative%20Pre-Training%22%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="&lt;PLM&amp;LLM系列论文阅读&gt;Transformer原文&quot;Attention Is All You Need&quot;阅读笔记">&lt;PLM&amp;LLM系列论文阅读&gt;Transformer原文&quot;Attention Is All You Need&quot;阅读笔记</a><time datetime="2024-03-01T13:25:13.000Z" title="发表于 2024-03-01 21:25:13">2024-03-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/12/14-%E4%B8%8EPLM%E6%9C%89%E5%85%B3%E7%9A%84%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E6%9E%84%E5%BB%BA%E7%9B%B8%E5%85%B3%E6%96%87%E7%8C%AE-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="与PLM有关的知识图谱构建相关文献-阅读笔记">与PLM有关的知识图谱构建相关文献-阅读笔记</a><time datetime="2023-10-12T09:28:12.000Z" title="发表于 2023-10-12 17:28:12">2023-10-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/11/13-ML%E7%9A%844%E4%B8%AA%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E4%B8%8EF1%20score/" title="ML的4个指标——准确率、精确率、召回率与F1 score">ML的4个指标——准确率、精确率、召回率与F1 score</a><time datetime="2023-10-11T12:55:23.000Z" title="发表于 2023-10-11 20:55:23">2023-10-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/09/12-Llama%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E8%A1%8C/" title="Llama部署与运行">Llama部署与运行</a><time datetime="2023-10-09T07:03:23.000Z" title="发表于 2023-10-09 15:03:23">2023-10-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Yunsaijc</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
   window.MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
